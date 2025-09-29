@@ -1,6 +1,5 @@
 <?php
 namespace PHPizza;
-global $dbType;
 use PHPizza\PageRenderer;
 use PHPizza\PageDatabase;
 /**
@@ -58,7 +57,7 @@ class BrowserEntryPoint
         $page_id = isset($_GET['title']) ? $_GET['title'] : 'home';
 
         // Pull DB config variables (provided by init.php)
-        global $dbServer, $dbUser, $dbPassword, $dbName, $sitename, $siteLanguage;
+        global $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage;
 
         // Initialize PageDatabase using config variables
         $pagedb = new PageDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);

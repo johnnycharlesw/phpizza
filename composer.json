@@ -1,0 +1,39 @@
+{
+    "name": "johnnycharlesw-github/phpizza",
+    "description": "A lightweight CMS that uses Markdown",
+    "type": "project",
+    "authors": [
+        {
+            "name": "John Charles Woods",
+            "email": "woods.johnny.charles@gmail.com"
+        }
+    ],
+    "require": {
+        "erusev/parsedown": "^1.7",
+        "symfony/finder": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPizza\\": "includes/",
+            "PHPizza\\Installer\\": "installer/"
+        }
+    },
+    "repositories": {
+        "johnnycharlesw-github/phpizza-installed-extensions": {
+            "type": "path",
+            "url": "extensions/*",
+            "options": {
+                "symlink":true
+            }
+        },
+
+        "johnnycharlesw-github/phpizza-installed-skins":{
+            "type": "path",
+            "url": "skins/*",
+            "options": {
+                "symlink": true
+            }
+        }
+
+    }
+}

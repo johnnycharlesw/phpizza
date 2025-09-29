@@ -1,0 +1,7 @@
+div.center{
+    justify-self: auto;
+    justify-content:center;
+    margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}

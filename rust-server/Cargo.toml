@@ -1,0 +1,16 @@
+[package]
+name = "phpizza-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+hyper = { version = "0.14", features = ["full"] }
+bytes = "1"
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+clap = { version = "4", features = ["derive"] }
+tokio-util = "0.7"
+rustls = "0.21"
+hyper-rustls = "0.23"

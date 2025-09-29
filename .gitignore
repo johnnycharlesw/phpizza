@@ -1,0 +1,5 @@
+# Sensitive runtime files and folders
+passwd.b64
+config.php
+uploads
+config.d

@@ -16,7 +16,8 @@ class Database {
         'mysql'   => MySQL::class,
         'sqlite'  => SQLite::class,
         'postgres' => PostgreSQL::class,
-        'metasql' => MetaSQL::class
+        'metasql' => MetaSQL::class,
+        'percona' => PerconaServer::class,
     ];
 
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType){

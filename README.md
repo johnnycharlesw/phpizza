@@ -1,5 +1,5 @@
 # PHPizza CMS
-This is a CMS I have beenn working on for fun.
+This is a CMS I have been working on for fun.
 
 ## Features
 * Stores content and skin layouts in Markdown (just like how this README is stored in Markdown)
@@ -10,7 +10,7 @@ This is a CMS I have beenn working on for fun.
     - Facebook MySQL
     - Percona Server
     - SQLite
-    - PostgresSQL
+    - PostgreSQL
 * Supports PHP 8.2 and later
 * Has a relatively simple database schema
 * Has a placeholder in the schema for COPPA compliance

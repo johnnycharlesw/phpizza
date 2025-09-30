@@ -56,7 +56,27 @@ class PageRenderer{
 HTML;
     }
 
-    public function get_body_tag_html($innerHTML = ''){
+    public function get_skin_body_innerHTML($skinName, $innerHTML = ''){
+        $skin = new Skin($skinName);
+        return <<<HTML
+<div class="{$skin->get_skin_class()}">
+    <header>
+        {$skin->get_header()}
+    </header>
+    <aside class="sidebar">
+        {$skin->get_sidebar()}
+    </aside>
+    <article class="phpizza-content">
+        {$innerHTML}
+    </article>
+    <footer>
+        {$skin->get_footer()}
+    </footer>
+</div>
+HTML;
+    }
+
+    public function get_body_tag_html($innerHTML = '', $useSkin=false){
         // Only convert Markdown when explicitly enabled
         if ($this->renderMarkdown && class_exists('Parsedown')) {
             try {
@@ -65,6 +85,11 @@ HTML;
             } catch (\Throwable $e) {
                 // fall back to raw content on error
             }
+        }
+
+        if ($useSkin){
+            global $skinName;
+            $innerHTML=$this->get_skin_body_innerHTML($skinName, $innerHTML);
         }
 
         return <<<HTML
@@ -86,7 +111,8 @@ HTML;
         $description = '', 
         $keywords = [], 
         $body_innerHTML = '', 
-        $siteLanguage = 'en'
+        $siteLanguage = 'en',
+        $useSkin = false,
     ) : string {
         $headHTML = $this->get_head_tag_html($sitename, $page_title, $description, $keywords);
         $bodyHTML = $this->get_body_tag_html($body_innerHTML);

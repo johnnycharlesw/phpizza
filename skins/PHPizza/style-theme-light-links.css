@@ -1,0 +1,15 @@
+/* General link styling */
+a:link {
+    color:blue;
+}
+a:link:hover{
+    color: lightskyblue;
+}
+
+a:visited{
+    color:purple;
+}
+
+a:visited:hover{
+    color:blueviolet;
+}

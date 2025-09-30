@@ -1,0 +1,15 @@
+/* General link styling */
+a:link {
+    color:var(--link-color);
+}
+a:link:hover{
+    color: var(--link-color-hover);
+}
+
+a:visited{
+    color:var(--link-color-visited);
+}
+
+a:visited:hover{
+    color:var(--link-color-visited-hover);
+}

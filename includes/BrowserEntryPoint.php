@@ -50,11 +50,13 @@ class BrowserEntryPoint
      */
     public function run()
     {
+        
         // Start a PHP session or load one if one already exists
         session_start();
         
         // Handle GET parameters
-        $page_id = isset($_GET['title']) ? $_GET['title'] : 'home';
+        global $homepageName;
+        $page_id = isset($_GET['title']) ? $_GET['title'] : $homepageName;
 
         // Pull DB config variables (provided by init.php)
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage;

@@ -112,10 +112,10 @@ HTML;
         $keywords = [], 
         $body_innerHTML = '', 
         $siteLanguage = 'en',
-        $useSkin = false,
+        $useSkin = true,
     ) : string {
         $headHTML = $this->get_head_tag_html($sitename, $page_title, $description, $keywords);
-        $bodyHTML = $this->get_body_tag_html($body_innerHTML);
+        $bodyHTML = $this->get_body_tag_html($body_innerHTML,$useSkin);
         return <<<HTML
 <!DOCTYPE html>
 <html lang="{$siteLanguage}">

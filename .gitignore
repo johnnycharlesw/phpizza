@@ -3,3 +3,8 @@ passwd.b64
 config.php
 uploads
 config.d
+
+# Other things that should not be in the repo
+adminer-*.php
+pma/
+phpMyAdmin-*.zip

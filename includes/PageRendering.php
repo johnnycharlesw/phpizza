@@ -56,7 +56,7 @@ class PageRenderer{
 HTML;
     }
 
-    public function get_skin_body_innerHTML($skinName, $innerHTML = ''){
+    public function get_skin_body_innerHTML(string $skinName, $innerHTML = ''){
         $skin = new Skin($skinName);
         return <<<HTML
 <div class="{$skin->get_skin_class()}">

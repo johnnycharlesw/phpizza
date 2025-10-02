@@ -10,6 +10,12 @@ class CLIEntryPoint
 
     public function run()
     {
+        
+        // Check for updates and install updates if available
+        $updater = new Updater();
+        $updater->install_updates_if_available();
+
+        // Main CLI logic
         global $argv;
         $cmd = isset($argv[1]) ? $argv[1] : 'help';
         switch ($cmd) {

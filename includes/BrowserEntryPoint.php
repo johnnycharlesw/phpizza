@@ -51,6 +51,10 @@ class BrowserEntryPoint
     public function run()
     {
         
+        // Check for updates and install updates if available
+        $updater = new Updater();
+        $updater->install_updates_if_available();
+
         // Start a PHP session or load one if one already exists
         session_start();
         

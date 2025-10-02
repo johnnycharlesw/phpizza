@@ -28,6 +28,7 @@ class ErrorScreen
         $htmlContent = <<<HTML
 <h1>PHPizza internal error</h1>
 <p>
+    
     {$message}
 </p>
 HTML;

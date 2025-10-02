@@ -69,10 +69,13 @@ class BrowserEntryPoint
         $pagedb = new PageDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $page = $pagedb->getPage($page_id);
 
+        // Initialize parsedown
+        $parsedown = new \Parsedown();
+
         if ($page) {
             http_response_code(200);
             $page_title = $page['title'];
-            $page_content = $page['content'];
+            $page_content = $parsedown->text($page['content']);
             $description = substr(strip_tags($page_content), 0, 150); // Simple description
             $keywords = [];
             if (!empty($page['keywords'])) {
@@ -93,7 +96,8 @@ class BrowserEntryPoint
             $description,
             $keywords,
             $page_content,
-            $siteLanguage
+            $siteLanguage,
+            $useSkin=true
         );
 
     }

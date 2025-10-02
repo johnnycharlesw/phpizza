@@ -19,7 +19,7 @@ class Skin extends Addon
         try {
             $parsedown = new \Parsedown();
         }
-        catch (e){
+        catch (\Exception $e){
             include 'vendor/autoload.php';
             $parsedown = new \Parsedown();
         }

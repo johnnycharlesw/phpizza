@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'johnnycharlesw-github/phpizza',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '1fcb623f74ee16e4a3898b2c3a06103e5173f6f7',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'johnnycharlesw-github/phpizza' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '1fcb623f74ee16e4a3898b2c3a06103e5173f6f7',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

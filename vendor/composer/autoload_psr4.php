@@ -7,6 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
-    'PHPizza\\Instaler\\' => array($baseDir . '/installer'),
+    'PHPizza\\Installer\\' => array($baseDir . '/installer'),
     'PHPizza\\' => array($baseDir . '/includes'),
 );

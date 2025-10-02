@@ -13,7 +13,7 @@ class ComposerStaticInitca8e50c71b574daa03d430047bc39689
         ),
         'P' => 
         array (
-            'PHPizza\\Instaler\\' => 17,
+            'PHPizza\\Installer\\' => 18,
             'PHPizza\\' => 8,
         ),
     );
@@ -23,7 +23,7 @@ class ComposerStaticInitca8e50c71b574daa03d430047bc39689
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
         ),
-        'PHPizza\\Instaler\\' => 
+        'PHPizza\\Installer\\' => 
         array (
             0 => __DIR__ . '/../..' . '/installer',
         ),

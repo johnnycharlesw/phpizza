@@ -1,6 +1,7 @@
 <?php
 namespace PHPizza;
 
+use function Adminer\dump_csv;
 
 /**
  * The page renderer class
@@ -52,17 +53,37 @@ class PageRenderer{
         return $head_tags;
     }
 
-    public function get_skin_head_tags(string $skinName){
+    public function get_skin_head_tags(string $skinName, string $theme = "system"){
         $skin = new Skin($skinName);
         if (isset($skin->manifest)) {
-            $skinStylesheet=$skin->manifest->stylesheet;
+            $skinStylesheet='';
+            foreach ($skin->manifest->stylesheets as $stylesheet) {
+                $skinStylesheet .= $skinName . "/" . $stylesheet . ",";
+            }
+            if ($skin->manifest->themeStylesheets) {
+                $skinStylesheet .= $skinName . "/" . $skin->manifest->themeStyleSheets[$theme];
+            }
+            $skinStylesheet=rtrim($skinStylesheet,",");
         }else{
             $skinStylesheet="style.css";
         }
         
-        return <<<HTML
-<link rel="stylesheet" href="css.php?f=skins/{$skinName}/{$skinStylesheet}"></link>
+        $skinStyleLinkTemplate = <<<HTML
+<link rel="stylesheet" href="css.php?f={{skinName}}/{{skinStyleSheet}}"></link>
 HTML;
+        $skinStyleLinks="";
+        if (isset($skin->manifest)) {
+            foreach ($skin->manifest->stylesheets as $stylesheet) {
+                $skinStyleLink=$skinStyleLinkTemplate;
+                $skinStyleLink=str_replace("{{skinName}}",$skinName,$skinStyleLink);
+                $skinStyleLink=str_replace("{{skinStyleSheet}}",$stylesheet,$skinStyleLink);
+                $skinStyleLinks .= "\n" . $skinStyleLink;
+            }
+        }
+        
+
+        #return $skinStyleLink;
+        return "<link rel='stylesheet' href='css.php?f=$skinName/$skinStylesheet'></link>";
     }
 
     public function get_head_tag_html($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = true){

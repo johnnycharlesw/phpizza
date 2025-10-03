@@ -1,7 +1,12 @@
 <?php
 namespace PHPizza;
+
+use Dom\HTMLElement;
 use PHPizza\PageRenderer;
 use PHPizza\PageDatabase;
+
+use function Safe\file_get_contents;
+
 /**
  * Handles a browser request for a single page.
  *
@@ -51,9 +56,7 @@ class BrowserEntryPoint
     public function run()
     {
         
-        // Check for updates and install updates if available
-        $updater = new Updater();
-        $updater->install_updates_if_available();
+        
 
         // Start a PHP session or load one if one already exists
         session_start();
@@ -61,6 +64,16 @@ class BrowserEntryPoint
         // Handle GET parameters
         global $homepageName;
         $page_id = isset($_GET['title']) ? $_GET['title'] : $homepageName;
+
+        // Check for updates and install updates if available
+        if ($page_id == $homepageName) {
+            $updater = new Updater();
+            if ($updater->get_is_available()) {
+                $updater->install_updates_if_available();
+            }
+            
+        }
+        
 
         // Pull DB config variables (provided by init.php)
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage;
@@ -74,6 +87,7 @@ class BrowserEntryPoint
 
         if ($page) {
             http_response_code(200);
+
             $page_title = $page['title'];
             $page_content = $parsedown->text($page['content']);
             $description = substr(strip_tags($page_content), 0, 150); // Simple description
@@ -83,10 +97,28 @@ class BrowserEntryPoint
             }
         } else {
             http_response_code(404);
-            $page_title = "Page Not Found";
-            $page_content = "<h1>404 Not Found</h1><p>The requested page does not exist.</p>";
-            $description = "The requested page does not exist.";
-            $keywords = [];
+            $page=$pagedb->getPage($page_id);
+            if ($page) {
+                $page_title = $page['title'];
+                $page_content = $parsedown->text($page['content']);
+                $description = substr(strip_tags($page_content), 0, 150); // Simple description
+                $keywords = [];
+                if (!empty($page['keywords'])) {
+                    $keywords = array_map('trim', explode(',', $page['keywords'])); // Assuming keywords are stored as comma-separated values
+                }
+            } else {
+                $page_title = "404 Not Found";
+                $page_content = <<<HTML
+<h1>404 Not Found</h1>
+<p>
+    It appears the page you were looking for has not been found, AND the owner of this site didn't put this 404 page here. What a coincidence.
+</p>
+HTML;
+                $description = substr(strip_tags($page_content), 0, 150); // Simple description
+                $keywords = [];
+                
+            }
+            
         }
 
         // Render page
@@ -101,4 +133,5 @@ class BrowserEntryPoint
         );
 
     }
-}
+    
+};

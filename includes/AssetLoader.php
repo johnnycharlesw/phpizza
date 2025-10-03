@@ -117,6 +117,10 @@ class AssetLoader
      */
     private function resolveFiles(array $relativePaths, string $type): array
     {
+        error_log("=== Resolving files for type: $type ===");
+        error_log("Relative paths: " . json_encode($relativePaths));
+        error_log("Allowed roots: " . json_encode($this->allowedRoots));
+
         $out = [];
         $ext = $type === 'css' ? '.css' : '.js';
         foreach ($relativePaths as $rel) {
@@ -222,7 +226,7 @@ class AssetLoader
     {
         if (headers_sent()) { return; }
         $mimeType=$this->mimeMapping[$type];
-        header('Content-Type: $mimeType; charset=UTF-8');
+        header("Content-Type: " . $mimeType . "; charset=UTF-8");
         /*
         if ($type === 'css') {
             header('Content-Type: text/css; charset=UTF-8');

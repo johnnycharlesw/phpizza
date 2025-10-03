@@ -27,6 +27,7 @@ class Skin extends Addon
         $markdown = file_get_contents($this->assetPath("/parts/$type.md"));
         
         $parsed=$parsedown->text($markdown);
+        $vars=$this->get_template_variables_as_array();
         foreach ($vars as $key => $value) {
             $parsed=str_replace("{{" . $key. "}}", $value, $parsed);
         }
@@ -38,7 +39,7 @@ class Skin extends Addon
     }
 
     public function get_template_variables_as_array(){
-        global $sitename, $siteLogoPath, $copyrightInfo, $licenseInfo, $siteLanguage, $siteTheme;
+        global $sitename, $siteLogoPath, $copyrightInfo, $licenseInfo, $siteLanguage, $siteTheme, $homepageName, $poweredByImageURL;
         return [
             'sitename' => $sitename,
             'siteLogoPath' => $siteLogoPath,
@@ -46,6 +47,8 @@ class Skin extends Addon
             'licenseInfo' => $licenseInfo,
             'siteLanguage' => $siteLanguage,
             'siteTheme' => $siteTheme,
+            'homePage' => $homepageName,
+            'poweredByImageURL' => $poweredByImageURL,
         ];
     }
 

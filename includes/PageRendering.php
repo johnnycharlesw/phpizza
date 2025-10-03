@@ -76,7 +76,17 @@ HTML;
 HTML;
     }
 
-    public function get_body_tag_html($innerHTML = '', $useSkin=false){
+    public function get_body_tag_html($innerHTML = '', $useSkin = false){
+        if ($useSkin){
+            global $skinName;
+            $innerHTML_=$this->get_skin_body_innerHTML($skinName, $innerHTML);
+        } else {
+            $innerHTML_=$innerHTML;
+        }
+        return $this->_get_body_tag_html($innerHTML_,$useSkin);
+    }
+
+    public function _get_body_tag_html($innerHTML = '', $useSkin=false){
         // Only convert Markdown when explicitly enabled
         if ($this->renderMarkdown && class_exists('Parsedown')) {
             try {
@@ -87,10 +97,6 @@ HTML;
             }
         }
 
-        if ($useSkin){
-            global $skinName;
-            $innerHTML=$this->get_skin_body_innerHTML($skinName, $innerHTML);
-        }
 
         return <<<HTML
 <body>

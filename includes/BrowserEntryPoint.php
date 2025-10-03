@@ -97,7 +97,7 @@ class BrowserEntryPoint
             }
         } else {
             http_response_code(404);
-            $page=$pagedb->getPage($page_id);
+            $page=$pagedb->getPage("404");
             if ($page) {
                 $page_title = $page['title'];
                 $page_content = $parsedown->text($page['content']);

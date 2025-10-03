@@ -7,6 +7,7 @@ class Updater {
     public function __construct() {
         error_log("Updater class instantiated");
         $this->threshold=file_get_contents(__DIR__ . "/.phpizza-update-threshold");
+        $this->threshold=(float)$this->threshold;
         
     }
 
@@ -16,10 +17,13 @@ class Updater {
         if (file_exists(__DIR__ . "/.phpizza-updater.lock")) {
             return false;
         }else{
-            if ($this->threshold == 20){
+            if ($this->threshold >= 20){
                 return true;
             }
+            $this->threshold++;
+            $this->save_threshold_to_disk();
             return false;
+            
             
         }
         */
@@ -28,7 +32,9 @@ class Updater {
     }
 
     public function save_threshold_to_disk(){
-        file_put_contents(__DIR__ . "/.phpizza-update-threshold",$this->threshold);
+        $threshold=$this->threshold;
+        $thresholdStr=(string)$threshold;
+        file_put_contents(__DIR__ . "/.phpizza-update-threshold", $thresholdStr);
     }
 
     public function install_updates_if_available(){

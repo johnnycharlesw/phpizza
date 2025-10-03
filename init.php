@@ -19,7 +19,12 @@ if (!isset($isInstaller)) {
     // Load everything for the config
     $configdir=dir(__DIR__ . "/config.d");
     while (($file = $configdir->read()) !== false) {
-        include $file;
+        try {
+            include $file;
+        } catch (Exception $e) {
+            error_log('file not found in config.d');
+        }
+        
     }
     $configdir->close();
 }

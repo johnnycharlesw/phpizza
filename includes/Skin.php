@@ -25,6 +25,7 @@ class Skin extends Addon
         }
         
         $markdown = file_get_contents($this->assetPath("/parts/$type.md"));
+        
         $parsed=$parsedown->text($markdown);
         foreach ($vars as $key => $value) {
             $parsed=str_replace("{{" . $key. "}}", $value, $parsed);

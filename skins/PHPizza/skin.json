@@ -1,3 +1,4 @@
 {
-    "enableDynamicCSSAndJS": true
+    "enableDynamicCSSAndJS": true,
+    "stylesheet": "style.css"
 }

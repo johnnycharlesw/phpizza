@@ -41,14 +41,32 @@ class PageRenderer{
         return $meta_tags;
     }
 
-    public function get_head_tags($sitename, $page_title = '', $description = '', $keywords = []){
+    public function get_head_tags($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = false){
         $head_tags = $this->get_title_tag($sitename, $page_title);
         $head_tags .= "\n" . $this->get_metadata_tags($description, $keywords);
+        if ($useSkin){
+            global $skinName;
+            $skin_head_tags=$this->get_skin_head_tags($skinName);
+            $head_tags .= "\n{$skin_head_tags}";
+        }
         return $head_tags;
     }
 
-    public function get_head_tag_html($sitename, $page_title = '', $description = '', $keywords = []){
-        $innerHTML= $this->get_head_tags($sitename, $page_title, $description, $keywords);
+    public function get_skin_head_tags(string $skinName){
+        $skin = new Skin($skinName);
+        if (isset($skin->manifest)) {
+            $skinStylesheet=$skin->manifest->stylesheet;
+        }else{
+            $skinStylesheet="style.css";
+        }
+        
+        return <<<HTML
+<link rel="stylesheet" href="css.php?f=skins/{$skinName}/{$skinStylesheet}"></link>
+HTML;
+    }
+
+    public function get_head_tag_html($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = true){
+        $innerHTML= $this->get_head_tags($sitename, $page_title, $description, $keywords, $useSkin);
         return <<<HTML
 <head>
     {$innerHTML}

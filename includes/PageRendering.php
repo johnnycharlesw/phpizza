@@ -1,7 +1,6 @@
 <?php
 namespace PHPizza;
 
-use function Adminer\dump_csv;
 
 /**
  * The page renderer class
@@ -82,7 +81,7 @@ HTML;
         }
         
 
-        #return $skinStyleLink;
+        #return $skinStyleLinks;
         return "<link rel='stylesheet' href='css.php?f=$skinName/$skinStylesheet'></link>";
     }
 

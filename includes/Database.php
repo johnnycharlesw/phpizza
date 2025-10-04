@@ -1,7 +1,7 @@
 <?php
 namespace PHPizza;
 
-class Database {
+final class Database {
 
     private $dbServer;
     private $dbUser;

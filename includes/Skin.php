@@ -23,10 +23,11 @@ class Skin extends Addon
             include 'vendor/autoload.php';
             $parsedown = new \Parsedown();
         }
-        
+        $parsedown_=new ParsedownWithTemplating();
+
         $markdown = file_get_contents($this->assetPath("/parts/$type.md"));
         
-        $parsed=$parsedown->text($markdown);
+        $parsed=$parsedown_->text($markdown,$this->get_template_variables_as_array());
         $vars=$this->get_template_variables_as_array();
         foreach ($vars as $key => $value) {
             $parsed=str_replace("{{" . $key. "}}", $value, $parsed);

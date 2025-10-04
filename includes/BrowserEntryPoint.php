@@ -64,6 +64,7 @@ class BrowserEntryPoint
         // Handle GET parameters
         global $homepageName;
         $page_id = isset($_GET['title']) ? $_GET['title'] : $homepageName;
+        $is_editor = isset($_GET['editing']) ? (bool)$_GET['editing'] && $_GET["editing"]==="true" : false;
 
         // Check for updates and install updates if available
         if ($page_id == $homepageName) {
@@ -89,7 +90,27 @@ class BrowserEntryPoint
             http_response_code(200);
 
             $page_title = $page['title'];
-            $page_content = $parsedown->text($page['content']);
+            #var_dump($is_editor);
+            #$is_editor=(bool)$is_editor && $is_editor == "true";
+
+            if ($is_editor) {
+                var_dump(__DIR__);
+                var_dump(__DIR__ . "/editor-ui.md");
+                $editor_ui_md=file_get_contents(__DIR__ . "/editor-ui.md");
+                $vars =[
+                    'md-contents' => $page['content'],
+                ];
+                foreach ($vars as $key => $value) {
+                    $editor_ui_md=str_replace("{{" . $key . "}}", htmlspecialchars($value), $editor_ui_md);
+                }
+                $page_content=$parsedown->text($editor_ui_md);
+                
+            }
+            else{
+                $page_content = $parsedown->text($page['content']);
+            }
+            
+
             $description = substr(strip_tags($page_content), 0, 150); // Simple description
             $keywords = [];
             if (!empty($page['keywords'])) {

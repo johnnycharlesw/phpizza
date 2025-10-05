@@ -3,7 +3,7 @@
         'name' => 'johnnycharlesw-github/phpizza',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '16017ddf96cf1ea8137e364987a9ffa4df4f3f19',
+        'reference' => '3a602ab7a52b77f98d1668915a9da8cb0c9b241e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'johnnycharlesw-github/phpizza' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '16017ddf96cf1ea8137e364987a9ffa4df4f3f19',
+            'reference' => '3a602ab7a52b77f98d1668915a9da8cb0c9b241e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

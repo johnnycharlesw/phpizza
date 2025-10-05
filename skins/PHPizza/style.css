@@ -1,6 +1,7 @@
 /*Styles for the PHPizza skin (not including colors, that will be handled seperately*/
 
-header > ul {
+
+header > ul, footer > ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -18,3 +19,8 @@ header > ul > li > a {
     text-decoration: none;
     font-size: 16px;
 }
+
+body {
+    font-family: "Inter", "Roboto", sans-serif;
+}
+

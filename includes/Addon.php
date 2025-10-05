@@ -34,6 +34,7 @@ abstract class Addon
         // Project root (one level above includes/)
         $baseDir = dirname(__DIR__);
         $this->folderPath = $baseDir . DIRECTORY_SEPARATOR . $this->type . 's' . DIRECTORY_SEPARATOR . $this->name;
+        $this->parse_manifest_json(isset($strictParsingAddonManifest) ? $strictParsingAddonManifest : false);
     }
 
     public function getName(): string { return $this->name; }

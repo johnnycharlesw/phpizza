@@ -41,14 +41,52 @@ class PageRenderer{
         return $meta_tags;
     }
 
-    public function get_head_tags($sitename, $page_title = '', $description = '', $keywords = []){
+    public function get_head_tags($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = false){
         $head_tags = $this->get_title_tag($sitename, $page_title);
         $head_tags .= "\n" . $this->get_metadata_tags($description, $keywords);
+        if ($useSkin){
+            global $skinName;
+            $skin_head_tags=$this->get_skin_head_tags($skinName);
+            $head_tags .= "\n{$skin_head_tags}";
+        }
         return $head_tags;
     }
 
-    public function get_head_tag_html($sitename, $page_title = '', $description = '', $keywords = []){
-        $innerHTML= $this->get_head_tags($sitename, $page_title, $description, $keywords);
+    public function get_skin_head_tags(string $skinName, string $theme = "system"){
+        $skin = new Skin($skinName);
+        if (isset($skin->manifest)) {
+            $skinStylesheet='';
+            foreach ($skin->manifest->stylesheets as $stylesheet) {
+                $skinStylesheet .= $skinName . "/" . $stylesheet . ",";
+            }
+            if ($skin->manifest->themeStylesheets) {
+                $skinStylesheet .= $skinName . "/" . $skin->manifest->themeStyleSheets[$theme];
+            }
+            $skinStylesheet=rtrim($skinStylesheet,",");
+        }else{
+            $skinStylesheet="style.css";
+        }
+        
+        $skinStyleLinkTemplate = <<<HTML
+<link rel="stylesheet" href="css.php?f={{skinName}}/{{skinStyleSheet}}"></link>
+HTML;
+        $skinStyleLinks="";
+        if (isset($skin->manifest)) {
+            foreach ($skin->manifest->stylesheets as $stylesheet) {
+                $skinStyleLink=$skinStyleLinkTemplate;
+                $skinStyleLink=str_replace("{{skinName}}",$skinName,$skinStyleLink);
+                $skinStyleLink=str_replace("{{skinStyleSheet}}",$stylesheet,$skinStyleLink);
+                $skinStyleLinks .= "\n" . $skinStyleLink;
+            }
+        }
+        
+
+        #return $skinStyleLinks;
+        return "<link rel='stylesheet' href='css.php?f=$skinName/$skinStylesheet'></link>";
+    }
+
+    public function get_head_tag_html($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = true){
+        $innerHTML= $this->get_head_tags($sitename, $page_title, $description, $keywords, $useSkin);
         return <<<HTML
 <head>
     {$innerHTML}
@@ -56,7 +94,7 @@ class PageRenderer{
 HTML;
     }
 
-    public function get_skin_body_innerHTML($skinName, $innerHTML = ''){
+    public function get_skin_body_innerHTML(string $skinName, $innerHTML = ''){
         $skin = new Skin($skinName);
         return <<<HTML
 <div class="{$skin->get_skin_class()}">
@@ -76,7 +114,17 @@ HTML;
 HTML;
     }
 
-    public function get_body_tag_html($innerHTML = '', $useSkin=false){
+    public function get_body_tag_html($innerHTML = '', $useSkin = false){
+        if ($useSkin){
+            global $skinName;
+            $innerHTML_=$this->get_skin_body_innerHTML($skinName, $innerHTML);
+        } else {
+            $innerHTML_=$innerHTML;
+        }
+        return $this->_get_body_tag_html($innerHTML_,$useSkin);
+    }
+
+    public function _get_body_tag_html($innerHTML = '', $useSkin=false){
         // Only convert Markdown when explicitly enabled
         if ($this->renderMarkdown && class_exists('Parsedown')) {
             try {
@@ -87,10 +135,6 @@ HTML;
             }
         }
 
-        if ($useSkin){
-            global $skinName;
-            $innerHTML=$this->get_skin_body_innerHTML($skinName, $innerHTML);
-        }
 
         return <<<HTML
 <body>

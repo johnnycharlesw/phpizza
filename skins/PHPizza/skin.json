@@ -1,3 +1,9 @@
 {
-    "enableDynamicCSSAndJS": true
+    "enableDynamicCSSAndJS": true,
+    "stylesheets": ["style.css"],
+    "themeStylesheets": {
+        "system": "style-theme-system.css",
+        "light": "style-theme-light.css",
+        "dark": "style-theme-dark.css"
+    }
 }

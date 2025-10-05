@@ -8,3 +8,5 @@ class Extension extends Addon
         parent::__construct($name, 'extension');
     }
 }
+
+#a;

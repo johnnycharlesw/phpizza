@@ -1,5 +1,7 @@
 <?php
 namespace PHPizza;
+include '../init.php';
+
 
 class AssetLoaderEntryPoint{
     private $assetLoader;
@@ -9,7 +11,7 @@ class AssetLoaderEntryPoint{
     }
     
     public function run(string $type){
-        include 'init.php';
+        
 
         $skinName=$_GET["skin"] ? $_GET["skin"] : ($_POST["skin"] ? $_POST["skin"] : "PHPizza");
         $skin=new Skin($skinName);

@@ -13,6 +13,11 @@ class AssetLoader
     /** @var string[] */
     private array $allowedRoots;
 
+    private array $mimeMapping = [
+        "css" => "text/css",
+        "js" => "text/javascript"
+    ];
+
     /** @var int default max-age (seconds) */
     private int $defaultMaxAge = 3600;
 
@@ -112,6 +117,10 @@ class AssetLoader
      */
     private function resolveFiles(array $relativePaths, string $type): array
     {
+        error_log("=== Resolving files for type: $type ===");
+        error_log("Relative paths: " . json_encode($relativePaths));
+        error_log("Allowed roots: " . json_encode($this->allowedRoots));
+
         $out = [];
         $ext = $type === 'css' ? '.css' : '.js';
         foreach ($relativePaths as $rel) {
@@ -216,11 +225,15 @@ class AssetLoader
     private function emitCommonHeaders(string $type, string $etag, int $lastMod, int $maxAge): void
     {
         if (headers_sent()) { return; }
+        $mimeType=$this->mimeMapping[$type];
+        header("Content-Type: " . $mimeType . "; charset=UTF-8");
+        /*
         if ($type === 'css') {
             header('Content-Type: text/css; charset=UTF-8');
         } else {
             header('Content-Type: application/javascript; charset=UTF-8');
         }
+        */
         header('X-Content-Type-Options: nosniff');
         header('Cache-Control: public, max-age=' . $maxAge);
         if ($lastMod > 0) {

@@ -16,11 +16,21 @@ class Skin extends Addon
 
     private function _get_component(string $type, array $vars) {
         $name=$this->name;
-        $parsedown = new \Parsedown();
-        $markdown = file_get_contents($this->assetPath("parts/$type.md"));
-        $parsed=$parsedown->text($markdown);
+        try {
+            $parsedown = new \Parsedown();
+        }
+        catch (\Exception $e){
+            include 'vendor/autoload.php';
+            $parsedown = new \Parsedown();
+        }
+        $parsedown_=new ParsedownWithTemplating();
+
+        $markdown = file_get_contents($this->assetPath("/parts/$type.md"));
+        
+        $parsed=$parsedown_->text($markdown,$this->get_template_variables_as_array());
+        $vars=$this->get_template_variables_as_array();
         foreach ($vars as $key => $value) {
-            $parsed=str_replace("{{$key}}", $value, $parsed);
+            $parsed=str_replace("{{" . $key. "}}", $value, $parsed);
         }
         return $parsed;
     }
@@ -30,7 +40,7 @@ class Skin extends Addon
     }
 
     public function get_template_variables_as_array(){
-        global $sitename, $siteLogoPath, $copyrightInfo, $licenseInfo, $siteLanguage, $siteTheme;
+        global $sitename, $siteLogoPath, $copyrightInfo, $licenseInfo, $siteLanguage, $siteTheme, $homepageName, $poweredByImageURL;
         return [
             'sitename' => $sitename,
             'siteLogoPath' => $siteLogoPath,
@@ -38,6 +48,8 @@ class Skin extends Addon
             'licenseInfo' => $licenseInfo,
             'siteLanguage' => $siteLanguage,
             'siteTheme' => $siteTheme,
+            'homePage' => $homepageName,
+            'poweredByImageURL' => $poweredByImageURL,
         ];
     }
 

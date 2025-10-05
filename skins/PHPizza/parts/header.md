@@ -2,8 +2,8 @@
 
 <!-- Logo -->
 [
-    ![$sitename Logo]({{siteLogoPath}})
-]( $homePage )
+    ![{{sitename}} Logo]({{siteLogoPath}})
+]( {{homePage}} )
 
 <!-- Links -->
 

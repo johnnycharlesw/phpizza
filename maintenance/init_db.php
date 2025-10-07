@@ -1,7 +1,7 @@
 <?php
 // Simple initializer that reads config.php and executes sql/create_schema.sql
 require_once __DIR__ . "/../config.php";
-$schemaFile = __DIR__ . "/../sql/create_schema.sql";
+$schemaFile = __DIR__ . "/../sql/create_schema_mysql_or_mariadb.sql";
 if (!file_exists($schemaFile)) {
     echo "Schema file not found: $schemaFile\n";
     exit(1);

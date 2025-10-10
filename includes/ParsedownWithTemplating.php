@@ -1,6 +1,7 @@
 <?php
 namespace PHPizza;
 
+// DEPRECATED!
 class ParsedownWithTemplating extends \Parsedown {
     public function __construct() {
         parent::__construct();

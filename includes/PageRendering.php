@@ -68,7 +68,7 @@ class PageRenderer{
         }
         
         $skinStyleLinkTemplate = <<<HTML
-<link rel="stylesheet" href="css.php?f={{skinName}}/{{skinStyleSheet}}"></link>
+<link rel="stylesheet" href="/css.php?f={{skinName}}/{{skinStyleSheet}}"></link>
 HTML;
         $skinStyleLinks="";
         if (isset($skin->manifest)) {
@@ -82,7 +82,7 @@ HTML;
         
 
         #return $skinStyleLinks;
-        return "<link rel='stylesheet' href='css.php?f=$skinName/$skinStylesheet'></link>";
+        return "<link rel='stylesheet' href='/css.php?f=$skinName/$skinStylesheet'></link>";
     }
 
     public function get_head_tag_html($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = true){
@@ -126,9 +126,9 @@ HTML;
 
     public function _get_body_tag_html($innerHTML = '', $useSkin=false){
         // Only convert Markdown when explicitly enabled
-        if ($this->renderMarkdown && class_exists('Parsedown')) {
+        if ($this->renderMarkdown && class_exists('PHPizza\Pizzadown')) {
             try {
-                $pd = new \Parsedown();
+                $pd = new Pizzadown();
                 $innerHTML = $pd->text($innerHTML);
             } catch (\Throwable $e) {
                 // fall back to raw content on error

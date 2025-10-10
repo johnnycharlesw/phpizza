@@ -55,7 +55,14 @@ class BrowserEntryPoint
      */
     public function run()
     {
-        
+        // Dynamically change PHP config according to PHPizza CMS config variables
+        global $debug;
+        if (isset($debug) && $debug){
+            ini_set('display_errors',true);
+        }else{
+            ini_set('display_errors',false);
+            error_reporting(0);
+        }
         
 
         // Start a PHP session or load one if one already exists
@@ -83,8 +90,8 @@ class BrowserEntryPoint
         $pagedb = new PageDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $page = $pagedb->getPage($page_id);
 
-        // Initialize parsedown
-        $parsedown = new \Parsedown();
+        // Initialize pizzadown
+        $parsedown = new Pizzadown();
 
         if ($page) {
             http_response_code(200);
@@ -103,11 +110,42 @@ class BrowserEntryPoint
                 foreach ($vars as $key => $value) {
                     $editor_ui_md=str_replace("{{" . $key . "}}", htmlspecialchars($value), $editor_ui_md);
                 }
+                // Extract embed lines, replace with tokens so Parsedown doesn't escape HTML
+                $embed_map = [];
+                $i = 0;
+                $editor_ui_md = preg_replace_callback('/^!(\w+)\[(.+)\]$/m', function($m) use ($parsedown, &$embed_map, &$i){
+                    $type = strtolower($m[1]);
+                    $value = trim($m[2]);
+                    $html = $parsedown->renderEmbed($type, $value);
+                    $token = "PHPIZZA-EMBED-" . (++$i) . "-TOKEN";
+                    $embed_map[$token] = $html;
+                    return $token;
+                }, $editor_ui_md);
+
                 $page_content=$parsedown->text($editor_ui_md);
+                if (!empty($embed_map)) {
+                    $page_content = str_replace(array_keys($embed_map), array_values($embed_map), $page_content);
+                }
+                error_log("Parsed editor content: " . substr($page_content,0,200));
                 
             }
             else{
-                $page_content = $parsedown->text($page['content']);
+                // Extract embed lines, replace with tokens so Parsedown doesn't escape HTML
+                $embed_map = [];
+                $i = 0;
+                $page_raw = preg_replace_callback('/^!(\w+)\[(.+)\]$/m', function($m) use ($parsedown, &$embed_map, &$i){
+                    $type = strtolower($m[1]);
+                    $value = trim($m[2]);
+                    $html = $parsedown->renderEmbed($type, $value);
+                    $token = "PHPIZZA-EMBED-" . (++$i) . "-TOKEN";
+                    $embed_map[$token] = $html;
+                    return $token;
+                }, $page['content']);
+                $page_content = $parsedown->text($page_raw);
+                if (!empty($embed_map)) {
+                    $page_content = str_replace(array_keys($embed_map), array_values($embed_map), $page_content);
+                }
+                error_log("Parsed page content: " . substr($page_content,0,200));
             }
             
 

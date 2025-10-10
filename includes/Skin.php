@@ -17,21 +17,17 @@ class Skin extends Addon
     private function _get_component(string $type, array $vars) {
         $name=$this->name;
         try {
-            $parsedown = new \Parsedown();
+            $parsedown = new Pizzadown();
         }
         catch (\Exception $e){
             include 'vendor/autoload.php';
-            $parsedown = new \Parsedown();
+            $parsedown = new Pizzadown();
         }
-        $parsedown_=new ParsedownWithTemplating();
+        
 
         $markdown = file_get_contents($this->assetPath("/parts/$type.md"));
         
-        $parsed=$parsedown_->text($markdown,$this->get_template_variables_as_array());
-        $vars=$this->get_template_variables_as_array();
-        foreach ($vars as $key => $value) {
-            $parsed=str_replace("{{" . $key. "}}", $value, $parsed);
-        }
+        $parsed=$parsedown->templateText($markdown,$this->get_template_variables_as_array());
         return $parsed;
     }
 

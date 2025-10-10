@@ -36,9 +36,9 @@ class MySQL {
     }
 }
 
-global $mariadb_connection;
+global $mysql_connection;
 function init_database($dbServer, $dbUser, $dbPassword, $dbName){
-    global $mariadb_connection;
+    global $mysql_connection;
     // Trim credentials to avoid accidental CR/LF from files
     $dbServer = trim($dbServer);
     $dbUser = trim($dbUser);
@@ -47,33 +47,33 @@ function init_database($dbServer, $dbUser, $dbPassword, $dbName){
 
     // Attempt to connect and handle errors without exposing sensitive details
     try {
-        $mariadb_connection = new \mysqli($dbServer, $dbUser, $dbPassword, $dbName);
+        $mysql_connection = new \mysqli($dbServer, $dbUser, $dbPassword, $dbName);
     } catch (\mysqli_sql_exception $e) {
         // Log detailed error to server logs for debugging, but show a generic message to the client
-        error_log("MariaDB connection error: " . $e->getMessage());
+        error_log("MySQL connection error: " . $e->getMessage());
         die("Database connection error. Please contact the administrator.");
     }
 
-    if ($mariadb_connection->connect_error) {
+    if ($mysql_connection->connect_error) {
         $message= <<<HTML
     Database connection error. Please contact the administrator.
-    MariaDB connect_error: {$mariadb_connection->connect_error}
+    mysql connect_error: {$mysql_connection->connect_error}
 HTML;
         throw new \Exception($message, 1);
         
     }
 
     // Set character set to utf8mb4
-    if (!$mariadb_connection->set_charset("utf8mb4")) {
-        error_log("Error loading character set utf8mb4: " . $mariadb_connection->error);
+    if (!$mysql_connection->set_charset("utf8mb4")) {
+        error_log("Error loading character set utf8mb4: " . $mysql_connection->error);
         die("Database configuration error. Please contact the administrator.");
     }
 }
 function run_query($query, $params = [], $types = ''){
-    global $mariadb_connection;
-    $stmt = $mariadb_connection->prepare($query);
+    global $mysql_connection;
+    $stmt = $mysql_connection->prepare($query);
     if ($stmt === false) {
-        error_log("Prepare failed: " . $mariadb_connection->error . " -- Query: " . $query);
+        error_log("Prepare failed: " . $mysql_connection->error . " -- Query: " . $query);
         die("Database query error. Please contact the administrator.");
     }
     if (!empty($params)) {
@@ -118,9 +118,9 @@ function fetch_one($stmt){
 }
 
 function close_database(){
-    global $mariadb_connection;
-    if ($mariadb_connection) {
-        $mariadb_connection->close();
+    global $mysql_connection;
+    if ($mysql_connection) {
+        $mysql_connection->close();
     }
 }
 

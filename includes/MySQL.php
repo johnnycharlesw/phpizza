@@ -31,6 +31,11 @@ class MySQL {
         return $stmt->affected_rows;
     }
 
+    public function getLastInsertId() {
+        global $mysql_connection;
+        return $mysql_connection->insert_id;
+    }
+
     public function __destruct() {
         close_database();
     }

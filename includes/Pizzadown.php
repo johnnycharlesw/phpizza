@@ -95,7 +95,16 @@ class Pizzadown extends \Parsedown{
         $parsed=$this->text($text);
 
         foreach ($params as $key => $value) {
-            $parsed=str_replace('{{{' . $key . '}}}',trim($value),$parsed);
+            // Ensure we don't pass null to trim() (PHP 8.3 deprecation).
+            // If value is not a string, cast to string; if null, become empty string.
+            if (!is_string($value)) {
+                if ($value === null) {
+                    $value = '';
+                } else {
+                    $value = (string)$value;
+                }
+            }
+            $parsed = str_replace('{{{' . $key . '}}}', trim($value), $parsed);
         }
 
         return $parsed;

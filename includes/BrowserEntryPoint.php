@@ -34,6 +34,43 @@ class BrowserEntryPoint
         $this->pageRenderer = new PageRenderer();
     }
 
+    public function signInAsUser($username, $password) {
+        // Start a PHP session or load one if one already exists
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Pull DB config variables (provided by init.php)
+        global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
+
+        // Initialize UserDatabase using config variables
+        $userdb = new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        if ($userdb->verify_user_credentials($username, $password)) {
+            $user = $userdb->get_user_by_username($username);
+            if ($user) {
+                $_SESSION['user_id'] = $user->getId();
+                $_SESSION['username'] = $user->getUsername();
+                $_SESSION['is_admin'] = $user->isAdmin();
+                return true;
+            }
+        }else {
+            return false;
+        }
+    }
+
+    public function logOutUser(){
+        if (session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
+        // Set the user login variables back to defaults
+        $_SESSION['user_id'] = null;
+        $_SESSION['username'] = null;
+        $_SESSION['is_admin'] = false;
+        // Log in user as guest to avoid null session issues
+        global $guestUsername, $guestPasswordB64;
+        $this->signInAsUser($guestUsername,base64_decode($guestPasswordB64));
+    }
+
      /**
     * Handles a browser request for a single page.
     *
@@ -55,6 +92,8 @@ class BrowserEntryPoint
      */
     public function run()
     {
+        global $sitename, $siteLanguage;
+        
         // Dynamically change PHP config according to PHPizza CMS config variables
         global $debug;
         if (isset($debug) && $debug){
@@ -66,12 +105,17 @@ class BrowserEntryPoint
         
 
         // Start a PHP session or load one if one already exists
-        session_start();
-        
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            $this->logOutUser();
+        }
         // Handle GET parameters
         global $homepageName;
         $page_id = isset($_GET['title']) ? $_GET['title'] : $homepageName;
         $is_editor = isset($_GET['editing']) ? (bool)$_GET['editing'] && $_GET["editing"]==="true" : false;
+
 
         // Check for updates and install updates if available
         if ($page_id == $homepageName) {
@@ -79,10 +123,31 @@ class BrowserEntryPoint
             if ($updater->get_is_available()) {
                 $updater->install_updates_if_available();
             }
-            
         }
-        
 
+        // Build page data via helper and render
+        $data = $this->buildPageData($page_id, $is_editor);
+
+        // Ensure correct HTTP status code is set
+        http_response_code($data['status']);
+
+        echo $this->pageRenderer->get_html_page(
+            $sitename,
+            $data['title'],
+            $data['description'],
+            $data['keywords'],
+            $data['html'],
+            $siteLanguage,
+            $useSkin=true
+        );
+    }
+
+
+    /**
+     * Build structured page data for a given page id.
+     * Returns an array: ['status'=>int,'title'=>string,'html'=>string,'description'=>string,'keywords'=>array]
+     */
+    protected function buildPageData(string $page_id, bool $is_editor = false): array {
         // Pull DB config variables (provided by init.php)
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage;
 
@@ -94,21 +159,13 @@ class BrowserEntryPoint
         $parsedown = new Pizzadown();
 
         if ($page) {
-            http_response_code(200);
-
+            $status = 200;
             $page_title = $page['title'];
-            #var_dump($is_editor);
-            #$is_editor=(bool)$is_editor && $is_editor == "true";
 
             if ($is_editor) {
-                var_dump(__DIR__);
-                var_dump(__DIR__ . "/editor-ui.md");
-                $editor_ui_md=file_get_contents(__DIR__ . "/editor-ui.md");
-                $vars =[
-                    'md-contents' => $page['content'],
-                ];
-                foreach ($vars as $key => $value) {
-                    $editor_ui_md=str_replace("{{" . $key . "}}", htmlspecialchars($value), $editor_ui_md);
+                $editor_ui_md = '';
+                if (is_readable(__DIR__ . "/editor-ui.md")) {
+                    $editor_ui_md = file_get_contents(__DIR__ . "/editor-ui.md");
                 }
                 // Extract embed lines, replace with tokens so Parsedown doesn't escape HTML
                 $embed_map = [];
@@ -122,14 +179,11 @@ class BrowserEntryPoint
                     return $token;
                 }, $editor_ui_md);
 
-                $page_content=$parsedown->text($editor_ui_md);
+                $page_content = $parsedown->text($editor_ui_md);
                 if (!empty($embed_map)) {
                     $page_content = str_replace(array_keys($embed_map), array_values($embed_map), $page_content);
                 }
-                error_log("Parsed editor content: " . substr($page_content,0,200));
-                
-            }
-            else{
+            } else {
                 // Extract embed lines, replace with tokens so Parsedown doesn't escape HTML
                 $embed_map = [];
                 $i = 0;
@@ -145,52 +199,46 @@ class BrowserEntryPoint
                 if (!empty($embed_map)) {
                     $page_content = str_replace(array_keys($embed_map), array_values($embed_map), $page_content);
                 }
-                error_log("Parsed page content: " . substr($page_content,0,200));
             }
-            
 
             $description = substr(strip_tags($page_content), 0, 150); // Simple description
             $keywords = [];
             if (!empty($page['keywords'])) {
                 $keywords = array_map('trim', explode(',', $page['keywords'])); // Assuming keywords are stored as comma-separated values
             }
-        } else {
-            http_response_code(404);
-            $page=$pagedb->getPage("404");
-            if ($page) {
-                $page_title = $page['title'];
-                $page_content = $parsedown->text($page['content']);
-                $description = substr(strip_tags($page_content), 0, 150); // Simple description
-                $keywords = [];
-                if (!empty($page['keywords'])) {
-                    $keywords = array_map('trim', explode(',', $page['keywords'])); // Assuming keywords are stored as comma-separated values
-                }
-            } else {
-                $page_title = "404 Not Found";
-                $page_content = <<<HTML
-<h1>404 Not Found</h1>
-<p>
-    It appears the page you were looking for has not been found, AND the owner of this site didn't put this 404 page here. What a coincidence.
-</p>
-HTML;
-                $description = substr(strip_tags($page_content), 0, 150); // Simple description
-                $keywords = [];
-                
+
+            return [
+                'status' => $status,
+                'title' => $page_title,
+                'html' => $page_content,
+                'description' => $description,
+                'keywords' => $keywords,
+            ];
+        }
+        // 404 handling
+        $status = 404;
+        $page404 = $pagedb->getPage("404");
+        if ($page404) {
+            $page_title = $page404['title'];
+            $page_content = $parsedown->text($page404['content']);
+            $description = substr(strip_tags($page_content), 0, 150);
+            $keywords = [];
+            if (!empty($page404['keywords'])) {
+                $keywords = array_map('trim', explode(',', $page404['keywords']));
             }
-            
+        } else {
+            $page_title = "404 Not Found";
+            $page_content = "<h1>404 Not Found</h1><p>It appears the page you were looking for has not been found.</p>";
+            $description = substr(strip_tags($page_content), 0, 150);
+            $keywords = [];
         }
 
-        // Render page
-        echo $this->pageRenderer->get_html_page(
-            $sitename,
-            $page_title,
-            $description,
-            $keywords,
-            $page_content,
-            $siteLanguage,
-            $useSkin=true
-        );
-
+        return [
+            'status' => $status,
+            'title' => $page_title,
+            'html' => $page_content,
+            'description' => $description,
+            'keywords' => $keywords,
+        ];
     }
-    
-};
+}

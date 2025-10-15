@@ -1,1 +1,1 @@
-<?php echo "This is the skin folder!"; ?>
+<?php echo "This is the skin folder! You should not try to inspect this!"; ?>

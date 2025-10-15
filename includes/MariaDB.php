@@ -31,6 +31,10 @@ class MariaDB {
         return $stmt->affected_rows;
     }
 
+    public function getLastInsertId() {
+        return $this->connection->insert_id;
+    }
+
     public function __destruct() {
         $this->close_database();
     }

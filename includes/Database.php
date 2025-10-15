@@ -46,4 +46,7 @@ final class Database {
         return $this->dbDriver->execute($query,$params,$types);
     }
 
+    public function getLastInsertId(){
+        return $this->dbDriver->getLastInsertId();
+    }
 }

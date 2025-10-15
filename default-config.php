@@ -14,6 +14,9 @@
 // Site
 $sitename = "My Website";
 $siteLanguage = "en";
+$useSkin=true;
+$skinName="PHPizza";
+$homepageName="home";
 
 // Database configuration
 $dbServer = "localhost";
@@ -21,6 +24,8 @@ $dbUser = "phpizza";
 // Either set the plain password here, or leave unset and create passwd.b64 with base64-encoded password.
 #$dbPassword = base64_decode(file_get_contents("passwd.b64"));
 $dbName = "phpizza";
+
+$dbType = "mariadb"; # Change this if you are using a different DBMS, e.g. "sqlite" or "pgsql"
 
 // Optional: If you want to use a passwd.b64 file instead of $dbPassword inline, uncomment:
 // $dbPassword = base64_decode(file_get_contents(__DIR__ . '/passwd.b64'));

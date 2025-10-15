@@ -13,7 +13,7 @@ class Updater {
 
     public function get_is_available(){
         
-        /*
+        
         if (file_exists(__DIR__ . "/.phpizza-updater.lock")) {
             return false;
         }else{
@@ -26,8 +26,8 @@ class Updater {
             
             
         }
-        */
-        return !file_exists(__DIR__ . "/.phpizza-updater.lock");
+        
+        #return !file_exists(__DIR__ . "/.phpizza-updater.lock");
         
     }
 

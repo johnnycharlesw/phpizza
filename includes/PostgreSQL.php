@@ -56,6 +56,15 @@ class PostgreSQL {
         return pg_affected_rows($result);
     }
 
+    public function getLastInsertId() {
+        $result = pg_query($this->dbInterface, "SELECT LASTVAL() AS id");
+        if ($result === false) {
+            return null;
+        }
+        $row = pg_fetch_assoc($result);
+        return $row ? (int)$row['id'] : null;
+    }
+
     public function __destruct() {
         if ($this->dbInterface) {
             @pg_close($this->dbInterface);

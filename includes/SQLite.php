@@ -33,4 +33,8 @@ class SQLite {
         return $this->dbInterface->exec($query, $params, $types);
     }
 
+    public function getLastInsertId() {
+        return $this->dbInterface->lastInsertRowID();
+    }
+
 }

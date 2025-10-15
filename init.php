@@ -1,4 +1,7 @@
 <?php
+
+namespace PHPizza;
+
 global $isInstaller;
 global $settingsDB;
 
@@ -9,25 +12,46 @@ if (file_exists("vendor/autoload.php")) {
     @include "../vendor/autoload.php";
 } else {
     error_log("Composer autoload script not found!");
-    
-    system("composer install");
-    if (file_exists("vendor/autoload.php")) {
-        include 'vendor/autoload.php';
-    }else{
-        die('Missing dependencies. When it was automatically run here, it did not generate the autoload file. Please run "composer install" manually.');
+
+    // Do NOT run composer automatically during web requests — it can block Apache/PHP.
+    // Only attempt to run composer when invoked from CLI (developer convenience).
+    if (php_sapi_name() === 'cli') {
+        @system("composer install");
+        if (file_exists("vendor/autoload.php")) {
+            include 'vendor/autoload.php';
+        } else {
+            die('Missing dependencies: composer install did not produce vendor/autoload.php. Please run "composer install" and try again.');
+        }
+    } else {
+        // Running under webserver — fail fast with an actionable message instead of blocking the request
+        http_response_code(500);
+        die('Missing dependencies. Please run "composer install" in the project root (web server cannot run composer automatically).');
     }
 }
 
+
+$specialPageClassMap = [
+    "OGTestHomepage" => SpecialPageOGTestHomepage::class,
+    "UserLogin" => SpecialPageUserLogin::class,
+    "SpecialPages" => SpecialPageSpecialPages::class,
+    "UserLogout" => SpecialPageUserLogout::class,
+];
 if (!isset($isInstaller)) {
     // Load configuration file
     @include __DIR__ . '/config.php';
+
+    // Reduce error verbosity for web requests to avoid exposing deprecation notices to visitors
+    if (php_sapi_name() !== 'cli') {
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+        ini_set('display_errors', '0');
+    }
 
     // Load everything for the config
     $configdir=dir(__DIR__ . "/config.d");
     while (($file = $configdir->read()) !== false) {
         try {
             @include $file;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log('file not found in config.d');
         }
         
@@ -57,7 +81,7 @@ if (empty($dbPassword)) {
     }
 }
 
-// Optional debug logging
+// Optional debug logging (only emit when $debug is enabled)
 if (!empty($debug)) {
     error_log("PHPizza init: dbServer={$dbServer}, dbUser={$dbUser}, dbName={$dbName}");
 }

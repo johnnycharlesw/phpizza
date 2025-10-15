@@ -2,17 +2,17 @@
 
 <!-- Logo -->
 [
-    ![{{sitename}} Logo]({{siteLogoPath}})
-]( {{homePage}} )
+    ![{{{sitename}}} Logo]({{{siteLogoPath}}})
+]( {{{homePage}}} )
 
 <!-- Links -->
 
-* [Home]({{homePage}})
-* [About]({{aboutPage}})
-* [Services]({{servicesPage}})
-* [Contact]({{contactPage}})
+* [Home]({{{homePage}}})
+* [About]({{{aboutPage}}})
+* [Services]({{{servicesPage}}})
+* [Contact]({{{contactPage}}})
 
 <!-- User tools -->
-{{userTools}}
+{{{userTools}}}
 
 <!-- End of header -->

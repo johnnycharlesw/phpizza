@@ -3,13 +3,13 @@
 
 * <div class="phpizza-footer-copyright-info">
     <!-- Copyright information -->
-    {{copyrightInfo}} {{licenseInfo}}
+    {{{copyrightInfo}}} {{{licenseInfo}}}
 </div>
 * [
     ![
         This site is powered by PHPizza
     ](
-    {{poweredByImageURL}}
+    {{{poweredByImageURL}}}
     )
 ](
     https://github.com/johnnycharlesw/phpizza

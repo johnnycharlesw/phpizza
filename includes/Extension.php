@@ -7,6 +7,10 @@ class Extension extends Addon
     {
         parent::__construct($name, 'extension');
     }
+
+    public function activate() {
+        include $this->assetPath('extension.php');
+    }
 }
 
 #a;

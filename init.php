@@ -35,6 +35,7 @@ $specialPageClassMap = [
     "UserLogin" => SpecialPageUserLogin::class,
     "SpecialPages" => SpecialPageSpecialPages::class,
     "UserLogout" => SpecialPageUserLogout::class,
+    "CreateAccount" => SpecialPageCreateAccount::class,
 ];
 if (!isset($isInstaller)) {
     // Load configuration file

@@ -52,6 +52,7 @@ class SpecialPageUserLogin extends SpecialPage {
     <input type="password" id="password" name="password" required><br><br>
     <input type="submit" value="Log In">
 </form>
+Do you have an account yet? [If not, sign up here.](/index.php?title=PHPizza:CreateAccount)
 MARKDOWN,
                 [
                     "sitename" => $sitename,

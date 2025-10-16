@@ -36,7 +36,18 @@ class Skin extends Addon
     }
 
     public function get_template_variables_as_array(){
-        global $sitename, $siteLogoPath, $copyrightInfo, $licenseInfo, $siteLanguage, $siteTheme, $homepageName, $poweredByImageURL;
+        global $sitename, $siteLogoPath, $copyrightInfo, $licenseInfo, $siteLanguage, $siteTheme, $homepageName, $poweredByImageURL, $guestUsername;
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $username=isset($_SESSION['username']) ? $_SESSION['username'] : $guestUsername;
+        if ($username == $guestUsername){
+            $userChangePage="index.php?title=PHPizza:UserLogin";
+            $changeUserButtonText="Log In";
+        } else {
+            $userChangePage="index.php?title=PHPizza:UserLogout";
+            $changeUserButtonText="Log Out";
+        }
         return [
             'sitename' => $sitename,
             'siteLogoPath' => $siteLogoPath,
@@ -46,6 +57,9 @@ class Skin extends Addon
             'siteTheme' => $siteTheme,
             'homePage' => $homepageName,
             'poweredByImageURL' => $poweredByImageURL,
+            'userName' => $username,
+            'userChangePage' => $userChangePage,
+            'changeUserButtonText' => $changeUserButtonText,
         ];
     }
 

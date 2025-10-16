@@ -38,6 +38,12 @@ class SpecialPageUserLogin extends SpecialPage {
         } else {
             $pizzadown = new Pizzadown(false);
             $output = $pizzadown->templateText(<<<MARKDOWN
+<style>
+    h1 > img {
+        width: 64px;
+        height: 64px;
+    }
+</style>
 # ![{{{sitename}}} Logo]({{{siteLogoPath}}}) Log in to {{{sitename}}}
 <form method="POST" action="index.php?title=PHPizza:UserLogin">
     <label for="username">Username:</label><br>

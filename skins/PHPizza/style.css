@@ -24,15 +24,15 @@ body {
     font-family: "Inter", "Roboto", sans-serif;
 }
 
-header > p > a {
+header > ul > li > p > a {
     display:flex;
     align-items: left;
     text-decoration: none;
-    font-size: 24px;
+    /*font-size: 24px;*/
     margin:auto;
 }
 
-header > p > a > img{
+header > ul > li > p > a > img{
     height:64px;
     width:64px;
 }

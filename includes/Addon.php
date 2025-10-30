@@ -15,7 +15,7 @@ abstract class Addon
     protected string $name;
     protected string $type; // 'extension' | 'skin'
     protected string $folderPath;
-    protected ?array $manifest = null;
+    public ?array $manifest = null;
 
     /**
      * @param string $name The add-on name (folder name). Will be normalized.
@@ -34,7 +34,7 @@ abstract class Addon
         // Project root (one level above includes/)
         $baseDir = dirname(__DIR__);
         $this->folderPath = $baseDir . DIRECTORY_SEPARATOR . $this->type . 's' . DIRECTORY_SEPARATOR . $this->name;
-        $this->parse_manifest_json(isset($strictParsingAddonManifest) ? $strictParsingAddonManifest : false);
+        $this->manifest=$this->parse_manifest_json(isset($strictParsingAddonManifest) ? $strictParsingAddonManifest : false);
     }
 
     public function getName(): string { return $this->name; }

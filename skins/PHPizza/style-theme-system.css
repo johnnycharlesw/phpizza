@@ -1,12 +1,82 @@
 /* CSS to handle the user preference to use the system theme */
-
 :root {
-    color-scheme: light dark;
+  color-scheme: light dark;
 }
 
-@media (prefers-color-scheme: light){
-    @import url("style-theme-light.css");
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+  }
+  header {
+    background-color: var(--header-bg-color);
+    color: var(--fg-color);
+  }
+  /* Modern header links blend in with the bar */
+  header > ul > li > a {
+    color: var(--fg-color);
+  }
+  /* General link styling */
+  a:link {
+    color: var(--link-color);
+  }
+  a:link:hover {
+    color: var(--link-color-hover);
+  }
+  a:visited {
+    color: var(--link-color-visited);
+  }
+  a:visited:hover {
+    color: var(--link-color-visited-hover);
+  }
+  :root {
+    color-scheme: light;
+    --bg-color:white;
+    --fg-color:black;
+    --header-bg-color: #f8f9fa;
+    --link-color: blue;
+    --link-color-hover: lightskyblue;
+    --link-color-visited: purple;
+    --link-color-visited-hover: blueviolet;
+  }
 }
-@media (prefers-color-scheme:dark){
-    @import url("style-theme-dark.css");
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+  }
+  header {
+    background-color: var(--header-bg-color);
+    color: var(--fg-color);
+  }
+  /* Modern header links blend in with the bar */
+  header > ul > li > a {
+    color: var(--fg-color);
+  }
+  /* General link styling */
+  a:link {
+    color: var(--link-color);
+  }
+  a:link:hover {
+    color: var(--link-color-hover);
+  }
+  a:visited {
+    color: var(--link-color-visited);
+  }
+  a:visited:hover {
+    color: var(--link-color-visited-hover);
+  }
+  /* CSS to handle dark mode */
+  :root {
+    color-scheme: dark;
+    --bg-color:black;
+    --fg-color:white;
+    --header-bg-color: #424950;
+    --link-color: blue;
+    --link-color-hover: lightskyblue;
+    --link-color-visited: purple;
+    --link-color-visited-hover: blueviolet;
+  }
 }
+
+/*# sourceMappingURL=style-theme-system.css.map */

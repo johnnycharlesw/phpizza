@@ -8,3 +8,5 @@ config.d
 adminer-*.php
 pma/
 phpMyAdmin-*.zip
+includes/.phpizza-updater.lock
+includes/.phpizza-updater-threshold

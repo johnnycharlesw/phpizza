@@ -36,7 +36,11 @@ $specialPageClassMap = [
     "SpecialPages" => SpecialPageSpecialPages::class,
     "UserLogout" => SpecialPageUserLogout::class,
     "CreateAccount" => SpecialPageCreateAccount::class,
+    "MistralBackedAgentRenderer" => SpecialPageMistralBackedAgentRenderer::class,
 ];
+
+// Insert config defaults
+@include __DIR__ . '/default-config.php'; // For later.
 if (!isset($isInstaller)) {
     // Load configuration file
     @include __DIR__ . '/config.php';
@@ -86,3 +90,7 @@ if (empty($dbPassword)) {
 if (!empty($debug)) {
     error_log("PHPizza init: dbServer={$dbServer}, dbUser={$dbUser}, dbName={$dbName}");
 }
+
+// Activate extensions
+runExtensions(); // global function
+

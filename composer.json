@@ -16,7 +16,10 @@
         "psr-4": {
             "PHPizza\\": "includes/",
             "PHPizza\\Installer\\": "installer/"
-        }
+        },
+        "files": [
+            "includes/GlobalFunctions.php"
+        ]
     },
     "repositories": {
         "johnnycharlesw-github/phpizza-installed-extensions": {

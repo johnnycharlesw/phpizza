@@ -74,6 +74,24 @@ class UserDatabase {
         return null;
     }
 
+    public function update_user_email(int $id, string $newEmail): bool {
+        $rowsAffected = $this->db->execute("UPDATE users SET email = ? WHERE id = ?", [$newEmail, $id]);
+        return $rowsAffected > 0;
+    }
+
+    public function get_user_settings(string $username): ?array {
+        // Relational Database setup: userid in row of user_settings table refers to id in users table
+        $user = $this->get_user_by_username($username);
+        if (!$user) {
+            return null;
+        }
+        $row = $this->db->fetchRow("SELECT * FROM user_settings WHERE userid = ?", [$user->getId()]);
+        if ($row && is_array($row)) {
+            return $row;
+        }
+        return null;
+    }
+
     public function getPasswordHashByUsername(string $username): ?string {
         $row = $this->db->fetchRow("SELECT password_hash FROM users WHERE username = ?", [$username]);
         if ($row && is_array($row) && isset($row['password_hash'])) {

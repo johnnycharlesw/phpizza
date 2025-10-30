@@ -43,7 +43,7 @@ class Updater {
             system("git fetch" . $extraArguments);
         }
         system("composer update");
-        system("rm " . __DIR__ . "/.phpizza-updater.lock");
+        unlink(__DIR__ . "/.phpizza-updater.lock"); // Remove lock file after update
         $this->threshold=0;
         $this->save_threshold_to_disk();
     }

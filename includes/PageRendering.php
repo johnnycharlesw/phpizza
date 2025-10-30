@@ -54,35 +54,50 @@ class PageRenderer{
 
     public function get_skin_head_tags(string $skinName, string $theme = "system"){
         $skin = new Skin($skinName);
+        $skin->parse_manifest_json(false);
         if (isset($skin->manifest)) {
             $skinStylesheet='';
-            foreach ($skin->manifest->stylesheets as $stylesheet) {
+            foreach ($skin->manifest['stylesheets'] as $stylesheet) {
                 $skinStylesheet .= $skinName . "/" . $stylesheet . ",";
             }
-            if ($skin->manifest->themeStylesheets) {
-                $skinStylesheet .= $skinName . "/" . $skin->manifest->themeStyleSheets[$theme];
+            if ($skin->manifest['themeStylesheets']) {
+                global $theme;
+                $theme = $theme ?? $_GET['usetheme'] ?? 'system';
+                $skinStylesheet .= $skinName . "/" . $skin->manifest['themeStylesheets'][$theme];
             }
             $skinStylesheet=rtrim($skinStylesheet,",");
         }else{
             $skinStylesheet="style.css";
         }
         
-        $skinStyleLinkTemplate = <<<HTML
-<link rel="stylesheet" href="/css.php?f={{skinName}}/{{skinStyleSheet}}"></link>
-HTML;
-        $skinStyleLinks="";
+        $skinStyleLinkTemplate = '<link rel="stylesheet" href="/css.php?f=%s/%s">';
+        global $theme;
+        $theme = $theme ?? (isset($_GET['usetheme']) ? htmlspecialchars($_GET['usetheme']) : 'system');
+
+        // Debug: Check manifest and theme
+        var_dump($skin->manifest ?? 'Manifest not set');
+        echo "Current theme: " . htmlspecialchars($theme);
+        $skinStyleLinks = "";
         if (isset($skin->manifest)) {
-            foreach ($skin->manifest->stylesheets as $stylesheet) {
-                $skinStyleLink=$skinStyleLinkTemplate;
-                $skinStyleLink=str_replace("{{skinName}}",$skinName,$skinStyleLink);
-                $skinStyleLink=str_replace("{{skinStyleSheet}}",$stylesheet,$skinStyleLink);
-                $skinStyleLinks .= "\n" . $skinStyleLink;
+            $links = [];
+            // Add all default stylesheets
+            foreach ($skin->manifest['stylesheets'] as $stylesheet) {
+                $links[] = sprintf($skinStyleLinkTemplate, $skinName, $stylesheet);
             }
+            // Add the theme-specific stylesheet if it exists
+            if (isset($skin->manifest["themeStylesheets"][$theme])) {
+                $links[] = sprintf($skinStyleLinkTemplate, $skinName, $skin->manifest["themeStylesheets"][$theme]);
+            }
+            $skinStyleLinks = implode("\n", $links);
+        } else {
+            // Fallback: single stylesheet
+            $skinStyleLinks = sprintf($skinStyleLinkTemplate, $skinName, $skinStylesheet);
         }
+
         
 
-        #return $skinStyleLinks;
-        return "<link rel='stylesheet' href='/css.php?f=$skinName/$skinStylesheet'></link>";
+        return $skinStyleLinks;
+        #return "<link rel='stylesheet' href='/css.php?f=$skinName/$skinStylesheet'>";
     }
 
     public function get_head_tag_html($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = true){

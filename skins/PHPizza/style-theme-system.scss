@@ -1,0 +1,12 @@
+/* CSS to handle the user preference to use the system theme */
+
+:root {
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: light){
+    @import './style-theme-light.scss';
+}
+@media (prefers-color-scheme:dark){
+    @import './style-theme-dark.scss';
+}

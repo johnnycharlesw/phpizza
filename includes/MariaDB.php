@@ -2,7 +2,7 @@
 namespace PHPizza;
 
 
-class MariaDB {
+class MariaDB implements SQLDatabaseManagementSystemDriver {
     private $dbServer;
     private $dbUser;
     private $dbPassword;

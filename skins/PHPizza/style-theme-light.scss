@@ -1,0 +1,12 @@
+/* CSS to handle light mode */
+@use './apply-theme.scss';
+:root {
+    color-scheme: light;
+    --bg-color:white;
+    --fg-color:black;
+    --header-bg-color: #f8f9fa;
+    --link-color: blue;
+    --link-color-hover: lightskyblue;
+    --link-color-visited: purple;
+    --link-color-visited-hover: blueviolet;
+}

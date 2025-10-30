@@ -1,0 +1,12 @@
+/* CSS to handle dark mode */
+@use './apply-theme.scss';
+:root {
+    color-scheme: dark;
+    --bg-color:black;
+    --fg-color:white;
+    --header-bg-color: #424950;
+    --link-color: blue;
+    --link-color-hover: lightskyblue;
+    --link-color-visited: purple;
+    --link-color-visited-hover: blueviolet;
+}

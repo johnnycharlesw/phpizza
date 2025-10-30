@@ -1,0 +1,8 @@
+{
+    "name": "PHPizza CMS Test Extension",
+    "version": "1.0.0",
+    "author": "Your Name",
+    "description": "A test extension for PHPizza CMS.",
+    "license": "AGPL-3.0-or-later",
+    "usesComposer": false
+}

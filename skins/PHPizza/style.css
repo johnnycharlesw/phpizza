@@ -1,38 +1,38 @@
 /*Styles for the PHPizza skin (not including colors, that will be handled seperately*/
-
-
 header > ul, footer > ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header > ul > li {
-    display: inline-block;
-    margin-right: 10px;
+  display: inline-flex;
+  margin-right: 10px;
 }
 
 header > ul > li > a {
-    text-decoration: none;
-    font-size: 16px;
+  text-decoration: none;
+  font-size: 16px;
 }
 
 body {
-    font-family: "Inter", "Roboto", sans-serif;
+  font-family: "Inter", "Roboto", sans-serif;
 }
 
 header > ul > li > p > a {
-    display:flex;
-    align-items: left;
-    text-decoration: none;
-    /*font-size: 24px;*/
-    margin:auto;
+  display: flex;
+  align-items: flex-start;
+  text-decoration: none;
+  /*font-size: 24px;*/
+  margin: auto;
 }
 
-header > ul > li > p > a > img{
-    height:64px;
-    width:64px;
+header > ul > li > p > a > img {
+  height: 64px;
+  width: 64px;
 }
+
+/*# sourceMappingURL=style.css.map */

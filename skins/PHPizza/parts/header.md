@@ -12,9 +12,9 @@
 <!-- Links -->
 
 * [Home]({{{homePage}}})
-* [About]({{{aboutPage}}})
-* [Services]({{{servicesPage}}})
-* [Contact]({{{contactPage}}})
+* [About](/about)
+* [Services](/services)
+* [Contact](/contact)
 
 <!-- User tools -->
 {{{userTools}}}

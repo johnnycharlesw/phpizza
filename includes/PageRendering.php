@@ -74,9 +74,6 @@ class PageRenderer{
         global $theme;
         $theme = $theme ?? (isset($_GET['usetheme']) ? htmlspecialchars($_GET['usetheme']) : 'system');
 
-        // Debug: Check manifest and theme
-        var_dump($skin->manifest ?? 'Manifest not set');
-        echo "Current theme: " . htmlspecialchars($theme);
         $skinStyleLinks = "";
         if (isset($skin->manifest)) {
             $links = [];

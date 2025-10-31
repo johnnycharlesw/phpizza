@@ -1,0 +1,3 @@
+[submodule "assets/phpizza-ui-framework"]
+	path = assets/phpizza-ui-framework
+	url = https://github.com/johnnycharlesw/phpizza-ui-framework.git

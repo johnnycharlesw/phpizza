@@ -1,3 +1,6 @@
 [submodule "assets/phpizza-ui-framework"]
 	path = assets/phpizza-ui-framework
 	url = https://github.com/johnnycharlesw/phpizza-ui-framework.git
+[submodule "extensions/PHPizzaCMSTestExtension"]
+	path = extensions/PHPizzaCMSTestExtension
+	url = https://github.com/johnnycharlesw/phpizza-extensions-PHPizzaCMSTestExtension.git

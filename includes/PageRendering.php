@@ -70,13 +70,20 @@ class PageRenderer{
             $skinStylesheet="style.css";
         }
         
-        $skinStyleLinkTemplate = '<link rel="stylesheet" href="/css.php?f=%s/%s">';
+        global $debug;
+        if ($debug){
+            $date=time();
+            $skinStyleLinkTemplate = '<link rel="stylesheet" href="/css.php?f=%s/%s&v=' . $date . '">';
+        } else {
+            $skinStyleLinkTemplate = '<link rel="stylesheet" href="/css.php?f=%s/%s">';
+        }
         global $theme;
         $theme = $theme ?? (isset($_GET['usetheme']) ? htmlspecialchars($_GET['usetheme']) : 'system');
 
         $skinStyleLinks = "";
         if (isset($skin->manifest)) {
             $links = [];
+            $links[] = sprintf($skinStyleLinkTemplate, "phpizza-ui-framework", "style.css");
             // Add all default stylesheets
             foreach ($skin->manifest['stylesheets'] as $stylesheet) {
                 $links[] = sprintf($skinStyleLinkTemplate, $skinName, $stylesheet);

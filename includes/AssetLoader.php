@@ -15,7 +15,9 @@ class AssetLoader
 
     private array $mimeMapping = [
         "css" => "text/css",
-        "js" => "text/javascript"
+        "js" => "text/javascript",
+        "woff2" => "font/woff2",
+        "ttf" => "font/ttf"
     ];
 
     /** @var int default max-age (seconds) */
@@ -74,7 +76,7 @@ class AssetLoader
     public function serve(string $type, array $relativePaths, array $options = []): void
     {
         $type = strtolower($type);
-        if (!in_array($type, ['css', 'js'], true)) {
+        if (!in_array($type, array_keys($this->mimeMapping), true)) {
             $this->emitError(400, 'Unsupported asset type');
             return;
         }
@@ -122,7 +124,7 @@ class AssetLoader
         error_log("Allowed roots: " . json_encode($this->allowedRoots));
 
         $out = [];
-        $ext = $type === 'css' ? '.css' : '.js';
+        $ext = $type; // type names are supposed to match with extensions
         foreach ($relativePaths as $rel) {
             if (!$this->isSafeRelative($rel)) { continue; }
             if (strtolower(substr($rel, -strlen($ext))) !== $ext) { continue; }

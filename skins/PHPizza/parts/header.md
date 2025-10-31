@@ -16,7 +16,5 @@
 * [Services](/services)
 * [Contact](/contact)
 
-<!-- User tools -->
-{{{userTools}}}
 
 <!-- End of header -->

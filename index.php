@@ -54,8 +54,9 @@ try {
     }
 
 } catch (\Throwable $e) {
-    error_log('Fatal error: ' . $e->getMessage());
-    $err = new \PHPizza\ErrorScreen('Internal server error');
+    $message='Fatal error: ' . $e->getMessage();
+    error_log($message);
+    $err = new \PHPizza\ErrorScreen('Internal server error\n' . $message);
     $err->render($sitename);
     exit(1);
 }

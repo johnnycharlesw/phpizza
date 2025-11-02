@@ -37,6 +37,7 @@ $specialPageClassMap = [
     "UserLogout" => SpecialPageUserLogout::class,
     "CreateAccount" => SpecialPageCreateAccount::class,
     "MistralBackedAgentRenderer" => SpecialPageMistralBackedAgentRenderer::class,
+    "Editor" => SpecialPageEditor::class
 ];
 
 // Insert config defaults

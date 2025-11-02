@@ -50,7 +50,6 @@ class BrowserEntryPoint
             if ($user) {
                 $_SESSION['user_id'] = $user->getId();
                 $_SESSION['username'] = $user->getUsername();
-                $_SESSION['is_admin'] = $user->isAdmin();
                 return true;
             }
         }else {
@@ -65,7 +64,6 @@ class BrowserEntryPoint
         // Set the user login variables back to defaults
         $_SESSION['user_id'] = null;
         $_SESSION['username'] = null;
-        $_SESSION['is_admin'] = false;
         // Log in user as guest to avoid null session issues
         global $guestUsername, $guestPasswordB64;
         $this->signInAsUser($guestUsername,base64_decode($guestPasswordB64));

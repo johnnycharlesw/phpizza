@@ -2,9 +2,12 @@
 namespace PHPizza;
 class UserDatabase {
     // Not using PDO, instead using the Database class
-    private $db;
+    private Database $db;
+    private UserGroupDatabase $groupdb;
+
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType) {
         $this->db = new Database($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        $this->groupdb = new UserGroupDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
     }
     public function get_user_by_username(string $username): ?User {
         $row = $this->db->fetchRow("SELECT * FROM users WHERE username = ?", [$username]);
@@ -92,11 +95,38 @@ class UserDatabase {
         return null;
     }
 
+    public function get_user_groups(string $username): ?array {
+        // user_groups row has name, members, id, permissions, but not userid
+        $user = $this->get_user_by_username($username);
+        if (!$user) {
+            return null;
+        }
+        # This is not UserGroupDatabase, but I put in an instance of UserGroupDatabase for simplicity, $this->groupdb
+        $userGroups = $this->groupdb->get_user_groups_by_user_id($user->getId());
+        if ($userGroups && is_array($userGroups)) {
+            return $userGroups;
+        }
+        return null;
+    }
+
     public function getPasswordHashByUsername(string $username): ?string {
         $row = $this->db->fetchRow("SELECT password_hash FROM users WHERE username = ?", [$username]);
         if ($row && is_array($row) && isset($row['password_hash'])) {
             return $row['password_hash'];
         }
         return null;
+    }
+
+    public function can_user_do(string $userId, string $action): bool {
+        // This is not UserGroupDatabase, but I put in an instance of UserGroupDatabase for simplicity, $this->groupdb
+        $userGroups = $this->groupdb->get_user_groups_by_user_id($userId);
+        if ($userGroups && is_array($userGroups)) {
+            foreach ($userGroups as $group) {
+                if (in_array($action, $group->getPermissions())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

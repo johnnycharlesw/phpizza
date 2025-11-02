@@ -25,7 +25,6 @@ HTML);
             if ($user) {
                 $_SESSION['user_id'] = $user->getId();
                 $_SESSION['username'] = $user->getUsername();
-                $_SESSION['is_admin'] = $user->isAdmin();
             }
         }
 

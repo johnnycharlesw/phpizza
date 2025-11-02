@@ -55,13 +55,18 @@ class PageDatabase {
         return $this->db->execute($query, [$title, $content]);
     }
 
-    public function updatePage($page_id, $title, $content) {
-        $query = "UPDATE pages SET title = ?, content = ? WHERE id = ?";
-        return $this->db->execute($query, [$title, $content, $page_id]);
+    public function updatePage($title, $content) {
+        $query = "UPDATE pages SET content = ? WHERE title = ?";
+        return $this->db->execute($query, [$content, $title]);
     }
 
-    public function deletePage($page_id) {
-        $query = "DELETE FROM pages WHERE id = ?";
-        return $this->db->execute($query, [$page_id]);
+    public function deletePage($title) {
+        $query = "DELETE FROM pages WHERE title = ?";
+        return $this->db->execute($query, [$title]);
+    }
+
+    public function renamePage($oldTitle, $newTitle){
+        $query = "UPDATE pages SET title = ? WHERE title = ?";
+        return $this->db->execute($query, [$newTitle, $oldTitle]);
     }
 }

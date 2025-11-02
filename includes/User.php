@@ -1,16 +1,17 @@
 <?php
 namespace PHPizza;
 class User {
+    const YES = true;
+    const NO = false;
+
     public $id;
     public $username;
-    public $is_admin;
     private $userdb;
 
-    public function __construct($id, $username, $is_admin) {
+    public function __construct($id, $username) {
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
         $this->id = $id;
         $this->username = $username;
-        $this->is_admin = $is_admin;
         $this->userdb = new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
     }
 
@@ -18,13 +19,9 @@ class User {
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'is_admin' => $this->is_admin,
         ];
     }
 
-    public function isAdmin(): bool {
-        return $this->is_admin;
-    }
 
     public function getUsername(): string {
         return $this->username;
@@ -36,5 +33,9 @@ class User {
 
     public function getPasswordHash(): string {
         return $this->userdb->getPasswordHashByUsername($this->username);
+    }
+
+    public function can_I_do(string $action) {
+        return $this->userdb->can_user_do($this->id, $action);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 namespace PHPizza;
+use ScssPhp\ScssPhp\Compiler;
+
 
 /**
  * AssetLoader: serves CSS/JS assets with safety and caching.
@@ -30,6 +32,7 @@ class AssetLoader
             $root . DIRECTORY_SEPARATOR . 'skins',
             $root . DIRECTORY_SEPARATOR . 'extensions',
             $root . DIRECTORY_SEPARATOR . 'assets', // optional, if you add a shared assets dir
+            $root . DIRECTORY_SEPARATOR . 'node_modules'
         ];
         // keep only existing dirs to avoid useless checks
         $this->allowedRoots = array_values(array_filter($roots, 'is_dir'));
@@ -37,6 +40,12 @@ class AssetLoader
             // allow injection of custom roots for testing
             $this->allowedRoots = $allowedRoots;
         }
+    }
+
+    public function compile_sass_to_css(string $scss)
+    {
+        $scssphp = new Compiler();
+        $scssphp->compile($scss);
     }
 
     /**

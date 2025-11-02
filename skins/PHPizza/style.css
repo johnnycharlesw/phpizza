@@ -1,4 +1,8 @@
 /*Styles for the PHPizza skin (not including colors, that will be handled seperately*/
+header {
+  box-shadow: 2px 2px 10px gray;
+}
+
 header > ul, footer > ul {
   list-style-type: none;
   padding: 0;
@@ -22,6 +26,11 @@ body {
   font-family: "Inter", "Roboto", sans-serif;
 }
 
+article {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
 header > ul > li > p > a {
   display: flex;
   align-items: flex-start;
@@ -34,5 +43,4 @@ header > ul > li > p > a > img {
   height: 64px;
   width: 64px;
 }
-
 /*# sourceMappingURL=style.css.map */

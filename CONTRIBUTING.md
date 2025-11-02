@@ -1,4 +1,4 @@
-# PHPizza CMS contributor guide
+# PHPizza contributor guide
 
 Here are some do's and don'ts of contributing:
 

@@ -10,7 +10,16 @@
     ],
     "require": {
         "erusev/parsedown": "^1.7",
-        "symfony/finder": "^7.3"
+        "symfony/finder": "^7.3",
+        "scssphp/scssphp": "2.0.1",
+        "jeremykendall/php-domain-parser": "^6.4",
+        "league/uri-components": "^7.5",
+        "symfony/polyfill-intl-idn": "^1.33",
+        "guzzlehttp/guzzle": "^7.10",
+        "nyholm/psr7": "^1.8",
+        "rowbot/url": "^4.1",
+        "laminas/laminas-httphandlerrunner": "^2.13",
+        "symfony/cache": "^7.3"
     },
     "autoload": {
         "psr-4": {
@@ -41,5 +50,7 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "*"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

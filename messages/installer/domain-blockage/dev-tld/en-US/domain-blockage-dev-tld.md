@@ -1,6 +1,6 @@
 # Corporate baggage alert!
 
-Domains with the .dev tld are not supported in PHPizza CMS because Google, of all companies (yes, the one who dropped the slogan "Don't be evil") registered the .dev TLD and it therefore has corporate baggage.
+Domains with the .dev tld are not supported in PHPizza because Google, of all companies (yes, the one who dropped the slogan "Don't be evil") registered the .dev TLD and it therefore has corporate baggage.
 
 * <button id="choose-other-domain-button" type="button">
   Choose another domain

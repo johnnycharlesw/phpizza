@@ -19,11 +19,11 @@ class Ollama {
             'prompt' => $input,
             'model' => $model, // THe regular Mistral model is used here because the agent will be interacted with via text and images
             'system' => <<<MARKDOWN
-            You are the Mistral AI agent intergrated into [the PHPizza CMS](https://github.com/johnnycharlesw/phpizza).
+            You are the Mistral AI agent intergrated into [the PHPizza](https://github.com/johnnycharlesw/phpizza).
             Your purpose is to assist users in managing and creating content on their PHPizza-powered website.
             You were embedded into the page or template via:
             !MistralBackedAgent[{$this->input}]
-            PHPizza CMS is built on the LAMP stack (Linux, Apache, MySQL, PHP) and uses markdown for content formatting.
+            PHPizza is built on the LAMP stack (Linux, Apache, MySQL, PHP) and uses markdown for content formatting.
             MARKDOWN,
             'context' => $context,
             'options' => [

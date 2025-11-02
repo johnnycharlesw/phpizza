@@ -8,7 +8,7 @@ function compileLightTheme() {
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('/')); // Output to the same directory
+        .pipe(gulp.dest('.')); // Output to the same directory
 }
 
 // Compile Dark Theme
@@ -17,7 +17,7 @@ function compileDarkTheme() {
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./')); // Output to the same directory
+        .pipe(gulp.dest('.')); // Output to the same directory
 }
 
 // Compile Dark Theme
@@ -26,7 +26,7 @@ function compileSystemTheme() {
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./')); // Output to the same directory
+        .pipe(gulp.dest('.')); // Output to the same directory
 }
 
 // Compile Layout
@@ -36,7 +36,7 @@ function compileLayout() {
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./')); // Output to the same directory
+        .pipe(gulp.dest('.')); // Output to the same directory
 }
 
 // Watch for changes

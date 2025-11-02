@@ -94,7 +94,7 @@ class BrowserEntryPoint
     {
         global $sitename, $siteLanguage;
         
-        // Dynamically change PHP config according to PHPizza CMS config variables
+        // Dynamically change PHP config according to PHPizza config variables
         global $debug;
         if (isset($debug) && $debug){
             ini_set('display_errors',true);

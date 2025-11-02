@@ -97,6 +97,8 @@ class PageRenderer{
             // Fallback: single stylesheet
             $skinStyleLinks = sprintf($skinStyleLinkTemplate, $skinName, $skinStylesheet);
         }
+        
+        $skinStyleLinks .= "<script src='/js.php?f=prismjs/prism.js'></script>\n";
 
         
 

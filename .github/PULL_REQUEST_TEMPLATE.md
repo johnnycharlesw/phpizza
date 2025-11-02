@@ -1,4 +1,4 @@
-# PHPizza CMS Pull Request
+# PHPizza Pull Request
 
 ## Description
 

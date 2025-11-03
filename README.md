@@ -6,7 +6,7 @@ This is a CMS I have been working on for fun.
 * Has multiskin functionality
 * Supports the following DBMSes:
     - MariaDB
-    - Oracle MySQL
+    - Oracle MySQL (DEPRECATED, use MariaDB instead)
     - Facebook MySQL
     - Percona Server
     - SQLite

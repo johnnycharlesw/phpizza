@@ -1,7 +1,7 @@
 -- Schema for phpizza
 -- Creates database and pages table
-CREATE DATABASE IF NOT EXISTS `phpizza` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `phpizza`;
+-- CREATE DATABASE IF NOT EXISTS `phpizza` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE `phpizza`;
 
 -- Pages
 CREATE TABLE IF NOT EXISTS `pages` (
@@ -61,7 +61,7 @@ CREATE TABLE `user_groups` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `user_groups` (`id`, `name`, `members`, `permissions`) VALUES
-(1,	'admin',	'1,2',	'edit,change_permissions');
+(1,	'admin',	'2',	'edit,change_permissions'); -- userid 2 will be created by the installer
 
 -- COPPA compliance
 CREATE TABLE IF NOT EXISTS `coppa_consents` (

@@ -1,7 +1,7 @@
 -- Schema for phpizza
 -- Creates database and pages table
-CREATE DATABASE IF NOT EXISTS `phpizza` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `phpizza`;
+-- CREATE DATABASE IF NOT EXISTS `phpizza` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE `phpizza`;
 
 -- Pages
 CREATE TABLE IF NOT EXISTS `pages` (
@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyRocks DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO pages (title, content) VALUES ('home', '# <img src="/assets/phpizza-cms-branding/logo.png" alt="PHPizza logo" width="64" height="auto" /> PHPizza has just been installed!\nYou just installed a powerful tool for site building.  \nSure, it might look like any old WordPress site could do this page, but this page is just the "Hello, World" of development with PHPizza.  \nOpen the editor. Change this page up a little bit.   See what you can do with this.\n\nIf you manage to do something impressive, [email me](mailto:woods.johnny.charles@gmail.com)');
 
 -- User data
 CREATE TABLE IF NOT EXISTS `users` (
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `users` (
    `is_blocked` BOOLEAN NOT NULL,
    `is_email_verified` BOOLEAN NOT NULL
 ) ENGINE=MyRocks DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO users (username, password_hash, email, signed_up_at, date_of_birth, coppa_approved_status, is_child, gender, is_blocked, is_email_verified) VALUES ('Guest', '$2y$10$O9yU1wkYAA2Q3dvEKAcmau6nY0raZVJlSQyqtOTtj96HBgcPP4OB6', 'phpizza-guest-account@example.org', 0000-00-00, 1, 0, 'other', 0, 1);
 
 CREATE TABLE IF NOT EXISTS `user_tokens` (
    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

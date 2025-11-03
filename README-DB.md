@@ -9,4 +9,4 @@ Database setup for phpizza
 php .\bin\init_db.php
 ```
 
-This will execute `sql/create_schema_mysql_or_mariadb.sql` using the credentials in `config.php`. If the DB user lacks permission to create databases, run the SQL as a user with sufficient privileges (for example the root account in XAMPP).
+This will execute `sql/create_schema_mariadb.sql` using the credentials in `config.php`. If the DB user lacks permission to create databases, run the SQL as a user with sufficient privileges (for example the root account in XAMPP).

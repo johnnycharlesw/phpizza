@@ -25,19 +25,19 @@ class UserDatabase {
     
     }
 
-    public function create_user(string $username, string $password, bool $is_admin = false): ?User {
+    public function create_user(string $username, string $password): ?User {
         $existingUser = $this->get_user_by_username($username);
         if ($existingUser) {
             // Add activated account check later, if account already exists but is deactivated, reactivate it instead of creating a new one
             return null; // Username already exists
         }
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
-        $rows = $this->db->execute("INSERT INTO users (username, password_hash, is_admin) VALUES (?, ?, ?)", [$username, $password_hash, $is_admin ? 1 : 0]);
+        $rows = $this->db->execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", [$username, $password_hash]);
         if ($rows === false || $rows === 0) {
             return null;
         }
         $newUserId = $this->db->getLastInsertId();
-        return new User((int)$newUserId, $username, $password_hash, $is_admin);
+        return new User((int)$newUserId, $username, $password_hash);
     }
 
     public function update_user_password(int $id, string $newPassword): bool {
@@ -72,7 +72,7 @@ class UserDatabase {
     public function get_user_by_email(string $email): ?User {
         $row = $this->db->fetchRow("SELECT * FROM users WHERE email = ?", [$email]);
         if ($row && is_array($row) && isset($row['id'])) {
-            return new User((int)$row['id'], $row['username'], $row['password_hash'], (bool)$row['is_admin']);
+            return new User((int)$row['id'], $row['username'], $row['password_hash']);
         }
         return null;
     }

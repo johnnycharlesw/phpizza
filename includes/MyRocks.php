@@ -1,12 +1,12 @@
 <?php
 namespace PHPizza;
 
-# Add in a class for Facebook, Inc.'s corporate fork of MySQL
+# Add in a class for MyRocks (or should I say, Facebook Inc's Rocks (get it?))
 
 // This subclass exists to handle quirks or future customizations
 // specific to Meta's MySQL fork: https://github.com/facebook/mysql-8.0
 
-class MetaSQL implements SQLDatabaseManagementSystemDriver
+class MyRocks implements SQLDatabaseManagementSystemDriver
 {
     private $dbServer;
     private $dbUser;

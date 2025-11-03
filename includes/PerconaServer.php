@@ -61,14 +61,14 @@ function init_database($dbServer, $dbUser, $dbPassword, $dbName){
         $percona_server__connection = new \mysqli($dbServer, $dbUser, $dbPassword, $dbName);
     } catch (\mysqli_sql_exception $e) {
         // Log detailed error to server logs for debugging, but show a generic message to the client
-        error_log("MySQL connection error: " . $e->getMessage());
+        error_log("Percona Server connection error: " . $e->getMessage());
         die("Database connection error. Please contact the administrator.");
     }
 
     if ($percona_server__connection->connect_error) {
         $message= <<<HTML
     Database connection error. Please contact the administrator.
-    mysql connect_error: {$percona_server__connection->connect_error}
+    Percona Server connect_error: {$percona_server__connection->connect_error}
 HTML;
         throw new \Exception($message, 1);
         

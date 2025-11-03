@@ -16,7 +16,8 @@ final class Database {
         'mysql'   => MySQL::class,
         'sqlite'  => SQLite::class,
         'postgres' => PostgreSQL::class,
-        'metasql' => MetaSQL::class,
+        'metasql' => MyRocks::class,
+        'myrocks' => MyRocks::class,
         'percona' => PerconaServer::class,
     ];
 

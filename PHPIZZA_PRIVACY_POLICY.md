@@ -8,6 +8,7 @@ For users under 13, parental consent is required. Parental information is collec
 
 PHPizza uses only this one cookie:
 * PHPSESSID - to keep track of data that only makes sense in the context of a single session. It is not used for tracking or profiling.
+PHPizza does not include any trackers; the only data collected is what is listed above, and any additional tracking must be explicitly added by the site owner.
 
 None of this data is ever shared with third parties. PHPizza is committed to protecting the privacy of its users and will not share any of their data with any third parties. If you have any questions about PHPizza's privacy policy, please contact me at [woods.johnny.charles@gmail.com](mailto:woods.johnny.charles@gmail.com).
 

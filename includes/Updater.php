@@ -39,10 +39,15 @@ class Updater {
 
     public function install_updates_if_available(){
         file_put_contents(__DIR__ . "/.phpizza-updater.lock", "");
+        $git_buf="";
         foreach (["", " origin", " upstream"] as $extraArguments) {
-            system("git fetch" . $extraArguments);
+            $git_buf .= system("git fetch" . $extraArguments);
         }
         system("composer update");
+        if ($git_buf !== "") {
+            # Output occured, there is probably an update
+            system("git merge");
+        }
         unlink(__DIR__ . "/.phpizza-updater.lock"); // Remove lock file after update
         $this->threshold=0;
         $this->save_threshold_to_disk();

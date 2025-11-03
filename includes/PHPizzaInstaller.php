@@ -83,8 +83,8 @@ PHP;
             case "percona":
                 $filename = "sql/create_schema_mysql.sql";
                 break;
-            case "metasql":
-                $filename = "sql/create_schema_metasql.sql";
+            case "myrocks":
+                $filename = "sql/create_schema_myrocks.sql";
                 break;
             case "postgresql":
                 $filename = "sql/create_schema_postgresql.sql";

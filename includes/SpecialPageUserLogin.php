@@ -24,10 +24,9 @@ class SpecialPageUserLogin extends SpecialPage {
             $userdb=new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
             if ($userdb->verify_user_credentials($username, $password)) {
                 $user = $userdb->get_user_by_username($username);
-                if ($user) {
+                if ($user && (!$user->am_I_blocked())) {
                     $_SESSION['user_id'] = $user->getId();
                     $_SESSION['username'] = $user->getUsername();
-                    $_SESSION['is_admin'] = $user->isAdmin();
                     // Redirect to homepage or another page after successful login
                     header("Location: index.php");
                     exit();

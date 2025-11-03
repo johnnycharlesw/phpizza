@@ -6,6 +6,7 @@ class SpecialPageCreateAccount extends SpecialPage {
         parent::__construct("CreateAccount", "Create Account", ""); // Content will be generated in getContent()
     }
     public function getContent(){
+        global $specialPrefix;
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
@@ -29,7 +30,7 @@ class SpecialPageCreateAccount extends SpecialPage {
                 } else {
                     if ($userdb->create_user($username, $password)) {
                         // Redirect to login page after successful account creation
-                        header("Location: index.php?title=PHPizza:UserLogin");
+                        header("Location: index.php?title={$specialPrefix}UserLogin");
                         exit();
                     } else {
                         $output = "<div class=\"create-account-error\">Failed to create account. Please try again.</div>";

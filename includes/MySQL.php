@@ -36,6 +36,12 @@ class MySQL {
         return $mysql_connection->insert_id;
     }
 
+    public function get_table_exists(string $tableName){
+        $query = "SELECT 1 FROM information_schema.tables WHERE table_schema = ? AND table_name = ?";
+        $stmt = $this->fetchAll($query, [$this->dbName, $tableName]);
+        return !empty($stmt);
+    }
+
     public function __destruct() {
         close_database();
     }

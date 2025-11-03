@@ -1,7 +1,7 @@
 <?php
 namespace PHPizza;
 
-# Add in a class for MyRocks (or should I say, Facebook Inc's Rocks (get it?))
+# Add in a class for MyRocks
 
 // This subclass exists to handle quirks or future customizations
 // specific to Meta's MySQL fork: https://github.com/facebook/mysql-8.0
@@ -12,6 +12,7 @@ class MyRocks implements SQLDatabaseManagementSystemDriver
     private $dbUser;
     private $dbPassword;
     private $dbName;
+    private $connection;
 
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName) {
         $this->dbServer = $dbServer;
@@ -37,103 +38,110 @@ class MyRocks implements SQLDatabaseManagementSystemDriver
         return $stmt->affected_rows;
     }
 
+    public function get_table_exists(string $tableName){
+        $query = "SELECT 1 FROM information_schema.tables WHERE table_schema = ? AND table_name = ?";
+        $stmt = $this->fetchAll($query, [$this->dbName, $tableName]);
+        return !empty($stmt);
+    }
+
     public function getLastInsertId() {
-        global $myrocks_connection;
-        return $myrocks_connection->insert_id;
+        
+        return $this->connection->insert_id;
     }
 
     public function __destruct() {
         close_database();
     }
     
-}
 
-global $myrocks_connection;
-function init_database($dbServer, $dbUser, $dbPassword, $dbName){
-    global $myrocks_connection;
-    // Trim credentials to avoid accidental CR/LF from files
-    $dbServer = trim($dbServer);
-    $dbUser = trim($dbUser);
-    $dbPassword = trim($dbPassword);
-    $dbName = trim($dbName);
-
-    // Attempt to connect and handle errors without exposing sensitive details
-    try {
-        $myrocks_connection = new \mysqli($dbServer, $dbUser, $dbPassword, $dbName);
-    } catch (\mysqli_sql_exception $e) {
-        // Log detailed error to server logs for debugging, but show a generic message to the client
-        error_log("MySQL connection error: " . $e->getMessage());
-        die("Database connection error. Please contact the administrator.");
-    }
-
-    if ($myrocks_connection->connect_error) {
-        $message= <<<HTML
-    Database connection error. Please contact the administrator.
-    mysql connect_error: {$myrocks_connection->connect_error}
-HTML;
-        throw new \Exception($message, 1);
+    function init_database($dbServer, $dbUser, $dbPassword, $dbName){
         
-    }
+        // Trim credentials to avoid accidental CR/LF from files
+        $dbServer = trim($dbServer);
+        $dbUser = trim($dbUser);
+        $dbPassword = trim($dbPassword);
+        $dbName = trim($dbName);
 
-    // Set character set to utf8mb4
-    if (!$myrocks_connection->set_charset("utf8mb4")) {
-        error_log("Error loading character set utf8mb4: " . $myrocks_connection->error);
-        die("Database configuration error. Please contact the administrator.");
+        // Attempt to connect and handle errors without exposing sensitive details
+        try {
+            $this->connection = new \mysqli($dbServer, $dbUser, $dbPassword, $dbName);
+        } catch (\mysqli_sql_exception $e) {
+            // Log detailed error to server logs for debugging, but show a generic message to the client
+            error_log("MySQL connection error: " . $e->getMessage());
+            die("Database connection error. Please contact the administrator.");
+        }
+
+        if ($this->connection->connect_error) {
+            $message= <<<HTML
+        Database connection error. Please contact the administrator.
+        MyRocks connect_error: {$this->connection->connect_error}
+    HTML;
+            throw new \Exception($message, 1);
+            
+        }
+
+        // Set character set to utf8mb4
+        if (!$this->connection->set_charset("utf8mb4")) {
+            error_log("Error loading character set utf8mb4: " . $this->connection->error);
+            die("Database configuration error. Please contact the administrator.");
+        }
     }
-}
-function run_query($query, $params = [], $types = ''){
-    global $myrocks_connection;
-    $stmt = $myrocks_connection->prepare($query);
-    if ($stmt === false) {
-        error_log("Prepare failed: " . $myrocks_connection->error . " -- Query: " . $query);
-        die("Database query error. Please contact the administrator.");
-    }
-    if (!empty($params)) {
-        if (empty($types)) {
-            // Automatically determine types if not provided
-            $types = '';
-            foreach ($params as $param) {
-                if (is_int($param)) {
-                    $types .= 'i';
-                } elseif (is_float($param)) {
-                    $types .= 'd';
-                } elseif (is_string($param)) {
-                    $types .= 's';
-                } else {
-                    $types .= 'b'; // blob and unknown
+    function run_query($query, $params = [], $types = ''){
+        
+        $stmt = $this->connection->prepare($query);
+        if ($stmt === false) {
+            error_log("Prepare failed: " . $this->connection->error . " -- Query: " . $query);
+            die("Database query error. Please contact the administrator.");
+        }
+        if (!empty($params)) {
+            if (empty($types)) {
+                // Automatically determine types if not provided
+                $types = '';
+                foreach ($params as $param) {
+                    if (is_int($param)) {
+                        $types .= 'i';
+                    } elseif (is_float($param)) {
+                        $types .= 'd';
+                    } elseif (is_string($param)) {
+                        $types .= 's';
+                    } else {
+                        $types .= 'b'; // blob and unknown
+                    }
                 }
             }
+            $stmt->bind_param($types, ...$params);
         }
-        $stmt->bind_param($types, ...$params);
+        if (!$stmt->execute()) {
+            error_log("Execute failed: " . $stmt->error . " -- Query: " . $query);
+            die("Database query execution error. Please contact the administrator.");
+        }
+        return $stmt;
     }
-    if (!$stmt->execute()) {
-        error_log("Execute failed: " . $stmt->error . " -- Query: " . $query);
-        die("Database query execution error. Please contact the administrator.");
-    }
-    return $stmt;
-}
 
-function fetch_all($stmt){
-    $result = $stmt->get_result();
-    if ($result === false) {
-        die("Get result failed: " . $stmt->error);
+    function fetch_all($stmt){
+        $result = $stmt->get_result();
+        if ($result === false) {
+            die("Get result failed: " . $stmt->error);
+        }
+        return $result->fetch_all(\MYSQLI_ASSOC);
     }
-    return $result->fetch_all(\MYSQLI_ASSOC);
-}
 
-function fetch_one($stmt){
-    $result = $stmt->get_result();
-    if ($result === false) {
-        die("Get result failed: " . $stmt->error);
+    function fetch_one($stmt){
+        $result = $stmt->get_result();
+        if ($result === false) {
+            die("Get result failed: " . $stmt->error);
+        }
+        return $result->fetch_assoc();
     }
-    return $result->fetch_assoc();
-}
 
-function close_database(){
-    global $myrocks_connection;
-    if ($myrocks_connection) {
-        $myrocks_connection->close();
+    function close_database(){
+        
+        if ($this->connection) {
+            $this->connection->close();
+        }
     }
-}
 
+
+
+}
 

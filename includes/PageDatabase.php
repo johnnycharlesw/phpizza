@@ -6,6 +6,10 @@ class PageDatabase {
 
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType) {
         $this->db = new Database($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        if ($this->db->get_table_exists('pages') === false) {
+            throw new Exception("The 'pages' table could not be found. Please update the database using the schema file.", 1);
+            
+        }
     }
 
     public function getPage($page_id) {
@@ -25,7 +29,8 @@ class PageDatabase {
             }
         }
         // Support special pages prefixed with "PHPizza:Name". Strip the prefix (exact match) and look up mapping.
-        $specialPrefix = 'PHPizza:';
+        global $specialPrefix;
+        $specialPrefix = $specialPrefix ?? 'PHPizza:';
         $specialLen = strlen($specialPrefix);
         if ((function_exists('str_starts_with') && str_starts_with($page_id, $specialPrefix)) || (strpos($page_id, $specialPrefix) === 0)) {
             $candidate = substr($page_id, $specialLen);

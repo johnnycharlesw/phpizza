@@ -13,7 +13,7 @@ final class Database {
     # type-to-class map
     private array $dbMap = [
         'mariadb' => MariaDB::class,
-        'mysql'   => MySQL::class,
+        'mysql' => MySQL::class,
         'sqlite'  => SQLite::class,
         'postgres' => PostgreSQL::class,
         'metasql' => MyRocks::class,
@@ -45,6 +45,10 @@ final class Database {
 
     public function execute($query, $params = [], $types = ''){
         return $this->dbDriver->execute($query,$params,$types);
+    }
+    
+    public function get_table_exists(string $tableName){
+        return $this->dbDriver->get_table_exists($tableName);
     }
 
     public function getLastInsertId(){

@@ -37,4 +37,10 @@ class SQLite {
         return $this->dbInterface->lastInsertRowID();
     }
 
+    public function get_table_exists(string $tableName) {
+        $query = "SELECT name FROM sqlite_master WHERE type='table' AND name='$tableName'";
+        $result = $this->dbInterface->query($query);
+        return $result->num_rows > 0;
+    }
+
 }

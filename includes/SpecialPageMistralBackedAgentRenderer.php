@@ -1,9 +1,15 @@
 <?php
 namespace PHPizza;
+
 class SpecialPageMistralBackedAgentRenderer extends SpecialPage {
     private $ollama;
     private $pizzadown;
-    private $template = <<<PIZZADOWN
+    private $template ;
+    public function __construct($instanceUrl = "http://localhost:11434") {
+        global $specialPrefix;
+        $input = $_GET['input'] ?? $_POST['input'] ?? 'It appears no input was provided actually, nevermind, Mistral.';
+        parent::__construct("MistralBackedAgentRenderer", "Mistral Backed Agent Renderer", ""); // Content will be generated in getContent()
+        $this->template = <<<PIZZADOWN
 <style>
     header, footer, aside.sidebar {
         display:none;
@@ -18,7 +24,7 @@ class SpecialPageMistralBackedAgentRenderer extends SpecialPage {
     <div class="context">
     {{{context}}}
     </div>
-    <form method="POST" action="index.php?title=PHPizza:MistralBackedAgentRenderer">
+    <form method="POST" action="index.php?title={$specialPrefix}MistralBackedAgentRenderer">
         <label for="user_input">Enter your input for the Mistral-backed agent:</label><br>
         <input type="text" id="context" name="context" hidden value=""><br><br>
         <textarea id="user_input" name="user_input" rows="4" cols="50" required></textarea><br><br>
@@ -26,9 +32,6 @@ class SpecialPageMistralBackedAgentRenderer extends SpecialPage {
     </form>
 </div>
 PIZZADOWN;
-    public function __construct($instanceUrl = "http://localhost:11434") {
-        $input = $_GET['input'] ?? $_POST['input'] ?? 'It appears no input was provided actually, nevermind, Mistral.';
-        parent::__construct("MistralBackedAgentRenderer", "Mistral Backed Agent Renderer", ""); // Content will be generated in getContent()
         $this->ollama = new Ollama($instanceUrl, $input);
         $this->pizzadown = new Pizzadown(false);
     }

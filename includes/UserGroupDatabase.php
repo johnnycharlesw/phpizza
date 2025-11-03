@@ -6,6 +6,10 @@ class UserGroupDatabase {
     private $db;
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType) {
         $this->db = new Database($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        if ($this->db->get_table_exists('user_groups') === false) {
+            throw new Exception("The 'user_groups' table could not be found. Please update the database using the schema file.", 1);
+            
+        }
     }
     public function get_user_group_by_name(string $name): ?UserGroup {
         $row = $this->db->fetchRow("SELECT * FROM user_groups WHERE name = ?", [$name]);

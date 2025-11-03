@@ -9,12 +9,13 @@ class SpecialPageSpecialPages extends SpecialPage {
     // Use camelCase to match the base class API
     public function getContent() {
         global $specialPageClassMap;
+        global $specialPrefix;
         $content = "<h1>Special Pages</h1>\n";
         $content .= "<ul>\n";
 
         $map = is_array($specialPageClassMap) ? $specialPageClassMap : [];
         foreach ($map as $pageName => $className) {
-            $url = "/index.php?title=PHPizza:" . rawurlencode($pageName);
+            $url = "/index.php?title=$specialPrefix" . rawurlencode($pageName);
             $safeName = htmlspecialchars($pageName, ENT_QUOTES | ENT_SUBSTITUTE);
             $content .= "<li><a href=\"{$url}\">{$safeName}</a></li>\n";
         }

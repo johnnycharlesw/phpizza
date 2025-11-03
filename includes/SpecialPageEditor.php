@@ -45,10 +45,11 @@ class SpecialPageEditor extends SpecialPage {
         $escaped = htmlspecialchars($raw, ENT_NOQUOTES, 'UTF-8');
         $escaped = str_replace('</textarea>', '&lt;/textarea&gt;', $escaped);
 
+        global $specialPrefix;
         // Return plain HTML (not Markdown) so BrowserEntryPoint doesn't render the header as Markdown
         return <<<HTML
 <h1>Editing page {$this->pagetitle}</h1>
-<form method="post" action="/index.php?title=PHPizza:Editor">
+<form method="post" action="/index.php?title={$specialPrefix}Editor">
   <input type="text" id="page_to_edit" name="page_to_edit" value="{$this->pagetitle}" hidden>
   <textarea id="content_pd" name="content_pd" rows="20" cols="80">{$escaped}</textarea>
   <input type="submit" value="Save">

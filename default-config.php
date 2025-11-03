@@ -17,6 +17,7 @@ $siteLanguage = "en";
 $useSkin=true;
 $skinName="PHPizza";
 $homepageName="home";
+$specialPrefix="PHPizza:";
 
 // Database configuration
 $dbServer = "localhost";

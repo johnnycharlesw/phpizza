@@ -28,13 +28,15 @@ class ErrorScreen
         $htmlContent = <<<HTML
 <h1>PHPizza internal error</h1>
 <p>
-    
+    It looks like we have been having some technical difficulties on our end.<br>
+    Please try again later. If this problem persists, please contact {$sitename} support.
+
     {$message}
 </p>
 HTML;
 
         $pageTitle = 'PHPizza internal error';
-        $description = 'An error has occurred in the PHPizza codebase and therefore this website cannot load.';
+        $description = "An error has occurred in the PHPizza codebase and therefore $sitename cannot load.";
         $keywords = [];
 
         return $this->renderer->get_html_page(

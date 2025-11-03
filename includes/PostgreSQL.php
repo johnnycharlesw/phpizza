@@ -65,6 +65,12 @@ class PostgreSQL {
         return $row ? (int)$row['id'] : null;
     }
 
+    public function get_table_exists(string $tableName) {
+        $query = "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = ?)";
+        $result = pg_query_params($this->dbInterface, $query, [$tableName]);
+        return $result && pg_num_rows($result) > 0 && pg_fetch_row($result)[0] === true;
+    }
+
     public function __destruct() {
         if ($this->dbInterface) {
             @pg_close($this->dbInterface);

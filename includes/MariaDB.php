@@ -7,6 +7,7 @@ class MariaDB implements SQLDatabaseManagementSystemDriver {
     private $dbUser;
     private $dbPassword;
     private $dbName;
+    private $connection;
 
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName) {
         $this->dbServer = $dbServer;
@@ -39,6 +40,12 @@ class MariaDB implements SQLDatabaseManagementSystemDriver {
         $this->close_database();
     }
 
+    public function get_table_exists(string $tableName){
+        $query = "SELECT 1 FROM information_schema.tables WHERE table_schema = ? AND table_name = ?";
+        $stmt = $this->fetchAll($query, [$this->dbName, $tableName]);
+        return !empty($stmt);
+    }
+
     private function init_database($dbServer, $dbUser, $dbPassword, $dbName){
         
         // Trim credentials to avoid accidental CR/LF from files
@@ -51,9 +58,12 @@ class MariaDB implements SQLDatabaseManagementSystemDriver {
         try {
             $this->connection = new \mysqli($dbServer, $dbUser, $dbPassword, $dbName);
         } catch (\mysqli_sql_exception $e) {
-            // Log detailed error to server logs for debugging, but show a generic message to the client
             error_log("MariaDB connection error: " . $e->getMessage());
-            die("Database connection error. Please contact the administrator.");
+            $msg = <<<HTML
+            Database connection error. Please contact the administrator.
+            MariaDB connect error: {$e->getMessage()}
+            HTML;
+            throw new Exception($msg, 1);
         }
     
         if ($this->connection->connect_error) {
@@ -61,7 +71,7 @@ class MariaDB implements SQLDatabaseManagementSystemDriver {
         Database connection error. Please contact the administrator.
         MariaDB connect_error: {$this->connection->connect_error}
     HTML;
-            throw new \Exception($message, 1);
+            throw new Exception($message, 1);
             
         }
     
@@ -77,7 +87,11 @@ class MariaDB implements SQLDatabaseManagementSystemDriver {
         $stmt = $this->connection->prepare($query);
         if ($stmt === false) {
             error_log("Prepare failed: " . $this->connection->error . " -- Query: " . $query);
-            die("Database query error. Please contact the administrator.");
+            $msg = <<<HTML
+            Database query execution error. Please contact the administrator.
+            Prepare failed failed:  {$this->connection->error}  -- Query:  {$query}
+            HTML;
+            throw new Exception($msg, 1);
         }
         if (!empty($params)) {
             if (empty($types)) {
@@ -99,7 +113,11 @@ class MariaDB implements SQLDatabaseManagementSystemDriver {
         }
         if (!$stmt->execute()) {
             error_log("Execute failed: " . $stmt->error . " -- Query: " . $query);
-            die("Database query execution error. Please contact the administrator.");
+            $msg = <<<HTML
+            Database query execution error. Please contact the administrator.
+            Execute failed:  {$stmt->error}  -- Query:  {$query}
+            HTML;
+            throw new Exception($msg, 1);
         }
         return $stmt;
     }

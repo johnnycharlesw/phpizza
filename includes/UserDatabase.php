@@ -1,5 +1,8 @@
 <?php
 namespace PHPizza;
+
+use DateTime;
+
 class UserDatabase {
     // Not using PDO, instead using the Database class
     private Database $db;
@@ -38,6 +41,23 @@ class UserDatabase {
         }
         $newUserId = $this->db->getLastInsertId();
         return new User((int)$newUserId, $username, $password_hash);
+    }
+
+    public function get_date_of_birth_by_userid(int $id): ?DateTime {
+        $row = $this->db->fetchRow("SELECT date_of_birth FROM users WHERE id = ?", [$id]);
+        if ($row && is_array($row) && isset($row['date_of_birth'])) {
+            return new DateTime($row['date_of_birth']);
+        }
+        return null;
+    }
+
+    public function is_user_blocked(int $id): bool {
+        // Check if the user is blocked by checking if their is_blocked field is set to 1
+        $row = $this->db->fetchRow("SELECT is_blocked FROM users WHERE id = ?", [$id]);
+        if ($row && is_array($row) && isset($row['is_blocked'])) {
+            return $row['is_blocked'] === 1;
+        }
+        return false;
     }
 
     public function update_user_password(int $id, string $newPassword): bool {

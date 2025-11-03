@@ -4,7 +4,6 @@ namespace PHPizza;
 # Add in a class for Percona Server
 
 class PerconaServer implements SQLDatabaseManagementSystemDriver {
-    
 
     private $dbServer;
     private $dbUser;

@@ -37,7 +37,8 @@ $specialPageClassMap = [
     "UserLogout" => SpecialPageUserLogout::class,
     "CreateAccount" => SpecialPageCreateAccount::class,
     "MistralBackedAgentRenderer" => SpecialPageMistralBackedAgentRenderer::class,
-    "Editor" => SpecialPageEditor::class
+    "Editor" => SpecialPageEditor::class,
+    "SiteSettings" => SpecialPageSettings::class
 ];
 
 // Insert config defaults
@@ -86,6 +87,14 @@ if (empty($dbPassword)) {
         }
     }
 }
+
+
+// Load settings from the site_settings table
+$settingsdb=new ConfigurationDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+$settingsdb->load_config();
+
+
+
 
 // Optional debug logging (only emit when $debug is enabled)
 if (!empty($debug)) {

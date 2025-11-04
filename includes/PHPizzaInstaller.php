@@ -6,8 +6,8 @@ class PHPizzaInstaller {
     private UserDatabase $userdb;
     private UserGroupDatabase $groupdb;
     private Pizzadown $pd;
-    private array $admin_creds;
-    private array $dbcreds;
+    public array $admin_creds;
+    public array $dbcreds;
     public string $pagetitle;
 
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType, $adminUsername, $adminPassword, $adminEmail, $sitename, $siteLanguage) {
@@ -22,8 +22,8 @@ class PHPizzaInstaller {
         # THE SCHEMA HAS NOT BEEN APPLIED AT THIS STAGE! INITIALIZING USERDB NOW WOULD BE UNSAFE!
         $this->admin_creds=[
             "username" => $adminUsername,
-            $adminPassword,
-            $adminEmail
+            "password" => $adminPassword,
+           "email" => $adminEmail
             ];
 
         $siteName=$sitename;

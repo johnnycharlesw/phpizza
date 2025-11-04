@@ -114,7 +114,7 @@ class BrowserEntryPoint
         $page_id = isset($_GET['title']) ? $_GET['title'] : $homepageName;
         $is_editor = isset($_GET['editing']) ? (bool)$_GET['editing'] && $_GET["editing"]==="true" : false;
 
-
+        
         // Check for updates and install updates if available
         if ($page_id == $homepageName) {
             $updater = new Updater();

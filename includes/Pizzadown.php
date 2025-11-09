@@ -113,6 +113,12 @@ class Pizzadown extends \Parsedown{
     // No blockParagraph override — let Parsedown handle paragraphs and call blockEmbed when appropriate.
     
     public function renderEmbed($type, $value){
+        global $embedTypeClassMapping;
+        if (array_search($type,array_keys($embedTypeClassMapping))) {
+            $embedHandlerClass = $embedTypeClassMapping[$type];
+            $embedHandler = new $embedHandlerClass($value);
+            return $embedHandler->render();
+        }
         switch ($type){
             case 'youtube':
 

@@ -1,6 +1,6 @@
 <?php
 namespace PHPizza;
-use PHPizza\PageRenderer;
+use PHPizza\Rendering\PageRenderer;
 
 class ErrorScreen
 {
@@ -30,7 +30,7 @@ class ErrorScreen
 <p>
     It looks like we have been having some technical difficulties on our end.<br>
     Please try again later. If this problem persists, please contact {$sitename} support.
-
+    <br>
     {$message}
 </p>
 HTML;

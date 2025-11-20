@@ -1,5 +1,7 @@
 <?php
 namespace PHPizza;
+use PHPizza\Database\Database;
+
 
 class PHPizzaInstaller {
     private Database $db; # It is not always MariaDB

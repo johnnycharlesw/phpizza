@@ -1,6 +1,7 @@
 <?php
-
 namespace PHPizza;
+use PHPizza\Database\Database;
+
 class ConfigurationDatabase {
     private $db;
     # Loads in config from the site_settings table

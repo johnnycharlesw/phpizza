@@ -2,6 +2,8 @@
 namespace PHPizza;
 # Global functions
 
+use PHPizza\Addons\Extension;
+use PHPizza\Addons\Skin;
 # Extensions: Load them, use them, see if they do anything useful.
 global $loadedExtensions;
 $loadedExtensions = [];

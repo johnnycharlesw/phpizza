@@ -23,6 +23,18 @@ class PHPizzaExtensionAPI {
         return $specialPageClassMap;
     }
 
+    public function unregisterHook(string $hookName) {
+        global $hooks;
+        if (isset($hooks[$hookName])) {
+            unset($hooks[$hookName]);
+        }
+    }
+
+    public function registerEmbedHandler(string $type, string $className) {
+        global $embedTypeClassMapping;
+        $embedTypeClassMapping[$type] = $className;
+    }
+
     public function registerHook(string $hookName, callable $callback) {
         global $hooks;
         if (!isset($hooks[$hookName])) {

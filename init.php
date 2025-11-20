@@ -32,6 +32,12 @@ if (file_exists("vendor/autoload.php")) {
 
 include 'includes/SpecialPages/specialPageClassMap.php';
 
+$embedTypeClassMapping = [
+    "youtube" => PizzadownEmbedHandlerYouTube::class,
+    "mastodon" => PizzadownEmbedHandlerMastodon::class,
+    // I am not actually going to support Twitter
+];
+
 // Insert config defaults
 @include __DIR__ . '/default-config.php'; // For later.
 if (!isset($isInstaller)) {

@@ -30,16 +30,7 @@ if (file_exists("vendor/autoload.php")) {
 }
 
 
-$specialPageClassMap = [
-    "OGTestHomepage" => SpecialPageOGTestHomepage::class,
-    "UserLogin" => SpecialPageUserLogin::class,
-    "SpecialPages" => SpecialPageSpecialPages::class,
-    "UserLogout" => SpecialPageUserLogout::class,
-    "CreateAccount" => SpecialPageCreateAccount::class,
-    "MistralBackedAgentRenderer" => SpecialPageMistralBackedAgentRenderer::class,
-    "Editor" => SpecialPageEditor::class,
-    "SiteSettings" => SpecialPageSettings::class
-];
+include 'includes/SpecialPages/specialPageClassMap.php';
 
 // Insert config defaults
 @include __DIR__ . '/default-config.php'; // For later.

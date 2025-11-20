@@ -49,7 +49,17 @@ class ComposerStaticInitca8e50c71b574daa03d430047bc39689
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'Pdp\\' => 4,
+            'PHPizza\\UserManagement\\' => 23,
+            'PHPizza\\Updates\\' => 16,
+            'PHPizza\\SpecialPages\\' => 21,
+            'PHPizza\\Rendering\\' => 18,
             'PHPizza\\Installer\\' => 18,
+            'PHPizza\\HTTPHandling\\' => 21,
+            'PHPizza\\EntryPoints\\' => 20,
+            'PHPizza\\Database\\' => 17,
+            'PHPizza\\COPPACompliance\\' => 24,
+            'PHPizza\\ArtificialIntelligence\\' => 31,
+            'PHPizza\\Addons\\' => 15,
             'PHPizza\\' => 8,
         ),
         'N' => 
@@ -167,9 +177,49 @@ class ComposerStaticInitca8e50c71b574daa03d430047bc39689
         array (
             0 => __DIR__ . '/..' . '/jeremykendall/php-domain-parser/src',
         ),
+        'PHPizza\\UserManagement\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/UserManagement',
+        ),
+        'PHPizza\\Updates\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/Updates',
+        ),
+        'PHPizza\\SpecialPages\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/SpecialPages',
+        ),
+        'PHPizza\\Rendering\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/Rendering',
+        ),
         'PHPizza\\Installer\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/installer',
+            0 => __DIR__ . '/../..' . '/includes/Installer',
+        ),
+        'PHPizza\\HTTPHandling\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/HTTPHandling',
+        ),
+        'PHPizza\\EntryPoints\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/EntryPoints',
+        ),
+        'PHPizza\\Database\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/Database',
+        ),
+        'PHPizza\\COPPACompliance\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/COPPACompliance',
+        ),
+        'PHPizza\\ArtificialIntelligence\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/ArtificialIntelligence',
+        ),
+        'PHPizza\\Addons\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/Addons',
         ),
         'PHPizza\\' => 
         array (

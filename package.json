@@ -6,6 +6,7 @@
     "sass": "^1.93.3"
   },
   "dependencies": {
+    "monaco-editor": "^0.54.0",
     "prismjs": "^1.30.0"
   }
 }

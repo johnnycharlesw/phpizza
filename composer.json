@@ -24,7 +24,17 @@
     "autoload": {
         "psr-4": {
             "PHPizza\\": "includes/",
-            "PHPizza\\Installer\\": "installer/"
+            "PHPizza\\Installer\\": "includes/Installer/",
+            "PHPizza\\Database\\": "includes/Database/",
+            "PHPizza\\Addons\\": "includes/Addons/",
+            "PHPizza\\SpecialPages\\": "includes/SpecialPages/",
+            "PHPizza\\Rendering\\": "includes/Rendering/",
+            "PHPizza\\UserManagement\\": "includes/UserManagement/",
+            "PHPizza\\COPPACompliance\\": "includes/COPPACompliance/",
+            "PHPizza\\EntryPoints\\": "includes/EntryPoints/",
+            "PHPizza\\HTTPHandling\\": "includes/HTTPHandling/",
+            "PHPizza\\Updates\\": "includes/Updates",
+            "PHPizza\\ArtificialIntelligence\\": "includes/ArtificialIntelligence"
         },
         "files": [
             "includes/GlobalFunctions.php"

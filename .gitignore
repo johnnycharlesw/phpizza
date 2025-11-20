@@ -3,6 +3,7 @@ passwd.b64
 config.php
 uploads
 config.d
+vendor/
 
 # Other things that should not be in the repo
 adminer-*.php

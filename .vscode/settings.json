@@ -1,3 +1,9 @@
 {
-    "codium.codeCompletion.enable": true
+    "codium.codeCompletion.enable": true,
+    "files.watcherExclude": {
+        "**/includes/**": true,
+        "**/.git/objects/**": true,
+        "**/node_modules/**": true,
+        "**/vendor/**": true
+    }
 }

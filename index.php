@@ -20,18 +20,13 @@ if (!empty($debug)) {
 
 try {
     if (in_array($sapi, $cliSapis, true)) {
-        $entry = new \PHPizza\CLIEntryPoint();
+        $entry = new \PHPizza\EntryPoints\CLIEntryPoint();
     } elseif (in_array($sapi, $webSapis, true) || ($isPyServer && isset($isPyServer))) {
         if ($isClientAPI) {
-            $entry = new \PHPizza\APIEntryPoint();
+            $entry = new \PHPizza\EntryPoints\APIEntryPoint();
         }else {
-            $entry = new \PHPizza\BrowserEntryPoint();
+            $entry = new \PHPizza\EntryPoints\BrowserEntryPoint();
         }
-    } elseif ($sapi === 'embed') {
-        // This is a CMS. It is not designed to be embedded into desktop apps.
-        $errorScreen = new \PHPizza\ErrorScreen("This is a CMS, not an app framework. Use this on your website, not a desktop app.");
-        $errorScreen->render($sitename);
-        exit(1);
     } else {
         // Unsupported or dangerous SAPI — behave differently in debug vs production
         if (!empty($debug)) {

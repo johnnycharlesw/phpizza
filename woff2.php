@@ -1,5 +1,5 @@
 <?php
-namespace PHPizza;
+namespace PHPizza\Rendering;
 include 'init.php';
 
 $assetLoaderEntryPoint=new AssetLoaderEntryPoint();

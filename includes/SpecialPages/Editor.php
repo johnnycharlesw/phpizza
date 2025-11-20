@@ -53,13 +53,15 @@ class Editor extends SpecialPage {
         global $specialPrefix;
         // Return plain HTML (not Markdown) so BrowserEntryPoint doesn't render the header as Markdown
         return <<<HTML
+<!--
 <link rel="stylesheet" href="/load.php?t=css&f=monaco-editor/min/vs/editor/editor.main.css">
 <script src="/load.php?t=js&f=monaco-editor/min/vs/loader.js"></script>
 <script src="/load.php?t=js&f=phpizza-cms-js/editor.js"></script>
+        -->
 <h1>Editing page {$this->pagetitle}</h1>
 <form method="post" action="/index.php?title={$specialPrefix}Editor" id="form">
   <input type="text" id="page_to_edit" name="page_to_edit" value="{$this->pagetitle}" hidden>
-  <textarea id="content_pd" name="content_pd" rows="20" cols="80" hidden>{$escaped}</textarea>
+  <textarea id="content_pd" name="content_pd" rows="20" cols="80" >{$escaped}</textarea>
   <div class="editor_container"></div>
   <input type="submit" value="Save">
 </form>

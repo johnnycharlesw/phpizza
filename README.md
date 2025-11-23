@@ -1,5 +1,5 @@
-# PHPizza
-This is a CMS I have been working on for fun.
+# <img width=128 height=128 alt="PHPizza Logo" src="assets/phpizza-cms-branding/logo.png" /> PHPizza
+This is a CMS/app framework I have been working on for fun.
 
 ## Features
 * Stores content and skin layouts in Markdown (just like how this README is stored in Markdown)

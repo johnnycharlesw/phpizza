@@ -1,6 +1,7 @@
 <?php
 namespace PHPizza\SpecialPages;
-
+use PHPizza\Rendering\Pizzadown;
+use PHPizza\UserManagement\UserDatabase;
 
 class UserLogin extends SpecialPage {
     public function __construct() {

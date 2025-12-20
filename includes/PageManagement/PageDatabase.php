@@ -1,7 +1,7 @@
 <?php
 namespace PHPizza\PageManagement;
 use PHPizza\Database\Database;
-
+use PHPizza\Exception;
 
 class PageDatabase {
     private $db;

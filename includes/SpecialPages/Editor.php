@@ -58,8 +58,14 @@ class Editor extends SpecialPage {
 <script src="/load.php?t=js&f=monaco-editor/min/vs/loader.js"></script>
 <script src="/load.php?t=js&f=phpizza-cms-js/editor.js"></script>
         -->
-<h1>Editing page {$this->pagetitle}</h1>
-<form method="post" action="/index.php?title={$specialPrefix}Editor" id="form">
+<form method="get" action="/index.php?title={$specialPrefix}AdminPanel&section=editor">
+    <h1>
+        Editing page 
+        <input type="text" name="page_to_edit" value="{$this->pagetitle}"/>  
+    </h1>
+    <button>Change page being edited</button>
+</form>
+<form method="post" action="/index.php?title={$specialPrefix}AdminPanel&section=editor" id="form">
   <input type="text" id="page_to_edit" name="page_to_edit" value="{$this->pagetitle}" hidden>
   <textarea id="content_pd" name="content_pd" rows="20" cols="80" >{$escaped}</textarea>
   <div class="editor_container"></div>

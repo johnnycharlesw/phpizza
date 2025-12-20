@@ -240,6 +240,7 @@ class BrowserEntryPoint extends HTTPEndpointHandler
             $keywords = [];
         }
 
+        
         return [
             'status' => $status,
             'title' => $page_title,

@@ -1,7 +1,9 @@
 <?php
-namespace PHPizza;
+namespace PHPizza\Installer;
 use PHPizza\Database\Database;
-
+use PHPizza\UserManagement\UserDatabase;
+use PHPizza\UserManagement\UserGroupDatabase;
+use PHPizza\Rendering\Pizzadown;
 
 class PHPizzaInstaller {
     private Database $db; # It is not always MariaDB

@@ -39,7 +39,6 @@ class Settings extends SpecialPage {
                     display:flex;
                 }
             </style>
-            <h1>Settings</h1><br>
             <ul class="tab-bar">
             HTML;
             $tabs=[
@@ -49,17 +48,17 @@ class Settings extends SpecialPage {
             foreach ($tabs as $id => $name) {
                 $content .= <<<HTML
                 <li>
-                    <a href="/index.php?title={$specialPrefix}SiteSettings?tab={$id}">{$name}</a>
+                    <a href="/index.php?title={$specialPrefix}AdminPanel&section=settings&tab={$id}">{$name}</a>
                 </li>
                 HTML;
             }
             $content .= "\n</ul>";
             global $sitename, $siteLanguage, $skinName;
-            $tab=$_GET["tab"];
+            $tab=$_GET["tab"] ?? 'general';
             if ($tab=="general"){
                 $content .= <<<HTML
                 <h2>General Settings</h2>
-                <form method="post" action="/index.php?title={$specialPrefix}SiteSettings">
+                <form method="post" action="/index.php?title={$specialPrefix}AdminPanel&section=settings">
                     <label for="site_name">Site Name:</label>
                     <input type="text" id="site_name" name="sitename" value="{$sitename}">
                     <br>
@@ -85,7 +84,7 @@ class Settings extends SpecialPage {
             foreach ($_POST as $key => $value) {
                 $this->configdb->set_value($key, $value);
             }
-            header("Location: /index.php?title={$specialPrefix}SiteSettings&tab=general");
+            header("Location: /index.php?title={$specialPrefix}AdminPanel&section=settings&tab=general");
         }
     }
 }

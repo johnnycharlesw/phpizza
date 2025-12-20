@@ -1,6 +1,7 @@
 <?php
 
 namespace PHPizza;
+use PHPizza\Rendering\ErrorScreen;
 
 global $isInstaller;
 global $settingsDB;
@@ -41,8 +42,19 @@ $embedTypeClassMapping = [
 // Insert config defaults
 @include __DIR__ . '/default-config.php'; // For later.
 if (!isset($isInstaller)) {
-    // Load configuration file
+    // Load global configuration file
     @include __DIR__ . '/config.php';
+
+    // Load site-specific configuration file if it exists
+    global $siteDomain;
+    $siteDomain = preg_replace("/^www\./","",$_SERVER["HTTP_HOST"] ?? "phpizza.localhost");
+    global $isApi;
+    $isApi=false;
+    if (preg_match('/^api\./', $siteDomain, $matches)) {
+        $siteDomain=lstrip($siteDomain, "api.");
+        $isApi=true;
+    }
+    @include __DIR__ . "/config.$siteDomain.php";
 
     // Reduce error verbosity for web requests to avoid exposing deprecation notices to visitors
     if (php_sapi_name() !== 'cli') {
@@ -89,8 +101,6 @@ if (empty($dbPassword)) {
 // Load settings from the site_settings table
 $settingsdb=new ConfigurationDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
 $settingsdb->load_config();
-
-
 
 
 // Optional debug logging (only emit when $debug is enabled)

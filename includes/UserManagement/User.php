@@ -40,7 +40,7 @@ class User {
         return $this->userdb->getPasswordHashByUsername($this->username);
     }
 
-    public function can_I_do(string $action, ?resource $context = null) {
+    public function can_I_do(string $action, string|bool|array|null $context = null) {
         return $this->userdb->can_user_do($this->id, $action, $context);
     }
 

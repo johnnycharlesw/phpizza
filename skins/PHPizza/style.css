@@ -29,6 +29,8 @@ body {
 article {
   user-select: text !important;
   -webkit-user-select: text !important;
+  width: 100%;
+  height: 100%;
 }
 
 header > ul > li > p > a {
@@ -43,4 +45,5 @@ header > ul > li > p > a > img {
   height: 64px;
   width: 64px;
 }
+
 /*# sourceMappingURL=style.css.map */

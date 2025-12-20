@@ -1,6 +1,7 @@
 <?php
 namespace PHPizza\UserManagement;
 use PHPizza\Database\Database;
+use PHPizza\Exception;
 
 class UserGroupDatabase {
     // Not using PDO, instead using the Database class

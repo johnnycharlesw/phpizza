@@ -1,5 +1,8 @@
 <?php
 namespace PHPizza\SpecialPages;
+use PHPizza\UserManagement\UserDatabase;
+use PHPizza\UserManagement\User;
+use PHPizza\Rendering\Pizzadown;
 class CreateAccount extends SpecialPage {
     public function __construct() {
         global $sitename;

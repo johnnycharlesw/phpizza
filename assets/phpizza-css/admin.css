@@ -1,0 +1,32 @@
+aside.phpizza-admin-panel-sidebar {
+  padding-right: 10px;
+}
+aside.phpizza-admin-panel-sidebar > ul {
+  list-style-type: none;
+}
+
+.phpizza-admin-panel-main {
+  display: flex;
+  width: 100%;
+  padding: 0.1%;
+}
+
+aside.phpizza-admin-panel-sidebar, main {
+  display: block;
+  width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  aside.phpizza-admin-panel-sidebar {
+    background-color: #151515;
+    color: white;
+  }
+}
+@media (prefers-color-scheme: light) {
+  aside.phpizza-admin-panel-sidebar {
+    background-color: #f1f1f1;
+    color: black;
+  }
+}
+
+/*# sourceMappingURL=admin.css.map */

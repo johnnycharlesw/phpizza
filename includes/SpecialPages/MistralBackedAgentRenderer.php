@@ -1,5 +1,7 @@
 <?php
 namespace PHPizza\SpecialPages;
+use PHPizza\ArtificialIntelligence\Ollama;
+use PHPizza\Rendering\Pizzadown;
 
 class MistralBackedAgentRenderer extends SpecialPage {
     private $ollama;

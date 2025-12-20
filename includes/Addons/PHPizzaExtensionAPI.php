@@ -1,5 +1,5 @@
 <?php
-namespace PHPizza;
+namespace PHPizza\Addons;
 # This file defines a class with hooks for extensions.
 class PHPizzaExtensionAPI {
     public function __construct() {

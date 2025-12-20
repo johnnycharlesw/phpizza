@@ -118,6 +118,12 @@ HTML;
     public function get_skin_body_innerHTML(string $skinName, $innerHTML = ''){
         $skin = new Skin($skinName);
         return <<<HTML
+<style>
+    .{$skin->get_skin_class()} {
+        width:100%;
+        height:100%;
+    }
+</style>
 <div class="{$skin->get_skin_class()}">
     <header>
         {$skin->get_header()}

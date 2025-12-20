@@ -1,0 +1,11 @@
+header {
+  background-color: var(--header-bg-color);
+  color: var(--fg-color);
+}
+
+/* Modern header links blend in with the bar */
+header > ul > li > a {
+  color: var(--fg-color) !important;
+}
+
+/*# sourceMappingURL=set-header-color.css.map */

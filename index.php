@@ -1,6 +1,8 @@
 <?php
 // Load initialization (config, vendor autoload)
+$isApi = false;
 require_once __DIR__ . '/init.php';
+use PHPizza\Rendering\ErrorScreen;
 
 // Determine SAPI and pick the appropriate entrypoint
 $sapi = PHP_SAPI;
@@ -8,7 +10,7 @@ $sapi = PHP_SAPI;
 $cliSapis = ['cli'];
 $webSapis = ['apache', 'apache2handler', 'cgi-fcgi', 'fpm-fcgi', 'cli-server', 'litespeed'];
 
-$isClientAPI = (isset($_GET["api_mode"])) ? $_GET["api_mode"] : false ;
+$isClientAPI = (isset($_GET["api_mode"])) ? $_GET["api_mode"] : $isApi ;
 
 $entry = null;
 
@@ -30,7 +32,7 @@ try {
     } else {
         // Unsupported or dangerous SAPI — behave differently in debug vs production
         if (!empty($debug)) {
-            $errorScreen = new \PHPizza\ErrorScreen("This is a CMS, not an LOP/ROP chain. Use this on your website, not a hacking tool.");
+            $errorScreen = new ErrorScreen("This is a CMS, not an LOP/ROP chain. Use this on your website, not a hacking tool.");
             http_response_code(500);
             $errorScreen->render($sitename);
             exit(1);
@@ -51,7 +53,7 @@ try {
 } catch (\Throwable $e) {
     $message='Fatal error: ' . $e->getMessage();
     error_log($message);
-    $err = new \PHPizza\ErrorScreen($message);
+    $err = new ErrorScreen($message);
     $err->render($sitename);
     exit(1);
 }

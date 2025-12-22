@@ -10,8 +10,9 @@ header {
 }
 
 /* Modern header links blend in with the bar */
-header > ul > li > a {
+header > ul > li > a, header > ul > li > p > a {
   color: var(--fg-color) !important;
+  text-decoration: none !important;
 }
 
 /* General link styling */
@@ -41,4 +42,5 @@ a:visited:hover {
   --link-color-visited: purple;
   --link-color-visited-hover: blueviolet;
 }
+
 /*# sourceMappingURL=style-theme-dark.css.map */

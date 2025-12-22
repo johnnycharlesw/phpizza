@@ -34,7 +34,11 @@ class Editor extends SpecialPage {
         }
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $content=$_POST["content_pd"];
-            $this->pagedb->updatePage($this->pagetitle, $content);
+            if (null != $this->pagedb->getPage($this->pagetitle)) {
+                $this->pagedb->updatePage($this->pagetitle, $content);
+            } else {
+                $this->pagedb->createPage($this->pagetitle, $content);
+            }
             http_response_code(302);
             header("Location: /{$this->pagetitle}");
             return "";
@@ -59,6 +63,8 @@ class Editor extends SpecialPage {
 <script src="/load.php?t=js&f=phpizza-cms-js/editor.js"></script>
         -->
 <form method="get" action="/index.php?title={$specialPrefix}AdminPanel&section=editor">
+    <input type="text" name="title" value="{$specialPrefix}AdminPanel" hidden />
+    <input type="text" name="section" value="editor" hidden />
     <h1>
         Editing page 
         <input type="text" name="page_to_edit" value="{$this->pagetitle}"/>  

@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["set-background-and-foreground-colors.scss","set-header-color.scss","set-link-color.scss"],"names":[],"mappings":"AAAA;EACI;EACA;;;ACFJ;EACI;EACA;;;AAGJ;AACA;EACI;;;ACPJ;AACA;EACI;;;AAEJ;EACI;;;AAGJ;EACI;;;AAGJ;EACI","file":"apply-theme.css"}
+{"version":3,"sourceRoot":"","sources":["set-background-and-foreground-colors.scss","set-header-color.scss","set-link-color.scss"],"names":[],"mappings":"AAAA;EACI;EACA;;;ACFJ;EACI;EACA;;;AAGJ;AACA;EACI;EACA;;;ACRJ;AACA;EACI;;;AAEJ;EACI;;;AAGJ;EACI;;;AAGJ;EACI","file":"apply-theme.css"}

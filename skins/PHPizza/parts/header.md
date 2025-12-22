@@ -13,8 +13,7 @@
 
 * [Home]({{{homePage}}})
 * [About](/about)
-* [Services](/services)
-* [Contact](/contact)
-
+* [Deploy Now!](/deploy)
+* [Contact Maintainers](/contact)
 
 <!-- End of header -->

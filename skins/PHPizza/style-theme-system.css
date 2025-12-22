@@ -13,8 +13,9 @@
     color: var(--fg-color);
   }
   /* Modern header links blend in with the bar */
-  header > ul > li > a {
+  header > ul > li > a, header > ul > li > p > a {
     color: var(--fg-color) !important;
+    text-decoration: none !important;
   }
   /* General link styling */
   a:link {
@@ -50,8 +51,9 @@
     color: var(--fg-color);
   }
   /* Modern header links blend in with the bar */
-  header > ul > li > a {
+  header > ul > li > a, header > ul > li > p > a {
     color: var(--fg-color) !important;
+    text-decoration: none !important;
   }
   /* General link styling */
   a:link {

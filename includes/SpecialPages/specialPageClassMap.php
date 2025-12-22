@@ -2,12 +2,10 @@
 
 use PHPizza\SpecialPages\AdminPanel;
 use PHPizza\SpecialPages\OGTestHomepage;
-use PHPizza\SpecialPages\Editor;
 use PHPizza\SpecialPages\CreateAccount;
 use PHPizza\SpecialPages\UserLogin;
 use PHPizza\SpecialPages\UserLogout;
 use PHPizza\SpecialPages\SpecialPages;
-use PHPizza\SpecialPages\Settings;
 use PHPizza\SpecialPages\MistralBackedAgentRenderer;
 
 $specialPageClassMap = [

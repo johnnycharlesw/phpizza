@@ -97,10 +97,6 @@ class PageRenderer{
             // Fallback: single stylesheet
             $skinStyleLinks = sprintf($skinStyleLinkTemplate, $skinName, $skinStylesheet);
         }
-        
-        $skinStyleLinks .= "<script src='/load.php?t=js&f=prismjs/prism.js'></script>\n";
-
-        
 
         return $skinStyleLinks;
         #return "<link rel='stylesheet' href='/css.php?f=$skinName/$skinStylesheet'>";
@@ -138,6 +134,7 @@ HTML;
         {$skin->get_footer()}
     </footer>
 </div>
+<script src='/load.php?t=js&f=prismjs/prism.js'></script>
 HTML;
     }
 

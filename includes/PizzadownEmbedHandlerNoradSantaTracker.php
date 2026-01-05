@@ -2,12 +2,16 @@
 namespace PHPizza;
 class PizzadownEmbedHandlerNoradSantaTracker extends PizzadownEmbedHandler {
     public function __construct($value) {
-        parent::construct("noradsantatracker", $value);
+        parent::__construct("noradsantatracker", $value);
     }
     public function render() {
         global $enableSantaTrackerEmbeds;
         if (!$enableSantaTrackerEmbeds) {
             return "<!-- Embed not rendered because the site owner disabled santa tracker embeds -->";
+        }
+        $datetime = new \DateTime("now");
+        if ($datetime->format("MM") !== "12") {
+            return "<!-- Embed not rendered because it isn't December, silly! -->";
         }
         $html = <<<html
 <style>
@@ -23,7 +27,7 @@ html;
     title="NTS Tracking Map"></iframe>
 html;
         } elseif ($this->value=="countdown") {
-            $html .= <<html
+            $html .= <<<html
 <iframe class="noradtrackssanta-countdown"
     src="https://www.noradsanta.org/countdownClock.html" 
     title="NTS Countdown Clock"></iframe>

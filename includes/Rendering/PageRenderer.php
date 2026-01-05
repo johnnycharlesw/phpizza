@@ -115,7 +115,7 @@ HTML;
         $skin = new Skin($skinName);
         return <<<HTML
 <style>
-    .{$skin->get_skin_class()} {
+    .{$skin->get_skin_class()}, body {
         width:100%;
         height:100%;
     }

@@ -1,5 +1,8 @@
 <?php
 namespace PHPizza\EntryPoints;
+use PHPizza\Updates\Updater;
+use PHPizza\EntryPoints\BrowserEntryPoint;
+
 
 class CLIEntryPoint
 {
@@ -31,7 +34,7 @@ class CLIEntryPoint
                 $this->runMaintenance($script);
                 break;
             case 'simulate-browser-request':
-                $entry = new \PHPizza\BrowserEntryPoint();
+                $entry = new BrowserEntryPoint();
                 $entry->run();
                 break;
             case 'help':

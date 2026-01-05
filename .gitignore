@@ -4,6 +4,7 @@ config.php
 uploads
 config.d
 vendor/
+node_modules/
 
 # Other things that should not be in the repo
 adminer-*.php

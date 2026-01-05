@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `title` TEXT NOT NULL,
   `content` TEXT NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `upTEXTd_at` TIMESTAMP NULL DEFAULT NULL ON UPTEXT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL ON TEXT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) DEFAULT;
 INSERT INTO pages (title, content) VALUES ('home', '# <img src="/assets/phpizza-cms-branding/logo.png" alt="PHPizza logo" width="64" height="auto" /> PHPizza has just been installed!\nYou just installed a powerful tool for site building.  \nSure, it might look like any old WordPress site could do this page, but this page is just the "Hello, World" of development with PHPizza.  \nOpen the editor. Change this page up a little bit.   See what you can do with this.\n\nIf you manage to do something impressive, [email me](mailto:woods.johnny.charles@gmail.com)');

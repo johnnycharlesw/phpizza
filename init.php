@@ -30,6 +30,10 @@ if (file_exists("vendor/autoload.php")) {
     }
 }
 
+if (!dir(__DIR__ . '/node_modules')) {
+    @system("npm i");
+}
+
 
 include 'includes/SpecialPages/specialPageClassMap.php';
 
@@ -51,7 +55,7 @@ if (!isset($isInstaller)) {
     global $isApi;
     $isApi=false;
     if (preg_match('/^api\./', $siteDomain, $matches)) {
-        $siteDomain=lstrip($siteDomain, "api.");
+        $siteDomain=ltrim($siteDomain, "api.");
         $isApi=true;
     }
     @include __DIR__ . "/config.$siteDomain.php";

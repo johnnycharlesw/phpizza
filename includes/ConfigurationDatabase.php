@@ -6,7 +6,7 @@ class ConfigurationDatabase {
     private $db;
     # Loads in config from the site_settings table
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType) {
-        global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
+        // Use the parameters passed to the constructor, not global variables
         $this->db = new Database($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
     }
 

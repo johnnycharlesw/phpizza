@@ -38,8 +38,8 @@ class SpecialPageSetup extends SpecialPage {
         # Clean up afterward
         include 'init.php'; # Switch the PHPizza context to the installed site from the installer site
         # Wipe the temp files used to render the installer
-        unlink("tmp/installer_site_db.sqlite");
-        unlink("tmp/installer_site_db.sqlite.bak");
+        unlink("includes/Installer/phpizza_installer.sqlite3");
+        unlink("includes/Installer/phpizza_installer.sqlite3.bak");
         # Keep installer-config.php, as it is needed to reinstall if something goes wrong
     }
 

@@ -14,6 +14,11 @@ if (file_exists("vendor/autoload.php")) {
 } else {
     error_log("Composer autoload script not found!");
 
+    // First, sync git submodules
+    @system("git submodule update --recursive");
+    // This is needed for the first run, as the submodules are not initialized by Composer.
+    // It is also needed for git-clone-and-run.
+
     // Do NOT run composer automatically during web requests — it can block Apache/PHP.
     // Only attempt to run composer when invoked from CLI (developer convenience).
     if (php_sapi_name() === 'cli') {

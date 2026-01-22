@@ -12,12 +12,14 @@
 */
 
 // Site
+global $sitename, $siteLanguage, $useSkin, $skinName, $homepageName, $specialPrefix, $siteLogoPath;
 $sitename = "PHPizza";
 $siteLanguage = "en";
 $useSkin=true;
 $skinName="PHPizza";
 $homepageName="Setup";
 $specialPrefix="";
+$siteLogoPath="assets/phpizza-cms-branding/logo.png";
 
 // Database configuration
 
@@ -29,7 +31,7 @@ if (!file_exists("includes/Installer/phpizza_installer.sqlite3")) {
     $dbName = "includes/Installer/phpizza_installer.sqlite3";
     $dbType = "sqlite"; # Change this if you are using a different DBMS, e.g. "sqlite" or "pgsql"
     $dbInterface = new \PHPizza\Database\SQLite($dbServer, $dbUser, $dbPassword, $dbName);
-    $dbInterface->execute(file_get_contents(__DIR__ . '/sql/create_schema_sqlite.sql'));
+    $dbInterface->execute(file_get_contents('/sql/create_schema_sqlite.sql'));
     $dbInterface->close_database();
 }
 
@@ -47,6 +49,13 @@ $dbType = "sqlite"; # Change this if you are using a different DBMS, e.g. "sqlit
 // Optional: enable debug mode (do not enable on production)
 $debug = false;
 
+global $specialPageClassMap;
 $specialPageClassMap = array_merge($specialPageClassMap, [
     "Setup" => \PHPizza\Installer\SpecialPageSetup::class,
 ]);
+
+$guestUsername="Guest";
+$guestPasswordB64="aUFtQUd1ZXN0IQ==";
+// expose installer-mode guest defaults to global scope
+$GLOBALS['guestUsername'] = $guestUsername;
+$GLOBALS['guestPasswordB64'] = $guestPasswordB64;

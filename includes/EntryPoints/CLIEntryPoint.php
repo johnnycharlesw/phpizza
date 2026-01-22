@@ -34,6 +34,14 @@ class CLIEntryPoint
                 $this->runMaintenance($script);
                 break;
             case 'simulate-browser-request':
+                # Put the environment variables to simulate a web request
+                $_SERVER['REQUEST_METHOD'] = 'GET';
+                $_SERVER['HTTP_HOST'] = 'localhost';
+                $_SERVER['REQUEST_URI'] = '/';
+                # Convert args into GET parameters
+                parse_str(implode('&', array_slice($argv, 2)), $_GET);
+            
+                #Run the browser entry point to simulate a web request
                 $entry = new BrowserEntryPoint();
                 $entry->run();
                 break;

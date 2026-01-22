@@ -10,7 +10,6 @@ class SpecialPageSetup extends SpecialPage {
         parent::__construct("Setup", "Setup", ""); # Content will be generated automatically
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType; # Umm, no, the PHPizzaInstaller object is looking for the database config variables of the target db, not the installer db, but we will change it when that info has been obtained
         $this->installer = new PHPizzaInstaller($dbServer, $dbUser, $dbPassword, $dbName, $dbType,"Admin","","admin-who-has-not-finished-the-phpizza-setup@example.org","PHPizza site","en-US");
-        $this->installer->install();
     }
 
     public function set_admin_creds($username, $password, $email) {
@@ -72,5 +71,13 @@ class SpecialPageSetup extends SpecialPage {
             "admin_creds" => "Admin Credentials",
             "db_config" => "Database Configuration"
         ];
+    }
+    public function getContent() {
+        // Pick between installation UI and installation process based on request method
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $this->handle_form_submission();
+        } else {
+            $this->render_installation_ui();
+        }
     }
 }

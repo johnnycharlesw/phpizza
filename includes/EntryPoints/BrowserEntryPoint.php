@@ -46,6 +46,13 @@ class BrowserEntryPoint extends HTTPEndpointHandler
             session_start();
         }
 
+        // Normalize missing username/password: fall back to guest credentials if available
+        if (!is_string($username) || $username === null) {
+            global $guestUsername, $guestPasswordB64;
+            $username = $guestUsername ?? 'Guest';
+            $password = $password ?? (isset($guestPasswordB64) ? base64_decode($guestPasswordB64) : '');
+        }
+
         // Pull DB config variables (provided by init.php)
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
 

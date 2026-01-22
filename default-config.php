@@ -31,5 +31,8 @@ $dbType = "mariadb"; # Change this if you are using a different DBMS, e.g. "sqli
 // Optional: If you want to use a passwd.b64 file instead of $dbPassword inline, uncomment:
 // $dbPassword = base64_decode(file_get_contents(__DIR__ . '/passwd.b64'));
 
+$guestUsername="Guest";
+$guestPasswordB64="aUFtQUd1ZXN0IQ==";
+
 // Optional: enable debug mode (do not enable on production)
 $debug = false;

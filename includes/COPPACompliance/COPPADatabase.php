@@ -1,7 +1,8 @@
 <?php
 namespace PHPizza\COPPACompliance;
 use PHPizza\Database\Database;
-
+use PHPizza\Exception;
+use PHPizza\COPPACompliance\COPPAConsentRequest;
 
 class COPPADatabase {
     private $db;

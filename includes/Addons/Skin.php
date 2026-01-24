@@ -77,4 +77,9 @@ class Skin extends Addon
     public function get_footer(){
         return $this->get_component('footer');
     }
+
+    public function render_email(string $emailContentMd){
+        $email = "";
+        
+    }
 }

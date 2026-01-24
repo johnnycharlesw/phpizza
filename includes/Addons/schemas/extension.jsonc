@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://phpizza.org/schemas/extension.json",
+  "title": "PHPizza Extension Manifest",
+  "description": "Schema for extension.json manifests. Extends the base add-on schema with extension-specific options.",
+  "allOf": [
+    { "$ref": "./addon.jsonc" },
+    {
+      "type": "object",
+      "properties": {
+        "type": { "const": "extension" },
+        "extension": {
+          "type": "object",
+          "title": "Extension-specific configuration",
+          "additionalProperties": false,
+          "properties": {
+            "routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["path", "handler"],
+                "properties": {
+                  "method": { "type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+                  "path": { "type": "string" },
+                  "handler": { "type": "string", "description": "Fully-qualified handler class or file path." }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

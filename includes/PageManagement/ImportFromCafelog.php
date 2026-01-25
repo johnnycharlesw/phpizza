@@ -1,17 +1,22 @@
 <?php
 namespace PHPizza\PageManagement;
+
+use DateTime;
 use PHPizza\PageManagement\ImportFromCMSX;
 use PHPizza\UserManagement\UserDatabase;
 use PHPizza\UserManagement\UserGroupDatabase;
 use PHPizza\Exception;
+use PHPizza\PageManagement\Page;
+use PHPizza\PageManagement\PageDatabase;
 use PHPizza\Database\Database;
 
 class ImportFromCafelog implements ImportFromCMSX {
     public $sourcePath;
-    private $userdb;
-    private $groupdb;
-    private $cafelogConfig;
-    private $cafelogDb;
+    private UserDatabase $userdb;
+    private UserGroupDatabase $groupdb;
+    private PageDatabase $pagedb;
+    private array $cafelogConfig;
+    private Database $cafelogDb;
     private $smileMap;
 
     public function __construct(string $sourcePath) {
@@ -19,6 +24,7 @@ class ImportFromCafelog implements ImportFromCMSX {
         $this->sourcePath = $sourcePath;
         $this->userdb = new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->groupdb = new UserGroupDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        $this->pagedb = new PageDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->smileMap = [
             # Map b2smile filenames to emojis
             'icon_arrow.gif' => '➡️',
@@ -71,15 +77,27 @@ class ImportFromCafelog implements ImportFromCMSX {
             'useSmartQuotes' => $use_smartquotes,
             'telemetryEnabled' => $use_cafelogping ?? false || $use_weblogsping ?? false || $use_blodotgsping ?? false,
             'b2smiletrans' => (array)$b2smiletrans,
-
+            'tablePosts' => (string)$tableposts,
+            'tableCategories' => (string)$tablecategories,
+            'tableComments' => (string)$tablecomments,
+            'tableSettings' => (string)$tablesettings,
+            'tableUsers' => (string)$tableusers,
         ];
         $this->cafelogConfig = $config;
         $this->cafelogDb = new Database($config['dbServer'], $config['dbUser'], $config['dbPassword'], $config['dbName'], $config['dbType']);
     }
-    public function importPage(string $pageId): void {
-        // Implement the logic to import a single page from a Cafelog source
-        // Example: Read the page data from a file or database
-        // Then, call the parent method to import the page
+    public function importPage(int $pageId): void {
+        $tablePosts=$this->cafelogConfig['tablePosts'];
+        $dbPage=$this->cafelogDb->fetchRow("SELECT * FROM ? WHERE ID=?", [$tablePosts, $pageId], 'si');
+        $this->pagedb->createPage(
+            date_format(
+                DateTime($dbPage['post_date']), 
+                "archives/YYYY/MM/DD/{$dbPage['post_title']}"
+            ), 
+            $this->importPageContent(
+                $dbPage['post_content']
+            )
+        );
     }
 
     public function importPageContent(string $pageMarkup): string {
@@ -175,22 +193,24 @@ class ImportFromCafelog implements ImportFromCMSX {
         return $content;
     }
 
-    public function importPageMeta(string $pageId): void {
+    public function importPageMeta(int $pageId): void {
         // Implement the logic to import the metadata of a page from a Cafelog source
         // Example: Read the page metadata from a file or database
         // Then, call the parent method to import the page metadata
     }
     public function importAllPages(): void {
-        // Implement the logic to import all pages from a Cafelog source
-        // Example: Read all page content and metadata from a file or database
-        // Then, call the parent method to import all pages
+        $tablePosts = $this->cafelogConfig['tablePosts'];
+        $dbPages = $this->cafelogDb->fetchAll("SELECT * FROM ?", [$tablePosts], 's');
+        foreach ($dbPages as $dbPage) {
+            $this->importPage($dbPage['ID']);
+        }
     }
-    public function importComments(string $pageId): void {
+    public function importComments(int $pageId): void {
         // Implement the logic to import comments for a page from a Cafelog source
         // Example: Read the comments from a file or database
         // Then, call the parent method to import comments
     }
-    public function importPageTags(string $pageId): void {
+    public function importPageTags(int $pageId): void {
         // Implement the logic to import tags for a page from a Cafelog source
         // Example: Read the tags from a file or database
         // Then, call the parent method to import tags
@@ -226,7 +246,7 @@ class ImportFromCafelog implements ImportFromCMSX {
             $this->groupdb->grant_permission_to_user_group($groupname, "manage");
         }
     }
-    public function importAttachments(string $pageId): void {
+    public function importAttachments(int $pageId): void {
         // Implement the logic to import attachments for a page from a Cafelog source
         // Example: Read the attachment data from a file or database
         // Then, call the parent method to import attachments

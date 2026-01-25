@@ -69,7 +69,9 @@ class SpecialPageSetup extends SpecialPage {
         HTML;
         $tabs=[
             "admin_creds" => "Admin Credentials",
-            "db_config" => "Database Configuration"
+            "db_config" => "Database Configuration",
+            "install" => "Install!",
+            "create_first_site" => "Create your first site",
         ];
     }
     public function getContent() {

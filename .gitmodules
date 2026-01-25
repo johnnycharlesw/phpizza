@@ -7,3 +7,6 @@
 [submodule "includes/Database"]
 	path = includes/Database
 	url = https://github.com/johnnycharlesw/phpizza-DatabaseHandling.git
+[submodule "skins/Eaglet"]
+	path = skins/Eaglet
+	url = https://github.com/johnnycharlesw/phpizza-skins-Eaglet

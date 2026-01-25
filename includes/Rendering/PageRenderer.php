@@ -44,6 +44,8 @@ class PageRenderer{
     public function get_head_tags($sitename, $page_title = '', $description = '', $keywords = [], $useSkin = false){
         $head_tags = $this->get_title_tag($sitename, $page_title);
         $head_tags .= "\n" . $this->get_metadata_tags($description, $keywords);
+        $head_tags .= "\n";
+        $head_tags .= "<script src=\"phpizza-cms-js/console_message.js\"></script>";
         if ($useSkin){
             global $skinName;
             $skin_head_tags=$this->get_skin_head_tags($skinName);

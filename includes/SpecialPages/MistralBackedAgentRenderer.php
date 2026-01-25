@@ -21,7 +21,7 @@ class MistralBackedAgentRenderer extends SpecialPage {
         max-width: 800px;
     }
 </style>
-<script src="/js.php?f=phpizza-cms-js/mistral-backed-agent-ui.js"></script>
+<script src="/js.php?f=phpizza-client-scripts/mistral-backed-agent-ui.js"></script>
 <div class="phpizza-cms-mistral-backed-agent-ui">
     <div class="context">
     {{{context}}}

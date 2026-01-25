@@ -1,5 +1,5 @@
 {
-    "codium.codeCompletion.enable": true,
+    "codium.codeCompletion.enable": false,
     "files.watcherExclude": {
         "**/includes/**": true,
         "**/.git/objects/**": true,

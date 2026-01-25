@@ -8,8 +8,8 @@ interface ImportFromCMSX {
 
     # Pages
     public function importPage(string $pageId): void;
-    public function importPageContent(string $pageId): void;
-    public function importPageMeta(string $pageId): void;
+    public function importPageContent(string $pageMarkup);
+    public function importPageMeta(string $pageId);
     public function importAllPages(): void;
     # Page-attached stuff
     public function importComments(string $pageId): void;

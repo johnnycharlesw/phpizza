@@ -82,12 +82,99 @@ class ImportFromCafelog implements ImportFromCMSX {
         // Then, call the parent method to import the page
     }
 
-    public function importPageContent(string $pageMarkup): void {
-        // Implement the logic to import the content of a page from a Cafelog source
-        // Example: Read the page content from a file or database
-        // Then, call the parent method to import the page content
+    public function importPageContent(string $pageMarkup): string {
+        $pageMarkdown = $pageMarkup;
+        // COnvert b2markup to Markdown
+
+        foreach ($this->cafelogConfig['b2smiletrans'] as $emoticon => $filename) {
+            // Convert each b2smile to an emoji
+            try {
+                $finalEmoji = $this->smileMap[$filename];
+            } catch (\Throwable $th) {
+                $finalEmoji = $emoticon;
+            }
+            $pageMarkdown=preg_replace("/\b$emoticon\b/", $finalEmoji, $pageMarkdown);
+        }
+
+        // If BBCode is used, convert it to Markdown formatting
+        if ($this->cafelogConfig['useBBCode']) {
+            $pageMarkdown = $this->convertBBCodeToMarkdown($pageMarkdown);
+               
+        }
+
+        // If GreyMatter is used, convert it to Markdown formatting
+        if ($this->cafelogConfig['useGreyMatterMarkup']) {
+            $pageMarkdown = $this->convertGreyMatterMarkupToMarkdown($pageMarkdown);
+        }
+
+        // If balance tags is enabled and there are unclosed tags, automatically close them
+        if ($this->cafelogConfig['useBalanceTags']) {
+            $pageMarkdown = $this->balanceTags($pageMarkdown);
+        }
+
+        return $pageMarkdown;
 
     }
+
+    public function balanceTags($content, $htmlTags = [
+        "div" => "</div>",
+        'p' => '</p>',
+        'b' => '</b>',
+        'i' => '</i>',
+        'u' => '</u>',
+        'strong' => '</strong>',
+        'em' => '</em>',
+    ]) {
+        foreach ($htmlTags as $openTag => $closeTag) {
+            $openTagPattern = '/' . preg_quote('<' . $openTag . '>', '/') . '/';
+            $closeTagPattern = '/' . preg_quote($closeTag, '/') . '/';
+            
+            $openCount = preg_match_all($openTagPattern, $content);
+            $closeCount = preg_match_all($closeTagPattern, $content);
+            
+            // If there are more open tags than close tags
+            if ($openCount > $closeCount) {
+                for ($i = 0; $i < ($openCount - $closeCount); $i++) {
+                    $content .= $closeTag; // Append closing tags
+                }
+            }
+        }
+        
+        return $content;
+    }
+
+
+    public function convertBBCodeToMarkdown($content, $patterns = [
+        '/\[b\](.*?)\[\/b\]/s' => '**$1**',            // Bold
+        '/\[i\](.*?)\[\/i\]/s' => '*$1*',               // Italics
+        '/\[u\](.*?)\[\/u\]/s' => '++$1++',              // Underline (custom)
+        '/\[url=(.*?)\](.*?)\[\/url\]/s' => '[$2]($1)', // URL
+        '/\[img\](.*?)\[\/img\]/s' => '![]($1)',         // Image
+        '/\[quote\](.*?)\[\/quote\]/s' => '> $1',       // Blockquote
+        '/\[list\](.*?)\[\/list\]/s' => '$1',           // Lists (handled later)
+        // Add more patterns as needed
+    ]) {
+        foreach ($patterns as $pattern => $replacement) {
+            $content = preg_replace($pattern, $replacement, $content);
+        }
+        return $content;
+    }
+
+    public function convertGreyMatterMarkupToMarkdown($content, $patterns = [
+        '/\*\*(.*?)\*\*/s' => '**$1**',              // Bold
+        '/\*(.*?)\*/s' => '*$1*',                    // Italics
+        '/\#\#\s(.*?)\n/s' => '## $1' . "\n",        // H2 Header
+        '/\#\s(.*?)\n/s' => '# $1' . "\n",           // H1 Header
+        '/~~(.*?)~~/s' => '~~$1~~',                  // Strikethrough
+        '/\[(.*?)\]\((.*?)\)/s' => '[$1]($2)',        // Inline Links
+        '/!\[(.*?)\]\((.*?)\)/s' => '![]($2)',       // Images
+    ]) {
+        foreach ($patterns as $pattern => $replacement) {
+            $content = preg_replace($pattern, $replacement, $content);
+        }
+        return $content;
+    }
+
     public function importPageMeta(string $pageId): void {
         // Implement the logic to import the metadata of a page from a Cafelog source
         // Example: Read the page metadata from a file or database

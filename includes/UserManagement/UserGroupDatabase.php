@@ -69,6 +69,31 @@ class UserGroupDatabase {
         return $groups;
     }
 
+    public function _grant_permission_to_user_group(string $permission, int $groupId): bool {
+        $query = "UPDATE user_groups SET permissions = CONCAT(permissions, ?, ',') WHERE id = ?";
+        return $this->db->execute($query, [$permission, $groupId]);
+    }
+
+    public function _revoke_permission_from_user_group(string $permission, int $groupId): bool {
+        $query = "UPDATE user_groups SET permissions = REPLACE(permissions, ?, ',') WHERE id = ?";
+        return $this->db->execute($query, [$permission, $groupId]);
+    }
+
+    public function grant_permission_to_user_group(string $permission, string $groupName): bool {
+        $group = $this->get_user_group_by_name($groupName);
+        if ($group === null) {
+            return false;
+        }
+        return $this->_grant_permission_to_user_group($permission, $group->id);
+    }
+    public function revoke_permission_from_user_group(string $permission, string $groupName): bool {
+        $group = $this->get_user_group_by_name($groupName);
+        if ($group === null) {
+            return false;
+        }
+        return $this->_revoke_permission_from_user_group($permission, $group->id);
+    }
+
     // the user_group_members table does not exist in the schema.
     public function get_user_groups_by_user_id(int $userId): array {
         # Loop over all groups and check if user is a member

@@ -128,7 +128,7 @@ class SkinWPThemeV1 extends Skin
 
         // Convert PHP templates
 
-        $targets = ['header', 'sidebar', 'footer'];
+        $targets = ['header', 'sidebar', 'footer', 'single', 'page', '404', 'front-page', 'home', 'search', 'attachment', 'archive']; // JUST DEDUPLICATING
         foreach ($targets as $type) {
             $mdPath = $this->assetPath("/parts/{$type}.md");
             // Skip if already native

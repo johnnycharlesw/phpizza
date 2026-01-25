@@ -2,7 +2,7 @@
 namespace PHPizza\UserManagement;
 class UserGroup {
     // This is UserGroup, not UserGroupDatabase.
-    private $id;
+    public $id;
     public $name;
     public $members;
     public $permissions;
@@ -25,4 +25,5 @@ class UserGroup {
     public function getPermissions(): array {
         return $this->permissions;
     }
+
 }

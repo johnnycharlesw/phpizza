@@ -1,4 +1,10 @@
 {
+  "name":"phpizza",
+  "displayName": "PHPizza",
+  "description": "",
+  "scripts": {
+    "importmap": "node tools/generate-importmap.js"
+  },
   "devDependencies": {
     "gulp": "^5.0.1",
     "gulp-sass": "^6.0.1",
@@ -6,6 +12,8 @@
     "sass": "^1.93.3"
   },
   "dependencies": {
+    "devtools-detect": "^4.0.2",
+    "js-cookie": "^3.0.5",
     "monaco-editor": "^0.54.0",
     "prismjs": "^1.30.0"
   }

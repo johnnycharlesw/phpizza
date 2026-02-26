@@ -23,6 +23,43 @@ class Pizzadown extends \Parsedown{
         }
     }
 
+    // Add classes to unordered lists based on marker type: '-' => list-dash, '*' => list-disc, '+' => list-plus
+    public function blockList($Line, $CurrentBlock = null){
+        // Let Parsedown build the list structure first
+        $Block = parent::blockList($Line, $CurrentBlock);
+        if (!$Block) {
+            return null;
+        }
+
+        // Only apply to unordered lists
+        if (isset($Block['element']['name']) && $Block['element']['name'] === 'ul') {
+            $markerClass = null;
+            if (isset($Line['text'][0])) {
+                $first = $Line['text'][0];
+                if ($first === '-') {
+                    $markerClass = 'list-dash';
+                } elseif ($first === '*') {
+                    $markerClass = 'list-disc';
+                } elseif ($first === '+') {
+                    $markerClass = 'list-plus';
+                }
+            }
+
+            if ($markerClass !== null) {
+                if (!isset($Block['element']['attributes'])) {
+                    $Block['element']['attributes'] = [];
+                }
+                if (isset($Block['element']['attributes']['class']) && $Block['element']['attributes']['class'] !== '') {
+                    $Block['element']['attributes']['class'] .= ' ' . $markerClass;
+                } else {
+                    $Block['element']['attributes']['class'] = $markerClass;
+                }
+            }
+        }
+
+        return $Block;
+    }
+
     // Parsedown will call blockEmbed with ($Line, $CurrentBlock)
     public function blockEmbed($Line, $CurrentBlock = null){
         if (preg_match('/^!(\w+)\[(.+)\]$/', $Line['text'], $matches)){

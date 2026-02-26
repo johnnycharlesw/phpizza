@@ -1,9 +1,21 @@
 {
+    "$schema": "../../includes/Addons/schemas/skin.jsonc",
+    "type": "skin",
+
     "enableDynamicCSSAndJS": true,
     "stylesheets": ["style.css"],
     "themeStylesheets": {
         "system": "style-theme-system.css",
         "light": "style-theme-light.css",
         "dark": "style-theme-dark.css"
+    },
+
+    "skin": {
+        "supports": ["dark-mode"],
+        "parts": {
+            "header": "parts/header.md",
+            "sidebar": "parts/sidebar.md",
+            "footer": "parts/footer.md"
+        }
     }
 }

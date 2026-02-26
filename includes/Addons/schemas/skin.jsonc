@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://phpizza.org/schemas/skin.json",
+  "title": "PHPizza Skin Manifest",
+  "description": "Schema for skin.json manifests. Extends the base add-on schema with skin-specific options.",
+  "allOf": [
+    { "$ref": "./addon.jsonc" },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "skin" },
+
+        // Legacy/compat skin manifest fields (found in skins/PHPizza/skin.json)
+        "enableDynamicCSSAndJS": { "type": "boolean", "default": false },
+        "stylesheets": { "type": "array", "items": { "type": "string" } },
+        "themeStylesheets": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "system": { "type": "string" },
+            "light": { "type": "string" },
+            "dark": { "type": "string" }
+          }
+        },
+
+        // New skin-specific configuration block
+        "skin": {
+          "type": "object",
+          "title": "Skin-specific configuration",
+          "additionalProperties": false,
+          "properties": {
+            "supports": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "List of supported features (e.g., 'dark-mode', 'wp-v1-compat')."
+            },
+            "parts": {
+              "type": "object",
+              "additionalProperties": { "type": "string" },
+              "description": "Mapping of component names to their part files (e.g., { 'header': 'parts/header.md' })."
+            }
+          }
+        }
+      }
+    }
+  ]
+}

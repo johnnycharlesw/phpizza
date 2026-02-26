@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "PHPizza Add-on Manifest",
+  "description": "Base manifest schema for PHPizza add-ons (skins and extensions). Use skin.json or extension.json conforming to this schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "type", "version"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Package name",
+      "description": "Folder-safe slug of the add-on. If omitted, folder name is used; when present it must match the folder name.",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "type": {
+      "type": "string",
+      "title": "Add-on type",
+      "description": "Either 'skin' or 'extension'.",
+      "enum": ["skin", "extension"]
+    },
+    "version": {
+      "type": "string",
+      "title": "Version",
+      "description": "Semantic version of the add-on (SemVer recommended)."
+    },
+    "title": {
+      "type": "string",
+      "title": "Human title",
+      "description": "Human-readable display name for the add-on."
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "description": "Short description of what the add-on does."
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri",
+      "title": "Homepage URL"
+    },
+    "license": {
+      "type": ["string", "object"],
+      "description": "SPDX license identifier or an object with 'type' and optional 'url'.",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {
+            "type": { "type": "string" },
+            "url": { "type": "string", "format": "uri" }
+          }
+        }
+      ]
+    },
+    "authors": {
+      "type": "array",
+      "description": "List of authors/maintainers.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "requires": {
+      "type": "object",
+      "title": "Engine and add-on requirements",
+      "additionalProperties": false,
+      "properties": {
+        "phpizza": {
+          "type": "string",
+          "description": "PHPizza core version range the add-on supports (e.g., '>=1.2 <2.0')."
+        },
+        "php": {
+          "type": "string",
+          "description": "PHP engine version range (optional)."
+        },
+        "extensions": {
+          "type": "array",
+          "description": "Required PHP extensions.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "Runtime dependencies on other add-ons keyed by name with version ranges.",
+      "additionalProperties": { "type": "string" }
+    },
+    "conflicts": {
+      "type": "object",
+      "description": "Incompatible add-ons keyed by name with version ranges.",
+      "additionalProperties": { "type": "string" }
+    },
+
+    "entry": {
+      "type": "object",
+      "title": "Code entry points",
+      "description": "Entrypoint file paths relative to the add-on folder.",
+      "additionalProperties": false,
+      "properties": {
+        "bootstrap": { "type": "string", "description": "Optional bootstrap file included early." },
+        "api": { "type": "string", "description": "Optional API registration file for extensions." }
+      }
+    },
+
+    "assets": {
+      "type": "object",
+      "title": "Asset locations",
+      "description": "Optional asset folders used by the add-on.",
+      "additionalProperties": false,
+      "properties": {
+        "styles": { "type": "array", "items": { "type": "string" } },
+        "scripts": { "type": "array", "items": { "type": "string" } },
+        "images": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

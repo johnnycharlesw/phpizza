@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "devtools-detect": "/load.php?t=js&f=node_modules/devtools-detect/index.js",
+    "js-cookie": "/load.php?t=js&f=node_modules/js-cookie/dist/js.cookie.mjs",
+    "monaco-editor": "/load.php?t=js&f=node_modules/monaco-editor/esm/vs/editor/editor.main.js",
+    "prismjs": "/load.php?t=js&f=node_modules/prismjs/prism.js"
+  }
+}

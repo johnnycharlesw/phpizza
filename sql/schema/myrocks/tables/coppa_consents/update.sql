@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS `coppa_consents` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `parent_userid` INT UNSIGNED NOT NULL,
+  `child_userid` INT UNSIGNED NOT NULL
+) ENGINE=MyRocks DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

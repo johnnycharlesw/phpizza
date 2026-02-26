@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS `site_settings` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `key` VARCHAR(191) PRIMARY KEY,
+  `value` TEXT NOT NULL,
+  `type` VARCHAR(16) NOT NULL
+) ENGINE=MyRocks CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

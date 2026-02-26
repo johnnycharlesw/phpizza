@@ -4,12 +4,17 @@ use PHPizza\Database\Database;
 use PHPizza\UserManagement\UserDatabase;
 use PHPizza\UserManagement\UserGroupDatabase;
 use PHPizza\Rendering\Pizzadown;
+use PHPizza\Updates\SchemaMigrator;
+use PHPIzza\Exception;
+use PHPizza\PageManagement\PageDatabase;
 
 class PHPizzaInstaller {
     private Database $db; # It is not always MariaDB
     private UserDatabase $userdb;
     private UserGroupDatabase $groupdb;
+    private PageDatabase $pagedb;
     private Pizzadown $pd;
+    private SchemaMigrator $schema_migrator;
     public array $admin_creds;
     public array $dbcreds;
     public string $pagetitle;
@@ -29,7 +34,6 @@ class PHPizzaInstaller {
             "password" => $adminPassword,
            "email" => $adminEmail
             ];
-
         $siteName=$sitename;
         global $sitename;
         $sitename=$siteName;
@@ -50,7 +54,7 @@ class PHPizzaInstaller {
 \$dbName = '{$this->dbcreds["database"]}';
 \$dbType = '{$this->dbcreds["type"]}';
 
-# Guest credentials (defaults defined in schema)
+# Guest credentials (defaults defined in installer)
 \$guestUsername="Guest";
 \$guestPasswordB64="aUFtQUd1ZXN0"; // base64 for "iAmAGuest"
 # Admin credentials are in the DB for security reasons
@@ -76,46 +80,15 @@ PHP;
 
     public function init_db(){
         global $dbServer, $dbUser, $dbName, $dbType, $dbPassword;
-        // I HAVE A SCHEMA FILE IN sql/create_schema_mariadb.sql for mariadb, follow the sae pattern for each dbtype. Canonicalize references to PostgreSQL to "postgresql" when looking up the filename.
-        switch ($dbType) {
-            case "mariadb":
-                $filename = "sql/create_schema_mariadb.sql";
-                break;
-            case "mysql":
-                $filename = "sql/create_schema_mysql.sql";
-                break;
-            case "percona":
-                $filename = "sql/create_schema_mysql.sql";
-                break;
-            case "myrocks":
-                $filename = "sql/create_schema_myrocks.sql";
-                break;
-            case "postgresql":
-                $filename = "sql/create_schema_postgresql.sql";
-                break;
-            case "pgsql":
-                $filename = "sql/create_schema_postgresql.sql";
-                break;
-            case "postgre":
-                $filename = "sql/create_schema_postgresql.sql";
-                break;
-            case "sqlite":
-                $filename = "sql/create_schema_sqlite.sql";
-                break;
-            default:
-                throw new Exception("Unsupported database type: $dbType");
-        }
+        $this->schema_migrator = new SchemaMigrator();
 
-        // Execute the SQL script
-        $sql=file_get_contents(realpath(__DIR__) . "/$filename");
-        $result=$this->db->execute($sql);
-        if ($result === false) {
-            throw new Exception("Failed to execute SQL script: " . $this->db->error);
-        }
+        // Initialize schema
+        $this->schema_migrator->migrate();
         
         // Now it is safe to initialize userdb, so do so
         $this->userdb=new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->groupdb=new UserGroupDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        $this->pagedb=new PageDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
     }
 
     public function create_admin_user(){
@@ -130,6 +103,16 @@ PHP;
         $_SESSION["user_id"]=$admins_account->getId();
         $_SESSION["username"]=$admins_account->getUsername();
         return true;
+    }
+
+    public function create_guest_account(){
+        $guestAccount = $this->userdb->create_user('Guest', 'iAmAGuest');
+    }
+
+    public function create_default_homepage(){
+        $homepageContents = file_get_contents(__DIR__ . '/sql/schema/default_data/pages/home.md');
+        global $homepageName;
+        $this->pagedb->createPage($homepageName, $homepageContents);
     }
 
     public function install(){

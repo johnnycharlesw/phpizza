@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS user_tokens (
+  id INT CHECK (id > 0) NOT NULL GENERATED ALWAYS AS IDENTITY,
+  userid INT CHECK (userid > 0) NOT NULL,
+  token VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP,
+  PRIMARY KEY (id)
+,
+  CONSTRAINT fk_user_tokens_user FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE
+);

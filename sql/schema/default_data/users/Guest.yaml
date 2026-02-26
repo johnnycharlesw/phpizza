@@ -1,0 +1,8 @@
+username: "Guest"
+email: "phpizza-guest-account@example.org"
+password_hash: "$2y$10$O9yU1wkYAA2Q3dvEKAcmau6nY0raZVJlSQyqtOTtj96HBgcPP4OB6"
+date_of_birth: 0000-00-00
+is_child: false
+is_blocked: false
+gender: "guest_account"
+is_email_verified: true

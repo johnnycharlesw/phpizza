@@ -2,6 +2,7 @@
 namespace PHPizza\UserManagement;
 use DateTime;
 use PHPizza\COPPACompliance\COPPADatabase;
+use PHPizza\Exception;
 
 class User {
     const YES = true;
@@ -69,4 +70,23 @@ class User {
         }
         return $blocked;
     }
+
+    public function hey_I_got_a_new_email(string $address) {
+        if (filter_var($address, FILTER_VALIDATE_EMAIL) === $address) {
+            $this->userdb->update_user_email($this->id, $address);
+        };
+    }
+
+    public function I_am_changing_my_password(?string $old_password, string $new_password, ?bool $reset) {
+        if (!$old_password && !$reset) {
+            throw new Exception("Sorry, hackers! No changing my password without permission!");
+        }
+
+        $this->userdb->update_user_password($this->id, $new_password);
+    }
+
+    public function verify_my_password(string $password) {
+        return password_verify($password, $this->getPasswordHash());
+    }
+
 }

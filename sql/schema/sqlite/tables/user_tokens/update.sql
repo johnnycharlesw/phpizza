@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS user_tokens (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  userid INTEGER NOT NULL,
+  token TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP,
+  FOREIGN KEY(userid) REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_user_tokens_userid ON user_tokens(userid);

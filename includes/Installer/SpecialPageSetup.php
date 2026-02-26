@@ -75,9 +75,9 @@ class SpecialPageSetup extends SpecialPage {
     public function getContent() {
         // Pick between installation UI and installation process based on request method
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            $this->handle_form_submission();
+            return $this->handle_form_submission();
         } else {
-            $this->render_installation_ui();
+            return $this->render_installation_ui();
         }
     }
 }

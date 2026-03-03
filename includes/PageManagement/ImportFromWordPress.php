@@ -10,7 +10,7 @@ use PHPizza\PageManagement\Page;
 use PHPizza\PageManagement\PageDatabase;
 use PHPizza\Database\Database;
 
-class ImportFromCafelog implements ImportFromCMSX {
+class ImportFromWordPress implements ImportFromCMSX {
     public $sourcePath;
     private UserDatabase $userdb;
     private UserGroupDatabase $groupdb;
@@ -53,22 +53,69 @@ class ImportFromCafelog implements ImportFromCMSX {
         $this->readConfig();
     }
 
+    /**
+     * @disregard P1010 Undefined function
+     */
     public function readConfig(){
-        // Load the Cafelog config
+        // Load the WordPress config
         $config = [];
-        // This function is used to sandbox the Cafelog config to prevent global leaks, as a lot of the b2config is unnecessary these days
-        $path = $this->sourcePath . '/b2config.php';
+        $configPhp = "";
+        // This function is used to sandbox the WordPress config to prevent global leaks and parse it through.
+        $path = $this->sourcePath . '/wp-config.php';
         if (file_exists($path)) {
-            include_once $path;
+            $configPhp = file_get_contents($path);
+            $configPhp = preg_replace('/(?:require_once|require|include_once|include) ABSPATH \. [\'"]wp-settings.php[\'"]/', '# phpizza-no-wp-conflict', $configPhp);
+            eval($configPhp);
+        }
+        
+        if (!defined('WPINC')) {
+            define('WPINC', 'wp-includes');
+        }
+        define('ABSPATH', $this->sourcePath);
+
+        include $this->sourcePath . WPINC . '/version.php';
+        include $this->sourcePath . WPINC . '/load.php';
+
+
+        // Emulate what wp-settings.php would do
+        /**
+         * @disregard P1010 Undefined function
+         */
+        wp_initial_constants();
+
+        /**
+         * @disregard P1011 Undefined constant
+         */
+    	$dbusername = defined( 'DB_USER' ) ? DB_USER : '';
+        /**
+         * @disregard P1011 Undefined constant
+         */
+    	$dbpassword = defined( 'DB_PASSWORD' ) ? DB_PASSWORD : '';
+        /**
+         * @disregard P1011 Undefined constant
+         */
+    	$dbname = defined( 'DB_NAME' ) ? DB_NAME : '';
+        /**
+         * @disregard P1011 Undefined constant
+         */
+    	$dbhost = defined( 'DB_HOST' ) ? DB_HOST : '';
+
+        # Slight divergence: Only operate if maintenance mode is on
+        /** @disregard P1010 Undefined function */
+        if (!wp_is_maintenance_mode()) {
+            throw new Exception("Before importing the site into PHPizza, enable maintenance mode to ensure database consistency.");
         }
 
+        // Collate the config
+
+        $fileupload_realpath = $this->sourcePath . '/wp-content/uploads';
         $config = [
-            'cafelog_version' => '0.6.2', # That was the last version of Cafelog before it got replaced with WordPress officially
+            'cafelog_version' => '0.6.2',
             'dbServer' => $dbhost,
             'dbUser' => $dbusername,
             'dbPassword' => $dbpassword,
             'dbName' => $dbname,
-            'dbType' => 'mariadb', # '90s MySQL was the default for Cafelog, and MariaDB is the closest thing to it maintained in 2026
+            'dbType' => 'mariadb',
             'fileUploadRealPath' => $fileupload_realpath,
             'fileUploadAllowedExtensions' => explode(" ",trim($fileupload_allowedtypes)),
             'useBBCode' => $use_bbcode,
@@ -251,9 +298,21 @@ class ImportFromCafelog implements ImportFromCMSX {
         // Example: Read the attachment data from a file or database
         // Then, call the parent method to import attachments
 
-        foreach (scandir($this->cafelogConfig['fileUploadRealPath']) as $file) {
+        foreach (scandir($this->cafelogConfig['fileUploadRealPath']) as $year) {
+            foreach (scandir($year) as $month) {
+                $this->_importAttachments($month);
+            }
+        }
+    }
+
+    public function _importAttachments(string $path): void {
+        // Implement the logic to import attachments for a page from a WordPress source
+        // Example: Read the attachment data from a file or database
+        // Then, call the parent method to import attachments
+
+        foreach (scandir($path) as $file) {
             if (!file_exists('/uploads/'.basename($file))) {
-                # In that case, we do need to bring it over from Cafelog, because it was not uploaded to PHPizza.
+                # In that case, we do need to bring it over from WordPress, because it was not uploaded to PHPizza.
                 rename($file, '/uploads/'.basename($file));
             }
         }

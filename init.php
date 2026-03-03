@@ -55,7 +55,7 @@ $embedTypeClassMapping = [
 ];
 
 function _load_config(){
-    global $isInstaller, $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
+    global $isInstaller, $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage, $useSkin, $skinName, $guestUsername, $guestPasswordB64, $siteLogoPath;
     
     // Check if config.php exists FIRST - if not, we're in installer mode
     // This must be checked before including default-config.php to prevent MariaDB connection attempts

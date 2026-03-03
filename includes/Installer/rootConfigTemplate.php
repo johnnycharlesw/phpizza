@@ -16,7 +16,7 @@ $sitename = "My Website";
 $siteLanguage = "en";
 $useSkin=true;
 $skinName="PHPizza";
-$homepageName="PHPizza:PostInstaller";
+$homepageName="home";
 $specialPrefix="PHPizza:";
 
 // Database configuration

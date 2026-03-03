@@ -115,6 +115,15 @@ PHP;
         $this->pagedb->createPage($homepageName, $homepageContents);
     }
 
+    public function create_groups(){
+        # Groups
+        $defaultGroups = [
+            "admin",
+            "editor"
+        ];
+        
+    }
+
     public function install(){
         global $debug;
         if ((!$debug) && file_exists(realpath(__DIR__) . "/config.php")) {

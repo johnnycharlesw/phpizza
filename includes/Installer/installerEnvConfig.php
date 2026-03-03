@@ -32,7 +32,6 @@ if (!file_exists("includes/Installer/phpizza_installer.sqlite3")) {
     $dbType = "sqlite"; # Change this if you are using a different DBMS, e.g. "sqlite" or "pgsql"
     $dbInterface = new \PHPizza\Database\SQLite($dbServer, $dbUser, $dbPassword, $dbName);
     $dbInterface->execute(file_get_contents('./installerdb.sql'));
-    $dbInterface->close_database();
 }
 
 $dbServer = "localhost";

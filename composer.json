@@ -19,7 +19,8 @@
         "nyholm/psr7": "^1.8",
         "rowbot/url": "^4.1",
         "laminas/laminas-httphandlerrunner": "^2.13",
-        "symfony/cache": "^7.3"
+        "symfony/cache": "^7.3",
+        "acmephp/acmephp": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -33,8 +34,10 @@
             "PHPizza\\COPPACompliance\\": "includes/COPPACompliance/",
             "PHPizza\\EntryPoints\\": "includes/EntryPoints/",
             "PHPizza\\HTTPHandling\\": "includes/HTTPHandling/",
-            "PHPizza\\Updates\\": "includes/Updates",
-            "PHPizza\\ArtificialIntelligence\\": "includes/ArtificialIntelligence"
+            "PHPizza\\Updates\\": "includes/Updates/",
+            "PHPizza\\ArtificialIntelligence\\": "includes/ArtificialIntelligence/",
+            "PHPizza\\DNS\\": "includes/DNS/",
+            "PHPizza\\Geolocation\\": "includes/Geolocation"
         },
         "files": [
             "includes/GlobalFunctions.php"

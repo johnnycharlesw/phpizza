@@ -10,8 +10,6 @@ use PHPizza\UserManagement\User;
 use PHPizza\HTTPHandling\HTTPEndpointHandler;
 use PHPizza\Updates\Updater;
 
-use function Safe\file_get_contents;
-
 /**
  * Handles a browser request for a single page.
  *
@@ -161,12 +159,16 @@ class BrowserEntryPoint extends HTTPEndpointHandler
      * Build structured page data for a given page id.
      * Returns an array: ['status'=>int,'title'=>string,'html'=>string,'description'=>string,'keywords'=>array]
      */
-    protected function buildPageData(string $page_id, bool $is_editor = false): array {
+    protected function buildPageData(?string $page_id, bool $is_editor = false): array {
         // Pull DB config variables (provided by init.php)
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage;
 
         // Initialize PageDatabase using config variables
         $pagedb = new PageDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        if (!$page_id) {
+            global $homepageName;
+            $page_id = $homepageName;
+        }
         $page = $pagedb->getPage($page_id);
 
         // Initialize pizzadown

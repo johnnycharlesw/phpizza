@@ -1,5 +1,5 @@
 <?php
-namespace PHPizza;
+namespace PHPizza\EntryPoints;
 class APIEntryPointCreatePage extends APIEntryPoint{
     public function run(){
         $this->run_begin();

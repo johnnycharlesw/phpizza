@@ -1,5 +1,5 @@
 <?php
-namespace PHPizza;
+namespace PHPizza\DNS;
 class DomainPicker {
     public $techTLDs=['net','tech','dev'];
     public $nonProfitTLDs=['org'];

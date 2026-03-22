@@ -1,5 +1,5 @@
 <?php
-namespace PHPizza;
+namespace PHPizza\EntryPoints;
 class APIEntryPointDeletePage extends APIEntryPoint {
     public function run_delete_page(){
         // Handle POST request to delete an existing page

@@ -18,6 +18,7 @@ $useSkin=true;
 $skinName="PHPizza";
 $homepageName="home";
 $specialPrefix="PHPizza:";
+$siteLogoPath="assets/phpizza-cms-branding/logo.png";
 
 // Database configuration
 $dbServer = "localhost";

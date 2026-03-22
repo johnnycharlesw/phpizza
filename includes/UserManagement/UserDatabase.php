@@ -63,7 +63,11 @@ class UserDatabase {
 
     public function update_user_password(int $id, string $newPassword): bool {
         $password_hash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $rowsAffected = $this->db->execute("UPDATE users SET password_hash = ? WHERE id = ?", [$password_hash, $id]);
+        return $this->update_user_password_hash($id, $password_hash);
+    }
+
+    public function update_user_password_hash(int $id, string $hash): bool {
+        $rowsAffected = $this->db->execute("UPDATE users SET password_hash = ? WHERE id = ?", [$hash, $id]);
         return $rowsAffected > 0;
     }
 

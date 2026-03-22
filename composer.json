@@ -20,7 +20,8 @@
         "rowbot/url": "^4.1",
         "laminas/laminas-httphandlerrunner": "^2.13",
         "symfony/cache": "^7.3",
-        "acmephp/acmephp": "dev-master"
+        "acmephp/acmephp": "dev-master",
+        "league/html-to-markdown": "^5.1"
     },
     "autoload": {
         "psr-4": {

@@ -1,5 +1,5 @@
 <?php
-namespace PHPizza;
+namespace PHPizza\EntryPoints;
 class APIEntryPointUpdatePage extends APIEntryPoint{
     public function run_update_page(){
         // Handle POST request to update an existing page

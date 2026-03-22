@@ -122,9 +122,25 @@ class BrowserEntryPoint extends HTTPEndpointHandler
         }
         // Handle GET parameters
         global $homepageName;
-        $page_id = isset($_GET['title']) ? $_GET['title'] : $homepageName;
+        $page_id = $_GET['title'];
         $is_editor = isset($_GET['editing']) ? (bool)$_GET['editing'] && $_GET["editing"]==="true" : false;
 
+        if (empty($page_id)) {
+            $this->setStatusCode(307);
+            header("Location: /$homepageName");
+            $html = $this->pageRenderer->get_html_page(
+                $sitename,
+                "Redirect to homepage",
+                "This is just redirecting to the homepage",
+                "",
+                "",
+                $siteLanguage,
+                $useSkin=true
+            );
+            $this->setBody($html);
+            $this->send_response_to_client();
+            return;
+        }
         
         // Check for updates and install updates if available
         if ($page_id == $homepageName) {

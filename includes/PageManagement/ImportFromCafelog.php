@@ -98,6 +98,8 @@ class ImportFromCafelog implements ImportFromCMSX {
                 $dbPage['post_content']
             )
         );
+        $this->importAttachments($pageId);
+        $this->importComments($pageId);
     }
 
     public function importPageContent(string $pageMarkup): string {
@@ -206,9 +208,11 @@ class ImportFromCafelog implements ImportFromCMSX {
         }
     }
     public function importComments(int $pageId): void {
-        // Implement the logic to import comments for a page from a Cafelog source
-        // Example: Read the comments from a file or database
-        // Then, call the parent method to import comments
+        $tableComments = $this->cafelogConfig['tableComments'];
+        $cafelogComments = $this->cafelogDb->fetchAll("SELECT * FROM $tableComments WHERE comment_post_ID = ?", [$pageId], 'i');
+        foreach ($cafelogComments as $comment) {
+            # code...
+        }
     }
     public function importPageTags(int $pageId): void {
         // Implement the logic to import tags for a page from a Cafelog source
@@ -216,9 +220,40 @@ class ImportFromCafelog implements ImportFromCMSX {
         // Then, call the parent method to import tags
     }
     public function importUsers(): void {
-        // Implement the logic to import users for a page from a Cafelog source
-        // Example: Read the user data from a file or database
-        // Then, call the parent method to import users
+        $tableusers = $this->cafelogConfig['tableUsers'];
+        $cafelogUsers = $this->cafelogDb->fetchAll("SELECT * FROM $tableusers");
+        foreach ($cafelogUsers as $cafelogUser) {
+            # Collate info from schema
+            $username = $cafelogUser['user_login'];
+            $password = $cafelogUser['user_pass'];
+            $realname = implode(" ", [$cafelogUser['user_firstname'], $cafelogUser['user_lastname']]) ?? $cafelogUser['user_nickname'];
+            $email = $cafelogUser['user_email'];
+            $groups = [];
+            $accessLevel = $cafelogUser['user_level'];
+            if ($accessLevel >= 0) {
+                $groups[] = "commenter";
+            }
+            if ($accessLevel >= 1) {
+                $groups[] = "contributor";
+            }
+            if ($accessLevel >= 2) {
+                $groups[] = "author";
+            }
+            if ($accessLevel >= 5) {
+                $groups[] = "editor";
+            }
+            if ($accessLevel >= 10) {
+                $groups[] = "admin";
+            }
+
+            # Import account
+            $importedUser = $this->userdb->create_user($username, $password);
+            $importedUser->hey_I_got_a_new_email($email);
+            foreach ($groups as $group) {
+                $this->groupdb->add_user_to_group($importedUser->id, $this->groupdb->get_user_group_by_name($group)->id);
+            }
+            
+        }
     }
     public function importGroups(): void {
         // Cafelog did not have a fully-fleshed group system, so we will create equivalent groups and assign users them based on value
@@ -268,6 +303,7 @@ class ImportFromCafelog implements ImportFromCMSX {
 
         // Pages
         $this->importAllPages();
+
     }
     public function getSourcePath(): string {
         return $this->sourcePath;

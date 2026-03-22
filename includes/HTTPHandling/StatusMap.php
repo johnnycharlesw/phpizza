@@ -90,7 +90,7 @@ class StatusMap
     public function isStandardCode(int $code): bool
     {
         $check1 = $code >= 100 && $code < 600;
-        $check2 = array_has(array_keys($this->map),code);
+        $check2 = array_has(array_keys($this->map),$code);
         $final = $check1 && $check2;
         return $final;
     }

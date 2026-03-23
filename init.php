@@ -10,6 +10,11 @@ global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
 // Initialize $isInstaller to false by default
 $isInstaller = false;
 
+# Log User-Agent for analytical purposes
+if ($_REQUEST) {
+    error_log("Traffic from User-Agent: ". $_SERVER['HTTP_USER_AGENT']);
+}
+
 # Load dependencies using composer autoloading
 if (file_exists("vendor/autoload.php")) {
     @include "vendor/autoload.php";

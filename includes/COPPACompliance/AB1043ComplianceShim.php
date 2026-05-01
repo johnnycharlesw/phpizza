@@ -1,6 +1,7 @@
 <?php
 namespace PHPizza\COPPACompliance;
 
+use DateTime;
 use PHPizza\UserManagement\User;
 use PHPizza\UserManagement\UserDatabase;
 
@@ -19,7 +20,7 @@ class AB1043ComplianceShim {
     public function _doAgeVerification(User $minor): int {
         if (!empty($verifyAge)) {
             $ageDatetime = $minor->when_was_I_born();
-            $ageGroup = date_format($ageDatetime, "YY");
+            $ageGroup = date_format($ageDatetime, "YY") - date_format(new DateTime('now'), "YY") < -18;
             return $ageGroup;
         }
         return 18;

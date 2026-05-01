@@ -21,7 +21,7 @@ class AB1043ComplianceShim {
         if (!empty($verifyAge)) {
             $ageDatetime = $minor->when_was_I_born();
             $ageGroup = date_format($ageDatetime, "YY") - date_format(new DateTime('now'), "YY") < -18;
-            return $ageGroup;
+            return $ageGroup * 18;
         }
         return 18;
     }

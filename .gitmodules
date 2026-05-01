@@ -10,3 +10,6 @@
 [submodule "skins/PHPizza"]
 	path = skins/PHPizza
 	url = https://github.com/johnnycharlesw/phpizza-skins-PHPizza
+[submodule "skins/SkinForAuntRuth"]
+	path = skins/SkinForAuntRuth
+	url = https://github.com/johnnycharlesw/phpizza-skins-SkinForAuntRuth.git

@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "devtools-detect": "^4.0.2",
-    "js-cookie": "^3.0.5",
+    "js-cookie": "^3.0.7",
     "monaco-editor": "^0.54.0",
     "prismjs": "^1.30.0"
   }

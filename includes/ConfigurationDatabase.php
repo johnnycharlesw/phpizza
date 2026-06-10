@@ -42,7 +42,7 @@ class ConfigurationDatabase {
         // Register a new configuration key
         $query = "INSERT INTO site_settings (`key`, `value`, `type`) VALUES (?, ?, ?)";
         $type = gettype($value);
-        $this->db->execute($query, [$key, (string)$value, $type]);
+        $this->db->execute($query, [$key, $value, $type]);
         $GLOBALS[$key] = $value;
     }
 

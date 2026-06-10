@@ -2,6 +2,7 @@
 namespace PHPizza\EntryPoints;
 
 use Dom\HTMLElement;
+use PHPizza\ConfigurationDatabase;
 use PHPizza\Rendering\PageRenderer;
 use PHPizza\Rendering\Pizzadown;
 use PHPizza\PageManagement\PageDatabase;
@@ -31,11 +32,23 @@ use PHPizza\Updates\Updater;
 class BrowserEntryPoint extends HTTPEndpointHandler
 {
     private $pageRenderer;
+    private $configdb;
 
     public function __construct() {
         // Initialize classes used
         parent::__construct();
-        $this->pageRenderer = new PageRenderer();
+        $this->pageRenderer = new PageRenderer(['isErrorScreen' => false]);
+        global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
+        $this->configdb = new ConfigurationDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        $this->register_settings();
+    }
+
+    public function register_settings(){
+        global $sitename, $siteLanguage, $guestUsername, $guestPasswordB64;
+        $this->configdb->register_key('sitename', $sitename ?? "My Website");
+        $this->configdb->register_key('siteLanguage', $siteLanguage ?? 'en');
+        $this->configdb->register_key('guestUsername', $guestUsername ?? 'Guest');
+        $this->configdb->register_key('guestPasswordB64', $guestPasswordB64 ?? 'aUFtQUd1ZXN0IQ==');
     }
 
     public function signInAsUser($username, $password) {

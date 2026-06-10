@@ -12,11 +12,13 @@ class User {
     public $username;
     private $userdb;
     private $coppadb;
+    public $email;
 
-    public function __construct($id, $username) {
+    public function __construct($id, $username, $email) {
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
         $this->id = $id;
         $this->username = $username;
+        $this->email = $email;
         $this->userdb = new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->coppadb = new COPPADatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
     }
@@ -46,7 +48,7 @@ class User {
     }
 
     public function when_was_I_born(): ?DateTime {
-        return $this->userdb->get_date_of_birth_by_userid($this->id);
+        return $this->userdb->get_date_of_birth_by_userid($this->id) ?? new DateTime('2026-5-31');
     }
 
     public function am_I_a_child(): bool {
@@ -55,6 +57,11 @@ class User {
         $birthdate = $this->when_was_I_born();
         $diff = $now->diff($birthdate);
         return $diff->y < 13;
+    }
+
+    public function what_is_my_email(): string {
+        // Return the email address
+        return $this->email;
     }
 
     public function am_I_blocked(): bool {

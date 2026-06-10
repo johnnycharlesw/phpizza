@@ -1,11 +1,14 @@
 <?php
 
 namespace PHPizza;
+
+use PHPizza\HTTPHandling\ClientIdentity;
 use PHPizza\Rendering\ErrorScreen;
 
 global $isInstaller;
 global $settingsDB;
 global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
+global $clientIdentity;
 
 // Initialize $isInstaller to false by default
 $isInstaller = false;
@@ -230,6 +233,9 @@ if ($dbVarsValid) {
         error_log("Skipping database configuration load: dbType is invalid (" . var_export($dbType, true) . ")");
     }
 }
+
+// Initialize the ClientIdentity class
+$clientIdentity = new ClientIdentity();
 
 
 // Optional debug logging (only emit when $debug is enabled)

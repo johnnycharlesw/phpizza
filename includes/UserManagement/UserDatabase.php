@@ -16,14 +16,14 @@ class UserDatabase {
     public function get_user_by_username(string $username): ?User {
         $row = $this->db->fetchRow("SELECT * FROM users WHERE username = ?", [$username]);
         if ($row && is_array($row) && isset($row['id'])) {
-            return new User((int)$row['id'], $row['username'], $row['password_hash'], (bool)$row['is_admin']);
+            return new User((int)$row['id'], $row['username'], $row['email']);
         }
         return null;
     }
     public function get_user_by_id(int $id): ?User {
         $row = $this->db->fetchRow("SELECT * FROM users WHERE id = ?", [$id]);
         if ($row && is_array($row) && isset($row['id'])) {
-            return new User((int)$row['id'], $row['username'], $row['password_hash'], (bool)$row['is_admin']);
+            return new User((int)$row['id'], $row['username'], $row['email']);
         }
         return null;
     
@@ -41,7 +41,8 @@ class UserDatabase {
             return null;
         }
         $newUserId = $this->db->getLastInsertId();
-        return new User((int)$newUserId, $username, $password_hash);
+        $email = "";
+        return new User((int)$newUserId, $username, $email);
     }
 
     public function get_date_of_birth_by_userid(int $id): ?DateTime {
@@ -97,7 +98,7 @@ class UserDatabase {
     public function get_user_by_email(string $email): ?User {
         $row = $this->db->fetchRow("SELECT * FROM users WHERE email = ?", [$email]);
         if ($row && is_array($row) && isset($row['id'])) {
-            return new User((int)$row['id'], $row['username'], $row['password_hash']);
+            return new User((int)$row['id'], $row['username'], $row['email']);
         }
         return null;
     }

@@ -23,7 +23,11 @@ class ConfigurationDatabase {
         $query = "SELECT * FROM site_settings";
         $result = $this->db->fetchAll($query);
         foreach ($result as $row) {
+            if (in_array($row['key'], $varDenylist)) {
+                continue;
+            }
             $GLOBALS[$row['key']] = $row['value'];
+            settype($GLOBALS[$row['key']], $row['type']);
         }
     }
 
@@ -34,10 +38,20 @@ class ConfigurationDatabase {
         $GLOBALS[$key] = $value;
     }
 
-    public function register_key($key, $value) {
+    public function _register_key($key, $value) {
         // Register a new configuration key
-        $query = "INSERT INTO site_settings (`key`, `value`) VALUES (?, ?)";
-        $this->db->execute($query, [$key, $value]);
+        $query = "INSERT INTO site_settings (`key`, `value`, `type`) VALUES (?, ?, ?)";
+        $type = gettype($value);
+        $this->db->execute($query, [$key, (string)$value, $type]);
         $GLOBALS[$key] = $value;
+    }
+
+    public function register_key($key, $value) {
+        // Register a new configuration key if it doesn't exist
+        $query = "SELECT * FROM site_settings WHERE `key` = ?";
+        $exists = (bool)$this->db->fetchRow($query, [$key]);
+        if (!$exists) {
+            $this->_register_key($key, $value);
+        }
     }
 }

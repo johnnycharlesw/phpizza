@@ -1,6 +1,7 @@
 <?php
 namespace PHPizza\Rendering;
 use PHPizza\Addons\Skin;
+use PHPizza\ConfigurationDatabase;
 
 /**
  * The page renderer class
@@ -13,12 +14,98 @@ class PageRenderer{
      * @var bool
      */
     private $renderMarkdown = false;
+    public $isMosaicLike = true;
+    public $isTrident = false;
+    public $isKhtml = false;
+    public $isWebkit = false;
+    public $isChromium = false;
+    public $isThorium = false;
+    public $isGecko = false;
+    public $isGoanna = false;
+    public $isPresto = false;
+    public $isPyBark = false;
+    private ConfigurationDatabase|null $configdb;
+
 
     public function __construct(array $options = [])
     {
+        global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
         if (isset($options['markdown'])) {
             $this->renderMarkdown = (bool)$options['markdown'];
         }
+
+        if (isset($options['isErrorScreen']) && $options['isErrorScreen']) {
+            $this->configdb = new ConfigurationDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+            $this->register_settings();
+        }
+
+        if (isset($options['browserEngine'])) {
+            switch ($options['browserEngine']) {
+                case 'thorium':
+                    $this->isThorium=true;
+                case 'chrome':
+                case 'brave':
+                case 'edge':
+                case 'opera2':
+                case 'chromium':
+                case 'samsung_internet':
+                case 'operagx':
+                    $this->isChromium=true;
+                case 'webkit':
+                case 'safari':
+                case 'epiphany':
+                case 'nx':
+                case 'nx2':
+                case 'ps4':
+                case 'ps5':
+                    $this->isWebkit=true;
+                case 'khtml':
+                case 'konqueror':
+                    $this->isKhtml=true;
+                    break;
+                case 'opera':
+                    $this->isPresto = true;
+                    break;
+                case 'goanna':
+                case 'palemoon':
+                    $this->isGoanna = true;
+                case 'gecko':
+                case 'firefox':
+                case 'thunderbird':
+                case 'librewolf':
+                case 'mullvad':
+                case 'tor':
+                    $this->isGecko = true;
+                    break;
+                case 'pybark':
+                case 'zerolfie_web':
+                    $this->isPyBark = true;
+                    break;
+                case 'trident':
+                case 'msie':
+                case 'ie5':
+                case 'ie6':
+                case 'ie7':
+                case 'ie8':
+                case 'ie9':
+                case 'ie10':
+                case 'ie11':
+                    $this->isTrident = true;
+                    break;
+                case 'lynx':
+                case 'w3h':
+                    $this->isMosaicLike = false;
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+        }
+    }
+
+    public function register_settings(){
+        $this->configdb->register_key('skinName', 'PHPizza');
+        $this->configdb->register_key('useSkin', true);
     }
 
     public function get_title_tag($sitename, $page_title = ''){
@@ -45,7 +132,7 @@ class PageRenderer{
         $head_tags = $this->get_title_tag($sitename, $page_title);
         $head_tags .= "\n" . $this->get_metadata_tags($description, $keywords);
         $head_tags .= "\n";
-        $head_tags .= "<script src=\"phpizza-client-scripts/console_message.js\"></script>";
+        $head_tags .= "<script src=\"load.php?t=js&f=phpizza-client-scripts/console_message.js\"></script>";
         if ($useSkin){
             global $skinName;
             $skin_head_tags=$this->get_skin_head_tags($skinName);
@@ -64,7 +151,11 @@ class PageRenderer{
             }
             if ($skin->manifest['themeStylesheets']) {
                 global $theme;
-                $theme = $theme ?? $_GET['usetheme'] ?? 'system';
+                if ($this->isTrident) {
+                    $theme = "light";
+                } else {
+                    $theme = $theme ?? $_GET['usetheme'] ?? 'system';
+                }
                 $skinStylesheet .= $skinName . "/" . $skin->manifest['themeStylesheets'][$theme];
             }
             $skinStylesheet=rtrim($skinStylesheet,",");

@@ -5,6 +5,7 @@ PHPizza collects the following data:
 * Dates of birth - to verify user age for the purposes of COPPA compliance
 * Email addresses - to send notifications and confirm user accounts
 For users under 13, parental consent is required. Parental information is collected only for verifying and recording consent.
+If you are the first admin on a site, your email may be shown on error pages as a support contact.
 
 PHPizza uses only this one cookie:
 * PHPSESSID - to keep track of data that only makes sense in the context of a single session. It is not used for tracking or profiling.

@@ -8,7 +8,7 @@ class ErrorScreen
 
     public function __construct(string $message = "Error") {
         $this->message = $message;
-        $this->renderer = new PageRenderer();
+        $this->renderer = new PageRenderer(["isErrorScreen" => true]);
     }
 
     /**

@@ -1,0 +1,2 @@
+php_value auto_prepend_file "serve-legal-warning.php"
+DirectoryIndex serve-legal-warning.php

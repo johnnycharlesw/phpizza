@@ -1,0 +1,3 @@
+# Block access to this folder
+Require all denied
+ErrorDocument 403 /httpd404.php

@@ -6,7 +6,7 @@ namespace PHPizza\SpecialPages;
 
 
 class OGTestHomepage extends SpecialPage {
-    public function __construct() {
+    public function __construct($name) {
         // OG as in Original, not Open Graph
         global $sitename;
         parent::__construct("OGTestHomepage", "OG Test Homepage", <<<HTML

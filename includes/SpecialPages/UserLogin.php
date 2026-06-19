@@ -4,7 +4,7 @@ use PHPizza\Rendering\Pizzadown;
 use PHPizza\UserManagement\UserDatabase;
 
 class UserLogin extends SpecialPage {
-    public function __construct() {
+    public function __construct($name) {
         global $sitename;
         parent::__construct("UserLogin", "User Login", "");
     }

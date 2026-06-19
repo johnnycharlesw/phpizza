@@ -34,4 +34,3 @@ function getLoadedExtensions(): array {
     global $loadedExtensions;
     return $loadedExtensions;
 }
-

@@ -4,7 +4,7 @@ use PHPizza\UserManagement\UserDatabase;
 use PHPizza\UserManagement\User;
 use PHPizza\Rendering\Pizzadown;
 class CreateAccount extends SpecialPage {
-    public function __construct() {
+    public function __construct($name) {
         global $sitename;
         parent::__construct("CreateAccount", "Create Account", ""); // Content will be generated in getContent()
     }

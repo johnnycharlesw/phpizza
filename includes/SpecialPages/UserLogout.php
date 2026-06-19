@@ -3,7 +3,7 @@ namespace PHPizza\SpecialPages;
 use PHPizza\UserManagement\UserDatabase;
 
 class UserLogout extends SpecialPage {
-    public function __construct() {
+    public function __construct($name) {
         global $sitename;
         parent::__construct("UserLogout", "User Logout", <<<HTML
 <h1>Logged Out</h1>

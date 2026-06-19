@@ -1,15 +1,6 @@
-CREATE TABLE IF NOT EXISTS `user_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `members` text NOT NULL,
-  `permissions` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE IF EXISTS `user_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `members` text NOT NULL,
-  `permissions` text NOT NULL,
-  PRIMARY KEY (`id`)
-);
+ALTER TABLE IF EXISTS `user_groups`
+ADD COLUMN IF NOT EXISTS `id` int(11) NOT NULL AUTO_INCREMENT,
+ADD COLUMN IF NOT EXISTS `name` text NOT NULL,
+ADD COLUMN IF NOT EXISTS `members` text NOT NULL,
+ADD COLUMN IF NOT EXISTS `permissions` text NOT NULL,
+ADD PRIMARY KEY IF NOT EXISTS (`id`);

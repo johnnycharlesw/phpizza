@@ -3,7 +3,7 @@ namespace PHPizza\SpecialPages;
 class DestroySessionToken extends SpecialPage {
     public function __construct($name, $title, $content) {
         $title = "Destroy Session Token (API USE ONLY!)";   
-        parent::construct($name, $title, $content);
+        parent::__construct($name, $title, $content);
     }
 
     public function getContent()

@@ -11,8 +11,29 @@ class UserDatabase {
 
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType) {
         $this->db = new Database($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        if (!$this->db->get_table_exists('users')) {
+            $this->install_my_table();
+        } else {
+            $this->update_my_table();
+        }
         $this->groupdb = new UserGroupDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
     }
+
+    public function update_my_table(){
+        global $dbType;
+        $schemaPath = __DIR__ . "/../../sql/schema/$dbType/tables/users/update.sql";
+        $this->db->execute(file_get_contents($schemaPath));
+        
+    }
+
+    private function install_my_table(){
+        global $guestUsername, $guestPasswordB64;
+        $this->db->create_table('users');
+        $guest = $this->create_user($guestUsername, base64_decode($guestPasswordB64));
+        $admin = $this->create_user("Admin", "phpizza");
+        $guest->hey_I_got_a_new_email('phpizza-guest-account@example.org');
+    }
+
     public function get_user_by_username(string $username): ?User {
         $row = $this->db->fetchRow("SELECT * FROM users WHERE username = ?", [$username]);
         if ($row && is_array($row) && isset($row['id'])) {

@@ -4,6 +4,7 @@ namespace PHPizza;
 
 use PHPizza\HTTPHandling\ClientIdentity;
 use PHPizza\Rendering\ErrorScreen;
+use Throwable;
 
 global $isInstaller;
 global $settingsDB;
@@ -31,19 +32,11 @@ if (file_exists("vendor/autoload.php")) {
     // This is needed for the first run, as the submodules are not initialized by Composer.
     // It is also needed for git-clone-and-run.
 
-    // Do NOT run composer automatically during web requests — it can block Apache/PHP.
-    // Only attempt to run composer when invoked from CLI (developer convenience).
-    if (php_sapi_name() === 'cli') {
-        @system("composer install");
-        if (file_exists("vendor/autoload.php")) {
-            include 'vendor/autoload.php';
-        } else {
-            die('Missing dependencies: composer install did not produce vendor/autoload.php. Please run "composer install" and try again.');
-        }
+    @system("composer install");
+    if (file_exists("vendor/autoload.php")) {
+        include 'vendor/autoload.php';
     } else {
-        // Running under webserver — fail fast with an actionable message instead of blocking the request
-        http_response_code(500);
-        die('Missing dependencies. Please run "composer install" in the project root (web server cannot run composer automatically).');
+        die('Missing dependencies: composer install did not produce vendor/autoload.php. Please run "composer install" and try again.');
     }
 }
 
@@ -63,7 +56,7 @@ $embedTypeClassMapping = [
 ];
 
 function _load_config(){
-    global $isInstaller, $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage, $useSkin, $skinName, $guestUsername, $guestPasswordB64, $siteLogoPath;
+    global $isInstaller, $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage, $useSkin, $skinName, $guestUsername, $guestPasswordB64, $siteLogoPath, $poweredByImageUrl;
     
     // Check if config.php exists FIRST - if not, we're in installer mode
     // This must be checked before including default-config.php to prevent MariaDB connection attempts
@@ -72,8 +65,8 @@ function _load_config(){
     // Insert config defaults (this sets $dbType = "mariadb" which we'll override if in installer mode)
     @include __DIR__ . '/default-config.php';
     
-    // If config.php doesn't exist, we're in installer mode - override defaults immediately
     if (!$configExists) {
+        /*
         $isInstaller = true;
         // Immediately override database settings to SQLite to prevent any MariaDB connection attempts
         $dbServer = "localhost";
@@ -81,20 +74,22 @@ function _load_config(){
         $dbPassword = "";
         $dbName = "includes/Installer/phpizza_installer.sqlite3";
         $dbType = "sqlite";
-    } else {
-        // Config file exists, try to load it
-        try {
-            @include __DIR__ . '/config.php';
-            // After loading config.php, check if database variables are set
-            // If they're not set or invalid, we might still need installer mode
-            if (!isset($dbType) || empty(trim($dbType ?? ''))) {
-                // Database type not set, might need installer
-                // But don't force installer mode if config exists - let it try to use the config
-            }
-        } catch (\Exception $e) {
-            $isInstaller = true;
-        }
+        */
+        file_put_contents('config.php', file_get_contents('default-config.php'));
     }
+    // Config file exists, try to load it
+    try {
+        @include __DIR__ . '/config.php';
+        // After loading config.php, check if database variables are set
+        // If they're not set or invalid, we might still need installer mode
+        if (!isset($dbType) || empty(trim($dbType ?? ''))) {
+            // Database type not set, might need installer
+            // But don't force installer mode if config exists - let it try to use the config
+        }
+    } catch (\Exception $e) {
+        $isInstaller = true;
+    }
+    
     
     // Only load additional configs if we're not in installer mode
     if (!$isInstaller) {
@@ -212,13 +207,6 @@ if ($dbVarsValid) {
     global $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $isInstaller;
     
     // CRITICAL: If in installer mode, force SQLite regardless of what $dbType says
-    if (isset($isInstaller) && $isInstaller) {
-        $dbType = "sqlite";
-        $dbServer = "localhost";
-        $dbUser = "phpizza";
-        $dbPassword = "";
-        $dbName = "includes/Installer/phpizza_installer.sqlite3";
-    }
     
     if (isset($dbType) && is_string($dbType) && trim($dbType) !== '') {
         // Load settings from the site_settings table
@@ -246,3 +234,18 @@ if (!empty($debug)) {
 // Activate extensions
 runExtensions(); // global function
 
+function errorHandler (Throwable $ex) {
+    global $sitename;
+    if ($ex instanceof Warning) {
+        $message='/* Warning: ' . $ex->getMessage() . '*/';
+        error_log($message);
+    } else {
+        $message='Fatal error: ' . $ex->getMessage();
+        error_log($message);
+        $err = new ErrorScreen($message);
+        $err->render($sitename);
+        exit(1);
+    }
+}
+
+set_exception_handler('PHPizza\errorHandler');

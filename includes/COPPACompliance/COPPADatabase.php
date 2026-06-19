@@ -13,13 +13,28 @@ class COPPADatabase {
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType) {
         $this->db = new Database($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         if ($this->db->get_table_exists('coppa_consents') === false) {
-            throw new Exception("The 'coppa_consents' table could not be found. Please update the database using the schema file.", 1);
+            //throw new Exception("The 'coppa_consents' table could not be found. Please update the database using the schema file.", 1);
+            $this->install_my_tables();
         }
         if ($this->db->get_table_exists('coppa_consent_requests') === false) {
-            throw new Exception("The 'coppa_consent_requests' table could not be found. Please update the database using the schema file.", 1);
+            //throw new Exception("The 'coppa_consent_requests' table could not be found. Please update the database using the schema file.", 1);
+            $this->install_my_tables();
+        } else {
+            $this->update_my_tables();
         }
     }
-    
+    public function update_my_tables(){
+        global $dbType;
+        $schemaPath = __DIR__ . "/../../sql/schema/$dbType/tables/coppa_consents/update.sql";
+        $this->db->execute(file_get_contents($schemaPath));
+        $schemaPath = __DIR__ . "/../../sql/schema/$dbType/tables/coppa_consent_requests/update.sql";
+        $this->db->execute(file_get_contents($schemaPath));
+    }
+    public function install_my_tables(){
+        $this->db->create_table('coppa_consents');
+        $this->db->create_table('coppa_consent_requests');
+        $this->update_my_tables();
+    }
     public function create_coppa_consent_request($parent_userid, $child_userid, $consent_type, $consent_status) {
         // Insert a new record into the 'coppa_consent_requests' table
         $query = "INSERT INTO coppa_consent_requests (parent_userid, child_userid, consent_type, consent_status) VALUES (?, ?, ?, ?)";

@@ -1,6 +1,8 @@
 <?php
 namespace PHPizza\Rendering;
 
+use Throwable;
+
 class ErrorScreen
 {
     private string $message;
@@ -18,19 +20,35 @@ class ErrorScreen
      * @param string $siteLanguage
      * @return string
      */
-    private function _render(string $sitename, ?string $message = null, string $siteLanguage = 'en'): string
+    private function _render(string $sitename, ?Throwable $throwable = null, string $siteLanguage = 'en'): string
     {
+        $message = $throwable->getMessage();
         if ($message === null) {
             $message = $this->message;
         }
-
+        $trace = "";
+        $traceAsArray = $throwable->getTrace();
+        foreach ($traceAsArray as $trace_) {
+            $functionArgs = var_export($trace_["args"]);
+            $file = $trace_["file"];
+            $function = $trace_["function"];
+            $line = $trace_["line"];
+            $trace .= <<<HTML
+            in function {$function} in {$file} on line {$line}, with these arguments:<br>
+            <pre><code class="language-php">
+            {$functionArgs}
+            </code></pre>
+            <br>
+            HTML;
+        }
         $htmlContent = <<<HTML
 <h1>PHPizza internal error</h1>
 <p>
     It looks like we have been having some technical difficulties on our end.<br>
     Please try again later. If this problem persists, please contact {$sitename} support.
     <br>
-    {$message}
+    Exception: {$message}<br>
+    {$trace}
 </p>
 HTML;
 
@@ -56,15 +74,16 @@ HTML;
      * @param bool $terminate
      * @return void
      */
-    public function render(string $sitename, ?string $message = null, bool $terminate = true): void
+    public function render(string $sitename, ?Throwable $throwable = null, bool $terminate = true): void
     {
-        http_response_code(500);
+        // http_response_code(500);
+        $message = $throwable->getMessage();
         if ($message !== null) {
             error_log($message);
         } else {
             error_log($this->message);
         }
-        echo $this->_render($sitename, $message);
+        echo $this->_render($sitename, $throwable);
         if ($terminate) {
             exit(1);
         }

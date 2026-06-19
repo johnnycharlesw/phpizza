@@ -20,40 +20,32 @@ if (!empty($debug)) {
 }
 
 
-try {
-    if (in_array($sapi, $cliSapis, true)) {
-        $entry = new \PHPizza\EntryPoints\CLIEntryPoint();
-    } elseif (in_array($sapi, $webSapis, true) || ($isPyServer && isset($isPyServer))) {
-        if ($isClientAPI) {
-            $entry = new \PHPizza\EntryPoints\APIEntryPoint();
-        }else {
-            $entry = new \PHPizza\EntryPoints\BrowserEntryPoint();
-        }
-    } else {
-        // Unsupported or dangerous SAPI — behave differently in debug vs production
-        if (!empty($debug)) {
-            $errorScreen = new ErrorScreen("This is a CMS, not an LOP/ROP chain. Use this on your website, not a hacking tool.");
-            http_response_code(500);
-            $errorScreen->render($sitename);
-            exit(1);
-        }
 
-        // Production: hide details, return 404 and log incident
+if (in_array($sapi, $cliSapis, true)) {
+    $entry = new \PHPizza\EntryPoints\CLIEntryPoint();
+} elseif (in_array($sapi, $webSapis, true)) {
+    if ($isClientAPI) {
+        $entry = new \PHPizza\EntryPoints\APIEntryPoint();
+    }else {
+        $entry = new \PHPizza\EntryPoints\BrowserEntryPoint();
+    }
+} else {
+    // Unsupported or dangerous SAPI — behave differently in debug vs production
+    if (!empty($debug)) {
+        $errorScreen = new ErrorScreen("This is a CMS, not an LOP/ROP chain. Use this on your website, not a hacking tool.");
         http_response_code(500);
-        error_log(sprintf("Unsupported SAPI detected: %s from %s", $sapi, $_SERVER['REMOTE_ADDR'] ?? 'unknown'));
-        echo sprintf("Unsupported SAPI detected: %s from %s", $sapi, $_SERVER['REMOTE_ADDR'] ?? 'unknown');
+        $errorScreen->render($sitename);
         exit(1);
     }
 
-    // Run the selected entrypoint
-    if ($entry !== null) {
-        $entry->run();
-    }
-
-} catch (\Throwable $e) {
-    $message='Fatal error: ' . $e->getMessage();
-    error_log($message);
-    $err = new ErrorScreen($message);
-    $err->render($sitename);
+    // Production: hide details, return 404 and log incident
+    http_response_code(500);
+    error_log(sprintf("Unsupported SAPI detected: %s from %s", $sapi, $_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+    echo sprintf("Unsupported SAPI detected: %s from %s", $sapi, $_SERVER['REMOTE_ADDR'] ?? 'unknown');
     exit(1);
+}
+
+// Run the selected entrypoint
+if ($entry !== null) {
+    $entry->run();
 }

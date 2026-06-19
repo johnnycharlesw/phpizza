@@ -9,11 +9,13 @@ use PHPizza\SpecialPages\OGTestHomepage;
 class AdminPanel extends SpecialPage {
     private $userdb;
     private $configdb;
-    public function __construct() {
+    private $args;
+    public function __construct($name, $title, $content) {
         global $sitename;
-        parent::__construct("AdminPanel", "PHPizza Admin Panel", ""); # Content will be generated automatically
+        parent::__construct($name, "PHPizza Admin Panel", ""); # Content will be generated automatically
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
         $this->userdb=new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        $this->args = explode('/', $name, PHP_INT_MAX);
     }
     public function getContent()
     {
@@ -36,7 +38,7 @@ class AdminPanel extends SpecialPage {
             'editor' => Editor::class,
             'settings' => Settings::class
         ];
-        $section = $_GET['section'] ?? 'main';
+        $section = $this->args[1] ?? $_GET['section'] ?? 'main';
         global $specialPrefix;
         $specialPage=new $sections[$section]();
         $sectionContent = $specialPage->getContent();

@@ -9,10 +9,26 @@ class UserGroupDatabase {
     public function __construct($dbServer, $dbUser, $dbPassword, $dbName, $dbType) {
         $this->db = new Database($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         if ($this->db->get_table_exists('user_groups') === false) {
-            throw new Exception("The 'user_groups' table could not be found. Please update the database using the schema file.", 1);
-            
+            //throw new Exception("The 'user_groups' table could not be found. Please update the database using the schema file.", 1);
+            $this->install_my_schema();
+        } else {
+            $this->update_my_schema();
         }
     }
+    public function update_my_schema(){
+        global $dbType;
+        $schemaPath = __DIR__ . "/../../sql/schema/$dbType/tables/user_groups/update.sql";
+        $this->db->execute(file_get_contents($schemaPath));
+    }
+
+    public function install_my_schema(){
+        $this->db->create_table('user_groups');
+        $this->update_my_schema();
+        $this->create_user_group('admin');
+        $group = $this->get_user_group_by_name('admin');
+        $this->add_user_to_group(1, $group->id);
+    }
+
     public function get_user_group_by_name(string $name): ?UserGroup {
         $row = $this->db->fetchRow("SELECT * FROM user_groups WHERE name = ?", [$name]);
         if ($row && is_array($row) && isset($row['id'])) {

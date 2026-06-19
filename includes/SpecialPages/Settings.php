@@ -108,7 +108,7 @@ class Settings extends SpecialPage {
                 HTML;
             }
             return $content;
-        } elseif ($_SERVER["REQUEST_METHOD"]="POST") {
+        } elseif ($_SERVER["REQUEST_METHOD"]=="POST") {
             # Parameters when POSTed to this script align with config.php variable names
             $accesser=$this->userdb->get_user_by_id($_SESSION['user_id']);
             if (!$accesser->can_I_do("use_admin_panel")) {

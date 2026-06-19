@@ -10,7 +10,6 @@
     ],
     "require": {
         "erusev/parsedown": "^1.7",
-        "symfony/finder": "^7.3",
         "scssphp/scssphp": "2.0.1",
         "jeremykendall/php-domain-parser": "^6.4",
         "league/uri-components": "^7.5",

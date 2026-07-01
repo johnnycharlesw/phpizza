@@ -11,7 +11,7 @@ class Editor extends SpecialPage {
     private Pizzadown $pd;
     public string $pagetitle;
 
-    public function __construct($name) {
+    public function __construct() {
         global $homepageName, $dbServer, $dbUser, $dbName, $dbPassword, $dbType;
         $this->pagedb=new PageDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->userdb=new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);

@@ -10,6 +10,7 @@ class User {
 
     public $id;
     public $username;
+    private $groupdb;
     private $userdb;
     private $coppadb;
     public $email;
@@ -21,6 +22,7 @@ class User {
         $this->email = $email;
         $this->userdb = new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->coppadb = new COPPADatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        $this->groupdb = new UserGroupDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
     }
 
     public function toArray() {
@@ -72,7 +74,11 @@ class User {
         if ($this->am_I_a_child()) {
             $consentRequest = $this->coppadb->get_coppa_consent_request_by_child($this->id);
             if ($consentRequest && $consentRequest->getConsentStatus() === COPPAConsentRequest::YES) {
-                return false;
+                return $blocked || false;
+            } else {
+                if ($this->am_I_an_admin()) {
+                    return false;
+                }
             }
         }
         return $blocked;
@@ -96,4 +102,8 @@ class User {
         return password_verify($password, $this->getPasswordHash());
     }
 
+    public function am_I_an_admin(){
+        $adminGroup = $this->groupdb->get_user_group_by_name("admin");
+        return $adminGroup->am_I_in_this($this);
+    }
 }

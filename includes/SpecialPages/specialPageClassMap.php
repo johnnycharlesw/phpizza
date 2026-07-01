@@ -3,6 +3,7 @@
 use PHPizza\SpecialPages\AdminPanel;
 use PHPizza\SpecialPages\OGTestHomepage;
 use PHPizza\SpecialPages\CreateAccount;
+use PHPizza\SpecialPages\DestroySessionToken;
 use PHPizza\SpecialPages\ExceptionTest;
 use PHPizza\SpecialPages\UserLogin;
 use PHPizza\SpecialPages\UserLogout;
@@ -17,5 +18,6 @@ $specialPageClassMap = [
     "CreateAccount" => CreateAccount::class,
     "MistralBackedAgentRenderer" => MistralBackedAgentRenderer::class,
     "AdminPanel" => AdminPanel::class,
-    "ExceptionTest" => ExceptionTest::class
+    "ExceptionTest" => ExceptionTest::class,
+    "DestroySessionToken" => DestroySessionToken::class
 ];

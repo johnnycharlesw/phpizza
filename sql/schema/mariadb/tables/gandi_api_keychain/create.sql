@@ -1,3 +1,5 @@
+CREATE TABLE IF NOT EXISTS `gandi_api_keychain` ();
+
 
 ALTER TABLE IF NOT EXISTS `gandi_api_keychain`
     ADD COLUMN IF NOT EXISTS `id` INT AUTO_INCREMENT,

@@ -222,10 +222,6 @@ if ($dbVarsValid) {
     }
 }
 
-// Initialize the ClientIdentity class
-$clientIdentity = new ClientIdentity();
-
-
 // Optional debug logging (only emit when $debug is enabled)
 if (!empty($debug)) {
     error_log("PHPizza init: dbServer=" . ($dbServer ?? 'undefined') . ", dbUser=" . ($dbUser ?? 'undefined') . ", dbName=" . ($dbName ?? 'undefined'));

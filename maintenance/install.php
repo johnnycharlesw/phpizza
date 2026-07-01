@@ -5,5 +5,5 @@ foreach ([
     "uploads",
     "config"
 ] as $folder) {
-    mkdir(__DIR__ . "../" . $folder);
+    mkdir(__DIR__ . "/../" . $folder);
 }

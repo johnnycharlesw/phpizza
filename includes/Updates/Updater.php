@@ -1,6 +1,6 @@
 <?php
 namespace PHPizza\Updates;
-
+use CzProject\GitPHP\Git;
 
 class Updater {
     private $threshold;
@@ -8,7 +8,6 @@ class Updater {
         error_log("Updater class instantiated");
         $this->threshold=file_get_contents(__DIR__ . "/.phpizza-update-threshold");
         $this->threshold=(float)$this->threshold;
-        
     }
 
     public function get_is_available(){

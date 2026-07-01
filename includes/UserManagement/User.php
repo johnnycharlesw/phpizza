@@ -75,11 +75,11 @@ class User {
             $consentRequest = $this->coppadb->get_coppa_consent_request_by_child($this->id);
             if ($consentRequest && $consentRequest->getConsentStatus() === COPPAConsentRequest::YES) {
                 return $blocked || false;
-            } else {
-                if ($this->am_I_an_admin()) {
-                    return false;
-                }
             }
+            if ($this->am_I_an_admin()) {
+                return false;
+            }
+            
         }
         return $blocked;
     }

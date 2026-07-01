@@ -10,6 +10,7 @@ use PHPizza\UserManagement\UserDatabase;
 use PHPizza\UserManagement\User;
 use PHPizza\HTTPHandling\HTTPEndpointHandler;
 use PHPizza\Updates\Updater;
+use PHPizza\HTTPHandling\ClientIdentity;
 
 /**
  * Handles a browser request for a single page.
@@ -41,6 +42,9 @@ class BrowserEntryPoint extends HTTPEndpointHandler
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
         $this->configdb = new ConfigurationDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->register_settings();
+        global $clientIdentity;
+        // Initialize the ClientIdentity class
+        $clientIdentity = new ClientIdentity();
     }
 
     public function register_settings(){

@@ -18,9 +18,9 @@
         "nyholm/psr7": "^1.8",
         "rowbot/url": "^4.1",
         "laminas/laminas-httphandlerrunner": "^2.13",
-        "symfony/cache": "^7.3",
-        "acmephp/acmephp": "dev-master",
-        "league/html-to-markdown": "^5.1"
+        "league/html-to-markdown": "^5.1",
+        "czproject/git-php": "^4.6",
+        "afosto/yaac": "^1.5"
     },
     "autoload": {
         "psr-4": {

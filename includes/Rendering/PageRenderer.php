@@ -13,7 +13,7 @@ class PageRenderer{
      * Defaults to false; enable explicitly when desired (e.g., web UI).
      * @var bool
      */
-    private $renderMarkdown = false;
+    private $renderMarkdown = true;
     public $isMosaicLike = true;
     public $isTrident = false;
     public $isKhtml = false;
@@ -31,7 +31,7 @@ class PageRenderer{
     {
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
         if (isset($options['markdown'])) {
-            $this->renderMarkdown = (bool)$options['markdown'];
+            $this->renderMarkdown = (bool)$options['markdown'] || true;
         }
 
         if (isset($options['isErrorScreen']) && $options['isErrorScreen']) {
@@ -170,7 +170,7 @@ class PageRenderer{
         } else {
             $skinStyleLinkTemplate = '<link rel="stylesheet" href="/load.php?t=css&f=%s/%s">';
         }
-        global $theme;
+        global $theme, $debug;
         $theme = $theme ?? (isset($_GET['usetheme']) ? htmlspecialchars($_GET['usetheme']) : 'system');
 
         $skinStyleLinks = "";
@@ -184,6 +184,9 @@ class PageRenderer{
             // Add the theme-specific stylesheet if it exists
             if (isset($skin->manifest["themeStylesheets"][$theme])) {
                 $links[] = sprintf($skinStyleLinkTemplate, $skinName, $skin->manifest["themeStylesheets"][$theme]);
+            }
+            if (isset($skin->manifest["themeStylesheets"]["dark"]) || $debug) {
+                $links[] = '<meta name="darkreader-lock"></meta>';
             }
             $skinStyleLinks = implode("\n", $links);
         } else {

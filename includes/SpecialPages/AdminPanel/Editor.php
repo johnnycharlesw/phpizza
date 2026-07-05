@@ -1,9 +1,11 @@
 <?php
-namespace PHPizza\SpecialPages;
+namespace PHPizza\SpecialPages\AdminPanel;
 use PHPizza\UserManagement\UserDatabase;
 use PHPizza\UserManagement\User;
 use PHPizza\Rendering\Pizzadown;
 use PHPizza\PageManagement\PageDatabase;
+use PHPizza\SpecialPages\SpecialPage;
+
 
 class Editor extends SpecialPage {
     private PageDatabase $pagedb;

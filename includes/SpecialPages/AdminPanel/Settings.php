@@ -1,7 +1,8 @@
 <?php
-namespace PHPizza\SpecialPages;
+namespace PHPizza\SpecialPages\AdminPanel;
 use PHPizza\UserManagement\UserDatabase;
 use PHPizza\ConfigurationDatabase;
+use PHPizza\SpecialPages\SpecialPage;
 
 class Settings extends SpecialPage {
     private $userdb;
@@ -48,6 +49,8 @@ class Settings extends SpecialPage {
             global $sitename, $siteLanguage, $skinName;
             $tab=$_GET["tab"] ?? 'general';
             if ($tab=="general"){
+                global $debug;
+                $devmodeBoxStatus = $debug ? "checked" : "";
                 $content .= <<<HTML
                 <h2>General Settings</h2>
                 <form method="post" action="/index.php?title={$specialPrefix}AdminPanel&section=settings">
@@ -59,6 +62,9 @@ class Settings extends SpecialPage {
                     <br>
                     <label for="site_description">Skin name:</label>
                     <input type="text" id="site_description" name="skinName" value="{$skinName}">
+                    <br>
+                    <label for="debug">Developer mode: </label>
+                    <input type="checkbox" id="debug" name="debug" {$devmodeBoxStatus}>
                     <br>
                     <input type="submit" value="Save">
                 </form>

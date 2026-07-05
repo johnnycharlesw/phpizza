@@ -28,8 +28,27 @@ class UserLogin extends SpecialPage {
                 if ($user && (!$user->am_I_blocked())) {
                     $_SESSION['user_id'] = $user->getId();
                     $_SESSION['username'] = $user->getUsername();
+                    if ($_SESSION['logins']) {
+                        $_SESSION['logins'][] = [
+                            'loginid' => count($_SESSION['logins']),
+                            'user_id' => $user->getId(),
+                            'username' => $user->getUsername()
+                        ];
+                    } else {
+                        $_SESSION['logins'] = [
+                            [
+                                'loginid' => 0,
+                                'user_id' => $user->getId(),
+                                'username' => $user->getUsername()
+                            ]
+                        ];
+                    }
                     // Redirect to homepage or another page after successful login
-                    header("Location: index.php");
+                    if ($_GET['returnto']) {
+                        header("Location: ".$_GET['returnto']);
+                    } else {
+                        header("Location: index.php");
+                    }
                     exit();
                 }
             } else {
@@ -39,12 +58,12 @@ class UserLogin extends SpecialPage {
             $pizzadown = new Pizzadown(false);
             $output = $pizzadown->templateText(<<<MARKDOWN
 <style>
-    h1 > img {
+    img.login-logo {
         width: 64px;
         height: 64px;
     }
 </style>
-# ![{{{sitename}}} Logo]({{{siteLogoPath}}}) Log in to {{{sitename}}}
+<h1><img alt="{{{sitename}}} Logo" src="{{{siteLogoPath}}}" class="login-logo" /> Log in to {{{sitename}}}</h1>
 <form method="POST" action="index.php?title=PHPizza:UserLogin">
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" required><br><br>
@@ -52,7 +71,7 @@ class UserLogin extends SpecialPage {
     <input type="password" id="password" name="password" required><br><br>
     <input type="submit" value="Log In">
 </form>
-Do you have an account yet? [If not, sign up here.](/index.php?title=PHPizza:CreateAccount)
+Do you have an account yet? <a href="/index.php?title=PHPizza:CreateAccount">If not, sign up here.</a>
 MARKDOWN,
                 [
                     "sitename" => $sitename,

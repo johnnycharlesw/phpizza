@@ -1,10 +1,9 @@
 <?php
-namespace PHPizza\SpecialPages;
+namespace PHPizza\SpecialPages\AdminPanel;
 use PHPizza\UserManagement\UserDatabase;
 use PHPizza\SpecialPages\CreateAccount;
-use PHPizza\SpecialPages\Editor;
-use PHPizza\SpecialPages\Settings;
-use PHPizza\SpecialPages\OGTestHomepage;
+use PHPizza\SpecialPages\SpecialPage;
+use PHPizza\SpecialPages\AdminPanel\OGTestHomepage;
 
 class AdminPanel extends SpecialPage {
     private $userdb;
@@ -43,6 +42,10 @@ class AdminPanel extends SpecialPage {
         $specialPage=new $sections[$section]();
         $sectionContent = $specialPage->getContent();
         $barContent="<ul>";
+        global $debug;
+        if ($debug) {
+            $barContent .= "<li><p>Developer mode enabled!</p></li>";
+        }
         foreach (array_keys($sections) as $section_){
             $barContent .= <<<HTML
 <li>
@@ -54,6 +57,7 @@ HTML;
         $content = <<<HTML
 <link rel="stylesheet" href="/load.php?t=css&f=phpizza-css/admin.css" />
 <div class="phpizza-admin-panel-main">
+    
 <aside class="phpizza-admin-panel-sidebar">
     {$barContent}
 </aside>

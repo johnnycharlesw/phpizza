@@ -37,7 +37,8 @@
             "PHPizza\\Updates\\": "includes/Updates/",
             "PHPizza\\ArtificialIntelligence\\": "includes/ArtificialIntelligence/",
             "PHPizza\\DNS\\": "includes/DNS/",
-            "PHPizza\\Geolocation\\": "includes/Geolocation"
+            "PHPizza\\Geolocation\\": "includes/Geolocation",
+            "PHPizza\\SpecialPages\\AdminPanel\\": "includes/SpecialPages/AdminPanel"
         },
         "files": [
             "includes/GlobalFunctions.php"

@@ -1,5 +1,6 @@
 <?php
-namespace PHPizza\SpecialPages;
+namespace PHPizza\SpecialPages\AdminPanel;
+use PHPizza\SpecialPages\SpecialPage;
 
 // The original test homepage from early alpha versions of PHPizza, added as a special page both for testing special pages and for nostalgia.
 // Now used as an easter egg.

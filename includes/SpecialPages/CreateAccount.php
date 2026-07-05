@@ -44,12 +44,12 @@ class CreateAccount extends SpecialPage {
             $pizzadown = new Pizzadown(false);
             $output = $pizzadown->templateText(<<<MARKDOWN
 <style>
-    h1 > img {
+    img.signup-logo {
         width: 64px;
         height: 64px;
     }
 </style>
-# ![{{{sitename}}} Logo]({{{siteLogoPath}}}) Create an Account on {{{sitename}}}
+<h1><img alt="{{{sitename}}} Logo" src="{{{siteLogoPath}}}" class="signup-logo" /> Create an Account on {{{sitename}}}</h1>
 <form method="POST" action="index.php?title=PHPizza:CreateAccount">
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" required><br><br>
@@ -59,7 +59,7 @@ class CreateAccount extends SpecialPage {
     <input type="password" id="confirm_password" name="confirm_password" required><br><br>
     <input type="submit" value="Create Account">
 </form>
-Already have an account? [Log in here.](/index.php?title=PHPizza:UserLogin)
+Already have an account? <a href="/index.php?title=UserLogin.php">Log in here.</a>
 MARKDOWN,
                 [
                     "sitename" => $sitename,

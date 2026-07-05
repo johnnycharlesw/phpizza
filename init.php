@@ -212,6 +212,7 @@ if ($dbVarsValid) {
         // Load settings from the site_settings table
         try {
             $settingsdb=new ConfigurationDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+            $settingsdb->register_key("debug", false);
             $settingsdb->load_config();
         } catch (\Exception $e) {
             // If database connection fails, log error but don't crash

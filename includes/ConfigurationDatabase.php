@@ -27,6 +27,13 @@ class ConfigurationDatabase {
                 continue;
             }
             $GLOBALS[$row['key']] = $row['value'];
+            if ($row['type'] == "boolean") {
+                if ($row['value'] == "on") {
+                    $row['value'] = "true";
+                } elseif ($row['value'] == "off") {
+                    $row['value'] = "false";
+                }
+            }
             settype($GLOBALS[$row['key']], $row['type']);
         }
     }

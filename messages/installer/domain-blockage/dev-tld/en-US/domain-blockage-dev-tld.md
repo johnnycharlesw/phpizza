@@ -4,7 +4,7 @@ Domains with the .dev tld are not supported in PHPizza because Google, of all co
 
 * <button id="choose-other-domain-button" type="button">
   Choose another domain
-</but
+</button>
 * <button id="use-net-tld-button" type="button">
   Use .net as a TLD instead
 </button>

@@ -125,6 +125,15 @@ class PageRenderer{
             $keywords_content = implode(', ', $keywords);
             $meta_tags .= "<meta name=\"keywords\" content=\"$keywords_content\">\n";
         }
+        global $sitename, $siteLogoPath,  $siteDomain;
+        $meta_tags .= <<<HTML
+        <meta property="og:title" content="$sitename">
+        <meta property="og:description" content="$description">
+        <meta property="og:image" content="$siteLogoPath">
+        <meta property="og:url" content="https://www.$siteDomain/">
+        <meta property="og:image:alt" content="$sitename Logo" />
+
+        HTML;
         return $meta_tags;
     }
 
@@ -220,12 +229,14 @@ HTML;
     <header>
         {$skin->get_header()}
     </header>
-    <aside class="sidebar">
-        {$skin->get_sidebar()}
-    </aside>
-    <article class="phpizza-content">
-        {$innerHTML}
-    </article>
+    <div class="sidebar-and-content">
+        <aside class="sidebar">
+            {$skin->get_sidebar()}
+        </aside>
+        <article class="phpizza-content">
+            {$innerHTML}
+        </article>
+    </div>
     <footer>
         {$skin->get_footer()}
     </footer>

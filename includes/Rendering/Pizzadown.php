@@ -1,5 +1,6 @@
 <?php
 namespace PHPizza\Rendering;
+use PHPizza\PageManagement\PageDatabase;
 
 class Pizzadown extends \Parsedown{
 

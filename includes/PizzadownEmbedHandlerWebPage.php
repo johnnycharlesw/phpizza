@@ -1,8 +1,15 @@
 <?php
 namespace PHPizza;
 class PizzadownEmbedHandlerWebPage extends PizzadownEmbedHandler {
+    private $embedType;
+    private $value;
+    public function __construct($embedType, $value){
+        $this->embedType = $embedType;
+        $this->value = $value;
+    }
+
     public function render(){
-        $url=trim($value);
+        $url=trim($this->value);
         global $allowWebPageEmbeds;
         if (!$allowWebPageEmbeds){
             return '<!-- Embed not rendered because the site owner disabled webpage embeds -->';

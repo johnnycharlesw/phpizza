@@ -2,7 +2,15 @@
 namespace PHPizza;
 
 class PizzadownEmbedHandlerFacebook extends PizzadownEmbedHandler {
+    private $value;
+    public function __construct($value) {
+        parent::__construct('facebook', $value);
+    }
     public function render(){
+        global $allowFacebookEmbeds;
+        if (!$allowFacebookEmbeds) {
+            return "<!-- Embed not rendered because Facebook embeds are disabled -->";
+        }
         $parsedValue=explode(",",$this->value);
         $handle=$parsedValue[0];
         $postID=$parsedValue[1];

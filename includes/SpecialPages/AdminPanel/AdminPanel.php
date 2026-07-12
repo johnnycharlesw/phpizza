@@ -33,7 +33,6 @@ class AdminPanel extends SpecialPage {
 
         $sections = [
             'main' => OGTestHomepage::class,
-            'create_account' => CreateAccount::class,
             'editor' => Editor::class,
             'settings' => Settings::class
         ];

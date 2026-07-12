@@ -20,16 +20,21 @@ class ErrorScreen
      * @param string $siteLanguage
      * @return string
      */
-    private function _render(string $sitename, ?Throwable $throwable = null, string $siteLanguage = 'en'): string
+    private function _render(string $sitename, \Throwable $throwable, string $siteLanguage = 'en'): string
     {
         $message = $throwable->getMessage();
         if ($message === null) {
             $message = $this->message;
         }
+        if ($message !== null) {
+            error_log($message);
+        } else {
+            error_log($this->message);
+        }
         $trace = "";
         $traceAsArray = $throwable->getTrace();
         foreach ($traceAsArray as $trace_) {
-            $functionArgs = var_export($trace_["args"]);
+            $functionArgs = @var_export($trace_["args"]);
             $file = $trace_["file"];
             $function = $trace_["function"];
             $line = $trace_["line"];
@@ -74,15 +79,10 @@ HTML;
      * @param bool $terminate
      * @return void
      */
-    public function render(string $sitename, ?Throwable $throwable = null, bool $terminate = true): void
+    public function render(string $sitename, Throwable $throwable, bool $terminate = true): void
     {
         // http_response_code(500);
-        $message = $throwable->getMessage();
-        if ($message !== null) {
-            error_log($message);
-        } else {
-            error_log($this->message);
-        }
+
         echo $this->_render($sitename, $throwable);
         if ($terminate) {
             exit(1);

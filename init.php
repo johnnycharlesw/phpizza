@@ -240,7 +240,7 @@ function errorHandler (Throwable $ex) {
         $message='Fatal error: ' . $ex->getMessage();
         error_log($message);
         $err = new ErrorScreen($message);
-        $err->render($sitename);
+        $err->render($sitename, $ex);
         exit(1);
     }
 }

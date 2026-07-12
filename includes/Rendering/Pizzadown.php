@@ -69,7 +69,7 @@ class Pizzadown extends \Parsedown{
             $value = trim($matches[2]);
             $renderedHTML = $this->renderEmbed($embedType, $value);
             // Add a visible marker in the output so the page source shows the embed was processed
-            $renderedHTML = "<!--PizzadownEmbed:{$embedType}-->" . $renderedHTML;
+            //$renderedHTML .= "<!--PizzadownEmbed:{$embedType}-->" . $renderedHTML;
 
             // Return a block compatible with Parsedown's element() renderer
             $Block = [
@@ -152,186 +152,14 @@ class Pizzadown extends \Parsedown{
     
     public function renderEmbed($type, $value){
         global $embedTypeClassMapping;
-        if (array_search($type,array_keys($embedTypeClassMapping))) {
+        if (isset($embedTypeClassMapping[$type])) {
             $embedHandlerClass = $embedTypeClassMapping[$type];
             $embedHandler = new $embedHandlerClass($value);
             return $embedHandler->render();
         }
-        switch ($type){
-            case 'youtube':
 
-                if (!(isset($allowGoogleOwnedServiceEmbeds) ? $allowGoogleOwnedServiceEmbeds : false)){
-                    return '<!-- Embed not rendered because the site owner opted out of Google-owned service embeds -->';
-                }
-                $videoID=htmlspecialchars($value,ENT_QUOTES);
-                return <<<HTML
-                    <iframe
-                        class="embedded-video"
-                        src="https://youtube.com/embed/{$videoID}"
-                        allowfullscreen
-                    ></iframe>
-                HTML;
-            case 'bluesky':
-                $siteLocation=htmlspecialchars($value,ENT_QUOTES);
-                return <<<HTML
-                    <iframe
-                        class="embedded-social bluesky-embed"
-                        src="https://bsky.app/{$siteLocation}"
-                        loading="lazy"
-                        allow="clipboard-write"
-                    ></iframe>
-                HTML;
-            case 'mastodon':
-
-                # Handle, well, the handle
-
-                $handle=trim($value);
-                if (preg_match('/^@?([a-zA-Z0-9_]+)@([a-zA-Z0-9_\.\-]+)$/',$handle,$matches)) {
-                    # Handle following official Fediverse syntax
-                    $username=$matches[1];
-                    $domain=$matches[2];
-                } 
-                elseif (preg_match('/^@([a-zA-Z0-9_]+)$/',$handle,$matches)){
-                    # Handle Facebook-like syntax (default server: mastodon.social)
-                    $username=$matches[1];
-                    $domain='mastodon.social';
-                }
-                else {
-                    return '<!-- Embed not rendered because of invalid Mastodon handle -->';
-                }
-
-                # Verify the server really is running Mastodon or a compatible platform
-                if (!$this->verifyMastodonServerViaNodeInfo($domain)) {
-                    return '<!-- Embed not rendered because the server specified does not appear to actually be a Mastodon server. Nice try, though. -->';
-                }
-
-                $url="https://{$domain}/@{$username}";
-
-                # Generate the iframe
-
-                return <<<HTML
-                <iframe
-                    src="{$url}"
-                    class="embedded-social mastodon-embed"
-                    loading="lazy"
-                    allow="clipboard-write"
-                ></iframe>
-                HTML;
-            case 'facebook':
-                # Placeholder for facebook intergration
-            case 'twitter':
-                return "<!-- Embed not rendered to avoid Musk drama -->";
-            case 'webpage':
-                $url=trim($value);
-                global $allowWebPageEmbeds;
-                if (!$allowWebPageEmbeds){
-                    return '<!-- Embed not rendered because the site owner disabled webpage embeds -->';
-                } else {
-                    // Check whether the target allows being framed (X-Frame-Options or CSP frame-ancestors)
-                    $curl = curl_init($url);
-                    curl_setopt_array($curl, [
-                        CURLOPT_NOBODY => true,
-                        CURLOPT_RETURNTRANSFER => true,
-                        CURLOPT_FOLLOWLOCATION => true,
-                        CURLOPT_TIMEOUT => 6,
-                        CURLOPT_SSL_VERIFYPEER => true,
-                        CURLOPT_USERAGENT => 'PHPizzaCMS-FrameCheck/1.0',
-                        CURLOPT_HEADER => true,
-                    ]);
-                    $headerStr = curl_exec($curl);
-                    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-                    curl_close($curl);
-
-                    $blocked = false;
-                    if ($headerStr && $httpCode >= 200 && $httpCode < 400) {
-                        $headers = explode("\n", $headerStr);
-                        foreach ($headers as $h) {
-                            $h = trim($h);
-                            if (stripos($h, 'x-frame-options:') === 0) {
-                                $blocked = true;
-                                break;
-                            }
-                            if (stripos($h, 'content-security-policy:') === 0 && stripos($h, 'frame-ancestors') !== false) {
-                                $blocked = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if ($blocked) {
-                        // Fallback: show a link and a notice instead of an iframe
-                        $safeUrl = htmlspecialchars($url, ENT_QUOTES);
-                        return "<div class=\"embedded-webpage-blocked\">Embedded page cannot be framed (site policy). <a href=\"{$safeUrl}\" target=\"_blank\" rel=\"noopener noreferrer\">Open in new tab</a></div>";
-                    }
-
-                    return <<<HTML
-                        <iframe 
-                            src="{$url}"
-                            class="embedded-webpage"
-                        ></iframe>
-                    HTML;
-                }
-        }
                 
     }
 
     
-    public function verifyMastodonServerViaNodeInfo(string $domain){
-        $domain=strtolower(trim($domain));
-
-
-        if (!preg_match('/^[a-z0-9.-]+$/i', $domain)) {
-            return false; # If it isn't a valid website, it has no chance of being a Mastodon server
-        }
-
-        $nodeInfoDiscoveryUrl="https://{$domain}/.well-known/nodeinfo";
-
-        $discovery=$this->httpGetJson($nodeInfoDiscoveryUrl); # retrive NodeInfo
-
-        if (!$discovery || !isset($discovery['links']) || !is_array($discovery['links'])){
-            return false; # Really, do not try to interfere with this verification function, it is here to protect clients from fake Mastodon servers and is needed because of Mastodon's federated architecture
-        }
-
-        $nodeInfoUrl=null;
-        foreach ($discovery['links'] as $link) {
-            if (isset($link['rel'], $link['href']) && is_string($link['href'])) {
-                $nodeInfoUrl=$link['href'];
-                break;
-            }
-        }
-
-        if (!$nodeInfoUrl) {
-            return false; # nodeinfo files should not be tampered with like that
-        }
-
-
-        $nodeinfoData=$this->httpGetJson($nodeInfoUrl);
-        if (!$nodeinfoData || !isset($nodeinfoData['software']['name'])){
-            return false; # nodeinfo files really should not be made like that
-        }
-
-        return strtolower($nodeinfoData['software']['name']) === 'mastodon';
-    }
-
-    public function httpGetJson(string $url){
-        $curl=curl_init($url);
-        curl_setopt_array($curl, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_TIMEOUT => 6,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_USERAGENT => 'PHPizzaCMS-NodeInfo-Checker/1.0',
-        ]);
-
-        $response=curl_exec($curl);
-        $code=curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-
-        if (!$response || $code < 200 || $code >= 300){
-            return null; # In that scenario, no JSON was found or something like that
-        }
-
-        $data=json_decode($response,true);
-        return is_array($data) ? $data : null;
-    }
 }

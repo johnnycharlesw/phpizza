@@ -35,7 +35,8 @@ class Settings extends SpecialPage {
             HTML;
             $tabs=[
                 "general" => "General Settings",
-                "clientidentity" => "Client Identity settings"
+                "clientidentity" => "Client Identity settings",
+                "service_settings" => "Service settings",
             ];
 
             foreach ($tabs as $id => $name) {
@@ -101,6 +102,31 @@ class Settings extends SpecialPage {
                     <select name="allowMobileData" id="allow_mobile_data">
                         <option value="true" selected>Allow</option>
                         <option value="false">Deny</option>
+                    </select>
+                    <br>
+                    <input type="submit" value="Save">
+                </form>
+                HTML;
+            } elseif ($tab == "service_settings") {
+                $content .= <<<HTML
+                <h2>Service Settings</h2>
+                <form method="post" action="/index.php?title={$specialPrefix}AdminPanel&section=settings">
+                    <label for="allow_youtube">Allow YouTube embeds:</label>
+                    <select name="allowGoogleOwnedServiceEmbeds" id="allow_youtube">
+                        <option value="true" selected>Allow</option>
+                        <option value="false">Deny</option>
+                    </select>
+                    <br>
+                    <label for="allow_santatracker">Allow Norad Santa Tracker embeds:</label>
+                    <select name="enableSantaTrackerEmbeds" id="allow_santatracker">
+                        <option value="true" selected>Allow</option>
+                        <option value="false">Deny</option>
+                    </select>
+                    <br>
+                    <label for="allow_facebook">Allow Facebook embeds:</label>
+                    <select name="allowFacebookEmbeds" id="allow_facebook">
+                        <option value="true">Allow</option>
+                        <option value="false" selected>Deny</option>
                     </select>
                     <br>
                     <input type="submit" value="Save">

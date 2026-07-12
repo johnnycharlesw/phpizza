@@ -1,5 +1,5 @@
 {
-  "name":"phpizza",
+  "name": "phpizza",
   "displayName": "PHPizza",
   "description": "",
   "scripts": {
@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "devtools-detect": "^4.0.2",
+    "dompurify": "^3.4.12",
     "js-cookie": "^3.0.7",
-    "monaco-editor": "^0.54.0",
+    "monaco-editor": "^0.55.1",
+    "picomatch": "^4.0.5",
     "prismjs": "^1.30.0"
   }
 }

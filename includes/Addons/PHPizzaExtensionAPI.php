@@ -23,10 +23,17 @@ class PHPizzaExtensionAPI {
         return $specialPageClassMap;
     }
 
-    public function unregisterHook(string $hookName) {
+    public function unregisterHooks(string $hookName) {
         global $hooks;
         if (isset($hooks[$hookName])) {
             unset($hooks[$hookName]);
+        }
+    }
+
+    public function unregisterHook(string $hookName, int $id) {
+        global $hooks;
+        if (isset($hooks[$hookName])) {
+            $hooks[$hookName][$id] = function (){};
         }
     }
 
@@ -40,6 +47,8 @@ class PHPizzaExtensionAPI {
         if (!isset($hooks[$hookName])) {
             $hooks[$hookName] = [];
         }
+        $index = count($hooks[$hookName]);
         $hooks[$hookName][] = $callback;
+        return $index;
     }
 }

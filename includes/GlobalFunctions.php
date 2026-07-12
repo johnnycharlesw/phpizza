@@ -7,6 +7,11 @@ use PHPizza\Addons\Skin;
 # Extensions: Load them, use them, see if they do anything useful.
 global $loadedExtensions;
 $loadedExtensions = [];
+global $hooks;
+$hooks = [
+    "renderer_var_insertion" => [],
+    "write_page_gui" => [],
+];
 
 function loadExtension(string $extension){
     global $loadedExtensions;

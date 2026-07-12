@@ -245,12 +245,19 @@ HTML;
 HTML;
     }
 
-    public function get_body_tag_html($innerHTML = '', $useSkin = false){
+    public function get_body_tag_html($innerHTML = '', $useSkin = true){
+        global $hooks;
         if ($useSkin){
             global $skinName;
             $innerHTML_=$this->get_skin_body_innerHTML($skinName, $innerHTML);
         } else {
             $innerHTML_=$innerHTML;
+        }
+        $contentAdjustmentHooks = $hooks['write_page_gui'];
+        if ($contentAdjustmentHooks) {
+            foreach ($contentAdjustmentHooks as $hook) {
+                $innerHTML_ = $hook($innerHTML_) ?? $innerHTML_;
+            }
         }
         return $this->_get_body_tag_html($innerHTML_,$useSkin);
     }

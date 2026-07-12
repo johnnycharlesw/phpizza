@@ -49,7 +49,9 @@ class Skin extends Addon
             $userChangePage="index.php?title=PHPizza:UserLogout";
             $changeUserButtonText="Log Out";
         }
-        return [
+        global $hooks;
+        $rendererVarInsertionHooks = $hooks['renderer_var_insertion'];
+        $vars = [
             'sitename' => $sitename,
             'siteLogoPath' => $siteLogoPath,
             'copyrightInfo' => $copyrightInfo,
@@ -62,6 +64,12 @@ class Skin extends Addon
             'userChangePage' => $userChangePage,
             'changeUserButtonText' => $changeUserButtonText,
         ];
+        if (count($rendererVarInsertionHooks) > 0) {
+            foreach ($rendererVarInsertionHooks as $hook) {
+                $vars = array_merge_recursive($vars, $hook());
+            }
+        }
+        return $vars;
     }
 
     

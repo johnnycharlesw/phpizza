@@ -5,7 +5,7 @@ use PHPizza\UserManagement\User;
 use PHPizza\Rendering\Pizzadown;
 use PHPizza\PageManagement\PageDatabase;
 use PHPizza\SpecialPages\SpecialPage;
-
+use PHPizza\Rendering\_403Renderer;
 
 class Editor extends SpecialPage {
     private PageDatabase $pagedb;
@@ -32,7 +32,12 @@ class Editor extends SpecialPage {
             throw new \Exception("The active user context is corrupted", 1);
         }
         if (!$user->can_I_do("edit")) {
-            return "You do not have permission to edit this page.";
+            // return <<<HTML
+            // <h1><img src="/node_modules/feather-icons/dist/icons/slash.svg" class="icon"></img> Access Denied</h1>
+            // <p>You do not have permission to edit pages.</p>
+            // HTML;
+            $_403renderer = new _403Renderer('edit pages');
+            return $_403renderer->render();
         }
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $content=$_POST["content_pd"];

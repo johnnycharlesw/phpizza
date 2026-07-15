@@ -1,5 +1,7 @@
 <?php
 namespace PHPizza\SpecialPages\AdminPanel;
+
+use PHPizza\Rendering\_403Renderer;
 use PHPizza\UserManagement\UserDatabase;
 use PHPizza\SpecialPages\CreateAccount;
 use PHPizza\SpecialPages\SpecialPage;
@@ -9,12 +11,14 @@ class AdminPanel extends SpecialPage {
     private $userdb;
     private $configdb;
     private $args;
+
     public function __construct($name, $title, $content) {
         global $sitename;
         parent::__construct($name, "PHPizza Admin Panel", ""); # Content will be generated automatically
         global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
         $this->userdb=new UserDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
         $this->args = explode('/', $name, PHP_INT_MAX);
+
     }
     public function getContent()
     {
@@ -25,10 +29,8 @@ class AdminPanel extends SpecialPage {
         $accesser=$this->userdb->get_user_by_id($_SESSION['user_id']);
         if ($accesser->am_I_an_admin() === false) {
             http_response_code(403);
-            return <<<HTML
-            <h1>Access Denied</h1>
-            <p>You do not have permission to access the admin panel.</p>
-            HTML;
+            $_403renderer = new _403Renderer('access the admin panel');
+            return $_403renderer->render();
         }
 
         $sections = [

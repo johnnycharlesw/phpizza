@@ -132,7 +132,7 @@ class PageRenderer{
         <meta property="og:image" content="$siteLogoPath">
         <meta property="og:url" content="https://www.$siteDomain/">
         <meta property="og:image:alt" content="$sitename Logo" />
-
+        <script type="module" src="/node_modules/feather-icons/dist/feather.min.js"></script>
         HTML;
         return $meta_tags;
     }
@@ -236,6 +236,9 @@ HTML;
         <article class="phpizza-content">
             {$innerHTML}
         </article>
+        <aside class="sidebar2">
+            {$skin->get_sidebar2()}
+        </aside>
     </div>
     <footer>
         {$skin->get_footer()}

@@ -58,11 +58,18 @@ class SwitchUser extends SpecialPage {
             foreach ($logins as $login) {
                 $output .= <<<HTML
                 <form method="post" action="index.php?title=SwitchUser.php">
+                    <!-- <img src="/node_modules/feather-icons/dist/icons/user.svg" class="icon" width="128" height="128"></img>
+                    <br> -->
                     <input type="text" name="loginid" value="{$login['loginid']}" hidden/>
                     <button>Log in as {$login['username']}</button>
                 </form>
                 HTML;
             }
+            $output .= <<<HTML
+            <br>
+            <a href="/UserLogin.php" class="btn">Log in as another user</a>
+            <a href="/UserLogout.php" class="btn">Log out all users</a>
+            HTML;
             return $output;
         }
     }

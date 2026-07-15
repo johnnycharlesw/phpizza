@@ -3,8 +3,12 @@ namespace PHPizza;
 
 class PizzadownEmbedHandlerFacebook extends PizzadownEmbedHandler {
     private $value;
+    private $configdb;
     public function __construct($value) {
         parent::__construct('facebook', $value);
+        global $dbServer, $dbUser, $dbPassword, $dbName, $dbType;
+        $this->configdb = new ConfigurationDatabase($dbServer, $dbUser, $dbPassword, $dbName, $dbType);
+        $this->configdb->register_key('allowFacebookEmbeds', false);
     }
     public function render(){
         global $allowFacebookEmbeds;

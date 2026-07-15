@@ -94,7 +94,7 @@ class PageDatabase {
                     ];
                 }
             }
-            if (!empty($specialPageClassMap) && isset($specialPageClassMap[$candidate])){
+            if (isset($specialPageClassMap[$candidate])){
                 $className = $specialPageClassMap[$candidate];
                 if (class_exists($className)){
                     $specialPageInstance = new $className($path, $candidate, "");

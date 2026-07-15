@@ -26,7 +26,10 @@ class Skin extends Addon
         }
         
 
-        $markdown = file_get_contents($this->assetPath("/parts/$type.md"));
+        $markdown = @file_get_contents($this->assetPath("/parts/$type.md"));
+        if ($markdown == "") {
+            $markdown = "<div></div>";
+        }
         
         $parsed=$parsedown->templateText($markdown,$this->get_template_variables_as_array());
         return $parsed;
@@ -84,6 +87,10 @@ class Skin extends Addon
 
     public function get_footer(){
         return $this->get_component('footer');
+    }
+
+    public function get_sidebar2() {
+        return $this->get_component('sidebar2');
     }
 
     public function render_email(string $emailContentMd){

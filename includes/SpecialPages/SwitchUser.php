@@ -34,6 +34,8 @@ class SwitchUser extends SpecialPage {
                     # Switch to that login
                     $_SESSION['user_id'] = $login['user_id'];
                     $_SESSION['username'] = $login['username'];
+                    header("Location: /");
+                    exit();
                 } else {
                     # Login state invalid - assume compromise, log user out IMMEDIATELY!
                     $_SESSION['logins'] = [];

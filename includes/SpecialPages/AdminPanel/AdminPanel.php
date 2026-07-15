@@ -23,7 +23,7 @@ class AdminPanel extends SpecialPage {
             session_start();
         }
         $accesser=$this->userdb->get_user_by_id($_SESSION['user_id']);
-        if (!$accesser->can_I_do("use_admin_panel")) {
+        if ($accesser->am_I_an_admin() === false) {
             http_response_code(403);
             return <<<HTML
             <h1>Access Denied</h1>

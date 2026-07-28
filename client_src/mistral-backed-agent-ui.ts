@@ -3,7 +3,7 @@ if (document){
     let contextInput = document.getElementById("context") ? document.getElementById("context") instanceof HTMLInputElement : new HTMLInputElement();  
 
     document.addEventListener("DOMContentLoaded", function() {
-        document.querySelector("div.context").addEventListener("DOMContentLoaded", function() { // The content is generated on the server side and is not changed dynamically on the client side
+        document.querySelector("div.context")!.addEventListener("DOMContentLoaded", function() { // The content is generated on the server side and is not changed dynamically on the client side
             let contextDivChildren = this.children;
             for (let i = 0; i < contextDivChildren.length; i++) {
                 if (contextDivChildren[i].classList.contains("user-input") || contextDivChildren[i].classList.contains("agent-reply")) {

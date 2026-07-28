@@ -47,13 +47,7 @@ if (!dir(__DIR__ . '/node_modules')) {
 
 include 'includes/SpecialPages/specialPageClassMap.php';
 
-$embedTypeClassMapping = [
-    "youtube" => PizzadownEmbedHandlerYouTube::class,
-    "mastodon" => PizzadownEmbedHandlerMastodon::class,
-    'NoradSantaTracker' => PizzadownEmbedHandlerNoradSantaTracker::class,
-    "facebook" => PizzadownEmbedHandlerFacebook::class,
-    "webpage" => PizzadownEmbedHandlerWebPage::class,
-];
+include 'includes/embedTypeClassMapping.php';
 
 function _load_config(){
     global $isInstaller, $dbServer, $dbUser, $dbPassword, $dbName, $dbType, $sitename, $siteLanguage, $useSkin, $skinName, $guestUsername, $guestPasswordB64, $siteLogoPath, $poweredByImageUrl;

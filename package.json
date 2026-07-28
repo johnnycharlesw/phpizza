@@ -18,6 +18,10 @@
     "js-cookie": "^3.0.7",
     "monaco-editor": "^0.55.1",
     "picomatch": "^4.0.5",
-    "prismjs": "^1.30.0"
+    "prismjs": "^1.30.0",
+    "ts-loader": "^9.6.2",
+    "typescript": "^6.0.3",
+    "webpack": "^5.108.4",
+    "webpack-cli": "^7.2.1"
   }
 }

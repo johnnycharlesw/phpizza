@@ -9,6 +9,7 @@ use PHPizza\SpecialPages\UserLogout;
 use PHPizza\SpecialPages\SpecialPages;
 use PHPizza\SpecialPages\MistralBackedAgentRenderer;
 use PHPizza\SpecialPages\SwitchUser;
+use PHPizza\SpecialPages\VideoRenderer;
 
 $specialPageClassMap = [
     "UserLogin" => UserLogin::class,
@@ -19,5 +20,6 @@ $specialPageClassMap = [
     "AdminPanel" => AdminPanel::class,
     "Debug/ExceptionTest" => ExceptionTest::class,
     "DestroySessionToken" => DestroySessionToken::class,
-    "SwitchUser" => SwitchUser::class
+    "SwitchUser" => SwitchUser::class,
+    "VideoRenderer" => VideoRenderer::class
 ];

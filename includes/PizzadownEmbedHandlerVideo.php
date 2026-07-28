@@ -8,18 +8,9 @@ class PizzadownEmbedHandlerVideo extends PizzadownEmbedHandler {
     }
     public function render() {
         $videoID=htmlspecialchars($this->value,ENT_QUOTES);
-
+        global $siteDomain;
         return <<<HTML
-        <div style="text-align:center"> 
-            <video id="video" width="420">
-                <source src="mov_bbb.mp4" type="video/mp4">
-                Your browser does not support HTML video.
-            </video>
-            <br>
-            <div id="controls">
-            <button onclick="playPause()"><img src="/node_modules/feather-icons/dist/icons/play.svg" class="icon"></img></button> 
-            </div>
-        </div> 
+        <iframe src="//{$siteDomain}/index.php?title=VideoRenderer.php&v={$videoID}" class="embedded-video"></iframe>
 HTML;
     }
 }

@@ -1,0 +1,21 @@
+header, footer, aside.sidebar, aside.sidebar2 {
+    display: none;
+}
+article, div.sidebar-and-content {
+    width: 100%;
+    height: 100%;
+}
+#video {
+    width: 80%;
+    height: 80%;
+}
+#seek {
+    width: 80%;
+}
+
+
+#playPauseBtn {
+    display: block !important;
+    background-color: #ed8650;
+}
+

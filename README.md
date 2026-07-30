@@ -27,7 +27,7 @@ You should have received a copy of the GNU Affero General Public License along w
 ### Extension and skin policy
 * Extensions can be added to the CMS by unzipping their zip files into the `extensions` directory, the same goes for skins.
 * All skins other than the PHPizza skin are not considered a part of PHPizza itself and are not derivative works.
-* Extensions and skins must be compatible with the PHPizza and must not violate any laws or regulations.
+* Extensions and skins must be compatible with PHPizza and must not violate any laws or regulations.
 
 ### Why AGPL?
 The AGPL is a copyleft license that requires any derivative work to be released under the same license. This means that if you modify the PHPizza, you must release your modified version under the AGPL. This is important because it ensures that the CMS remains open-source and that any modifications made by users are not restricted by copyright laws.

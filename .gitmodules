@@ -13,3 +13,6 @@
 [submodule "extensions/Blog"]
 	path = extensions/Blog
 	url = https://github.com/johnnycharlesw/phpizza-extensions-Blog.git
+[submodule "assets/phemoji"]
+	path = assets/phemoji
+	url = https://github.com/johnnycharlesw/phemoji.git

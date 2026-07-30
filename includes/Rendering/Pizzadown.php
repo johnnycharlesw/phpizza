@@ -1,5 +1,7 @@
 <?php
 namespace PHPizza\Rendering;
+
+use Override;
 use PHPizza\PageManagement\PageDatabase;
 
 class Pizzadown extends \Parsedown{
@@ -23,6 +25,7 @@ class Pizzadown extends \Parsedown{
             $this->BlockTypes['!'][] = 'Embed';
         }
     }
+
 
     // Add classes to unordered lists based on marker type: '-' => list-dash, '*' => list-disc, '+' => list-plus
     public function blockList($Line, $CurrentBlock = null){
@@ -60,6 +63,46 @@ class Pizzadown extends \Parsedown{
 
         return $Block;
     }
+
+    protected function loadPhemojiAssets()
+    {
+        $map = [];
+        $files = glob($_SERVER['DOCUMENT_ROOT'] . '/assets/phemoji/assets/72x72/*.png');
+
+        foreach ($files as $file) {
+            $name = pathinfo($file, PATHINFO_FILENAME);
+            $codepoints = explode('-', $name);
+
+            $sequence = '';
+
+            foreach ($codepoints as $codepoint) {
+                $sequence .= mb_chr(hexdec($codepoint), 'UTF-8');
+            }
+
+            $map[$sequence] = '/assets/72x72/'. basename($file);
+        }
+
+        uksort($map, function ($a, $b) {
+            return mb_strlen($b, 'UTF-8') <=> mb_strlen($a, 'UTF-8');
+        });
+
+        return $map;
+    }
+
+    protected function replacePhemoji($html)
+    {
+        $emojiMap = $this->loadPhemojiAssets();
+
+        foreach ($emojiMap as $sequence => $asset) {
+            $newline = "\n";
+            $img = $newline . '<img class="phemoji" src="/assets/phemoji/' . $asset . '"/>'. $newline;
+
+            $html = str_replace($sequence, $img, $html);
+        }
+
+        return $html;
+    }
+
 
     // Parsedown will call blockEmbed with ($Line, $CurrentBlock)
     public function blockEmbed($Line, $CurrentBlock = null){
@@ -159,6 +202,12 @@ class Pizzadown extends \Parsedown{
         }
 
                 
+    }
+
+    #[Override]
+    public function text($text)
+    {
+        return $this->replacePhemoji(parent::text($text));
     }
 
     

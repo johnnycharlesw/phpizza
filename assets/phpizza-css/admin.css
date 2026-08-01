@@ -1,3 +1,9 @@
+#datacenter-warning-banner {
+  background-color: yellow !important;
+  color: black !important;
+  font-size: large;
+}
+
 aside.phpizza-admin-panel-sidebar {
   padding-right: 10px;
 }

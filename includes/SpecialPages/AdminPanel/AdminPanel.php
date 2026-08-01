@@ -33,6 +33,7 @@ class AdminPanel extends SpecialPage {
             return $_403renderer->render();
         }
 
+
         $sections = [
             'main' => OGTestHomepage::class,
             'editor' => Editor::class,
@@ -54,8 +55,23 @@ class AdminPanel extends SpecialPage {
 </li>
 HTML;
         }
+
         $barContent .= "</ul>";
-        $content = <<<HTML
+        // Datacenter check
+        $serverip = $_SERVER["SERVER_ADDR"];
+        $ipquery_json = file_get_contents("https://api.ipquery.io/" . $serverip);
+        $ipquery = json_decode($ipquery_json, true);
+        if ($ipquery['risk']['is_datacenter']) {
+            $content = <<<HTML
+            <div id="datacenter-warning-banner">
+                ⚠️ WARNING: Your site seems to be running in a datacenter. PHPizza does not support hosting on third-party VPS services, and support will not be offered for such instances. Please self-host your site if you can safely do so.
+            </div><br>
+            HTML;
+        } else {
+            $content = "";
+        }
+
+        $content .= <<<HTML
 <link rel="stylesheet" href="/load.php?t=css&f=phpizza-css/admin.css" />
 <div class="phpizza-admin-panel-main">
     

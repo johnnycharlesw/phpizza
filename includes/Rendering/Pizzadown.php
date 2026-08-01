@@ -9,6 +9,58 @@ class Pizzadown extends \Parsedown{
     // Whether to load templates from DB
     protected $dbTemplates = false;
 
+    private array $emoticonMap = [
+        // Grinning face
+        ':)' => '😀',
+        ':]' => '😀',
+        ':>' => '😀',
+        '8)' => '😀',
+        ':}' => '😀',
+
+        // Smiling with a tear
+        ":')" => '🥲',
+
+        // Slightly smiling
+        ':-)' => '🙂',
+        ':-]' => '🙂',
+        ':->' => '🙂',
+        '8-)' => '🙂',
+        ':-}' => '🙂',
+
+        // ROFL
+        'x-D' => '🤣',
+        'xD' => '🤣',
+        'X-D' => '🤣',
+        "XD" => '🤣',
+        'rofl' => '🤣',
+        "ROFL" => '🤣',
+
+        // Grinning with glasses
+        ':D' => '😎',
+        ':-D' => '😎',
+
+        // Kissy face
+        ':*' => '😘',
+        ':-*' => '💏',
+
+        // Angel
+        'O:-)' => '😇',
+        'O:)' => '😇',
+        'O:-3' => '😇',
+        'O:3' => '😇',
+
+        // Crying emojis
+        ':(' => '😢',
+        ':c' => '😢',
+        ':-(' => '😭',
+        ':-c' => '😭',
+        ':=(' => '😭',
+        
+        // Angry emojis
+        '>:(' => '😡',
+        '~!@#$%' => '🤬'
+    ];
+
     // We register the Embed block in the constructor so we don't overwrite
     // the parent's BlockTypes and accidentally disable other block markers.
 
@@ -24,6 +76,7 @@ class Pizzadown extends \Parsedown{
         if (!in_array('Embed', $this->BlockTypes['!'], true)) {
             $this->BlockTypes['!'][] = 'Embed';
         }
+        $this->InlineTypes[':'][] = 'Emoticon';
     }
 
 
@@ -204,9 +257,31 @@ class Pizzadown extends \Parsedown{
                 
     }
 
+    public function inlineEmoticon($Excerpt, $CurrentBlock = null) {
+        if (preg_match('/(\S+)/', $Excerpt['text'], $matches)) {
+            $rendered = "";
+            $emoticon = $matches[1];
+            if (array_search($emoticon, array_keys($this->emoticonMap)) !== false) {
+                $rendered = $this->emoticonMap[$emoticon];
+            } else {
+                return null;
+            }
+            return [
+                'extent' => strlen($emoticon),
+                'element' => [
+                    'name' => 'span',
+                    'text' => $rendered
+                ]
+            ];
+        }
+        return null;
+    }
+
+
     #[Override]
     public function text($text)
     {
+        
         return $this->replacePhemoji(parent::text($text));
     }
 

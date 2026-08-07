@@ -8,6 +8,7 @@ use PHPizza\SpecialPages\UserLogin;
 use PHPizza\SpecialPages\UserLogout;
 use PHPizza\SpecialPages\SpecialPages;
 use PHPizza\SpecialPages\MistralBackedAgentRenderer;
+use PHPizza\SpecialPages\SeizeSite;
 use PHPizza\SpecialPages\SwitchUser;
 use PHPizza\SpecialPages\VideoRenderer;
 
@@ -21,5 +22,6 @@ $specialPageClassMap = [
     "Debug/ExceptionTest" => ExceptionTest::class,
     "DestroySessionToken" => DestroySessionToken::class,
     "SwitchUser" => SwitchUser::class,
-    "VideoRenderer" => VideoRenderer::class
+    "VideoRenderer" => VideoRenderer::class,
+    "SeizeSite" => SeizeSite::class
 ];

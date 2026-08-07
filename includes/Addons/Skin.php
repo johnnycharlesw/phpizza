@@ -39,11 +39,83 @@ class Skin extends Addon
         return $this->_get_component($type, $this->get_template_variables_as_array());
     }
 
+    public function get_powered_by_image_name_by_id($id) {
+        return '/assets/os-branding/poweredby_' . $id . '.png';
+    }
+
+    public function get_os_url($id) {
+        $urls = [
+            'unix' => 'https://unix.org',
+            'linux' => 'https://kernel.org',
+            'debian' => 'https://debian.org',
+            'windows' => 'https://www.microsoft.com/en-US/windows',
+            'reactos' => 'https://reactos.org/',
+            'freebsd' => 'https://freebsd.org',
+            'openbsd' => 'https://openbsd.org',
+            'niche' => 'https://github.com/search?q=operating+system&type=repositories'
+        ];
+        return $urls[$id];
+    }
+
+    public function get_os_powered_by_result($id){
+        return [
+            'name' => $id,
+            'image' => $this->get_powered_by_image_name_by_id($id),
+            'url' => $this->get_os_url($id)
+        ];
+    }
+
+    public function get_os_powered_by(){
+        $isUnix = is_dir('/') && is_dir('/usr') && is_dir('/usr/bin') && is_dir('/usr/sbin');
+        $isWindowsLike = is_dir('C:/') && (is_dir('C:/Windows') || is_dir('C:/ReactOS'));
+        $phpOsFamily = PHP_OS_FAMILY;
+
+        // Unix-like operating systems
+        if ($isUnix) {
+            if ($phpOsFamily == "Linux") {
+                // Linux: it may or may not be Debian
+                if (is_file('/etc/os-release')) {
+                    $osRelease = file_get_contents('/etc/os-release');
+                    $isDebian = preg_match('/(debian|raspbian|ubuntu)/', $osRelease) && @is_file('/usr/bin/apt');
+                    return $this->get_os_powered_by_result( $isDebian ? 'debian' : 'linux');
+                } else {
+                    return $this->get_os_powered_by_result('linux');
+                }
+            } elseif ($phpOsFamily == "Darwin") {
+                return $this->get_os_powered_by_result('apple');
+            } elseif ($phpOsFamily == "BSD") {
+                $uname = strtolower(php_uname('s'));
+                return $this->get_os_powered_by_result($uname ?? 'unix');
+            }
+
+            return $this->get_os_powered_by_result('unix');
+        }
+
+        // Windows-like operating systems
+        if ($isWindowsLike) {
+            # Check for ReactOS
+            if (is_file('C:/Windows/System32/notevil.exe') || is_file('C:/ReactOS/system32/notevil.exe')) {
+                # It is ReactOS, display the correct badge
+                return $this->get_os_powered_by_result('reactos');
+            } else {
+                return $this->get_os_powered_by_result('windows');
+            }
+        }
+
+        // Anything else-display a niche OS badge
+        return $this->get_os_powered_by_result('niche');
+
+    }
+
     public function get_template_variables_as_array(){
         global $sitename, $siteLogoPath, $copyrightInfo, $licenseInfo, $siteLanguage, $siteTheme, $homepageName, $poweredByImageURL, $guestUsername;
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
+        $osPoweredBy = $this->get_os_powered_by();
+        $os = $osPoweredBy['name'];
+        $osPoweredByImage = $osPoweredBy['image'];
+        $osPoweredByUrl = $osPoweredBy['url'];
         $username=isset($_SESSION['username']) ? $_SESSION['username'] : $guestUsername;
         if ($username == $guestUsername){
             $userChangePage="index.php?title=PHPizza:UserLogin";
@@ -66,6 +138,9 @@ class Skin extends Addon
             'userName' => $username,
             'userChangePage' => $userChangePage,
             'changeUserButtonText' => $changeUserButtonText,
+            'osPoweredByImageUrl' => $osPoweredByImage,
+            'osPoweredByLinkUrl' => $osPoweredByUrl,
+            'osName' => $os
         ];
         if (count($rendererVarInsertionHooks) > 0) {
             foreach ($rendererVarInsertionHooks as $hook) {

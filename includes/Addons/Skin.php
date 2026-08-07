@@ -52,6 +52,7 @@ class Skin extends Addon
             'reactos' => 'https://reactos.org/',
             'freebsd' => 'https://freebsd.org',
             'openbsd' => 'https://openbsd.org',
+            'netbsd' => 'https://netbsd.org',
             'niche' => 'https://github.com/search?q=operating+system&type=repositories'
         ];
         return $urls[$id];

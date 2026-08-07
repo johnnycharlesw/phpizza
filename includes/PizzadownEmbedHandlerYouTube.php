@@ -19,7 +19,7 @@ class PizzadownEmbedHandlerYouTube extends PizzadownEmbedHandler {
 
         $catsSneakIntoASuitcase = "MUOWbKh8GhM";
 
-        $videoID=htmlspecialchars($this->value,ENT_QUOTES);
+        $videoID=htmlspecialchars($this->value,ENT_QUOTES) ?? $catsSneakIntoASuitcase;
 
         return <<<HTML
         <iframe

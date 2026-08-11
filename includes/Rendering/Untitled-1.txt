@@ -1,0 +1,23 @@
+# <img src="/assets/phpizza-cms-branding/logo.png" alt="PHPizza logo" width="64" height="auto" /> Hello, PHPizza!
+Build sites like with a CMS. Build apps like with Symfony.
+## See how PHPizza compares
+
+|Feature | <img src="/assets/phpizza-cms-branding/logo.png" width=64 height=64 alt="PHPizza"></img><br>PHPizza  |  <img src="/uploads/drupal-logo.png" width=64 height=64 alt="Drupal"></img><br>Drupal | <img src="/uploads/wordpress-logo.png" width=64 height=64 alt="WordPress"></img><br>WordPress  |  <img src="/uploads/jekyll-logo.png" width=64 height=64 alt="Jekyll"></img><br>Jekyll |  <img src="/uploads/joomla-logo.png" width=64 height=64 alt="Joomla!"></img><br>Joomla  |<img src="/uploads/wix-logo.png" width=64 height=64 alt="Wix"></img><br>WiX
+|---|---|---|---|---|---|---|
+| Self-installation  | [x]  | [ ]  | [ ]  | [ ]  | [ ]  | [ ]|  
+| Self-hosting  | [x]  | [x]  | [x]  | [x]  | [x]  | [ ] | 
+| Dynamic content  | [x]  | [x]  | [x]  | [ ]  | [x]  | [x] |
+| Markdown support  | [x]  | [ ]<sup>1</sup>   | [ ]  | [x]  | [ ]  | [ ] |
+| SaaS-hosted version  | [ ]<sup>2</sup>  | [ ]  | [x]  | [x]  | [x]  | [x] |
+| User account support  | [x]  | [x]  | [x]<sup>3</sup>  | [ ]  | [x]  | [ ] |
+| `/includes/` honeypot  | [x]  | [ ]  | [ ]  |  [ ] | [ ]  | [ ] |
+| Extension API  | [x]  | [x]  | [x]  | [-]  | [x]  | [x] |
+| No ACE risk  | [x]  | [x]  | [ ]  | [x]  | [x]  | [ ] |
+
+
+<sup>1</sup>Certain Drupal distributions may modify Drupal to add Markdown support, however that is not very common
+<sup>2</sup>We don't have SaaS, and we're very proud of it!
+<sup>3</sup>WordPress has accounts for site contributors, but no public user-facing account system
+
+
+John Charles Woods and this site is not affiliated with or endorsed by The Joomla! Project™. Any products and services provided through this site are not supported or warrantied by The Joomla! Project or Open Source Matters, Inc. Use of the Joomla!® name, symbol, logo and related trademarks is permitted under a limited license granted by Open Source Matters, Inc. "WiX" is a trademark of Wix.com, Inc in the US and other countries. Drupal is a registered trademark of Dries Buytaert. 

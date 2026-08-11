@@ -51,7 +51,7 @@ class AdminPanel extends SpecialPage {
         foreach (array_keys($sections) as $section_){
             $barContent .= <<<HTML
 <li>
-    <a href="/index.php?title={$specialPrefix}AdminPanel&section={$section_}">{$section_}</a>
+    <a href="/index.php?title={$specialPrefix}AdminPanel&section={$section_}" class="btn tab vertical">{$section_}</a>
 </li>
 HTML;
         }
@@ -64,7 +64,7 @@ HTML;
         if ($ipquery['risk']['is_datacenter']) {
             $content = <<<HTML
             <div id="datacenter-warning-banner">
-                ⚠️ WARNING: Your site seems to be running in a datacenter. PHPizza does not support hosting on third-party VPS services, and support will not be offered for such instances. Please self-host your site if you can safely do so.
+                ⚠️ WARNING: Your site seems to be running in a datacenter. PHPizza does not support hosting on third-party VPS services, and support will not be offered for such instances. Please self-host your site when you can safely do so, if you can.
             </div><br>
             HTML;
         } else {

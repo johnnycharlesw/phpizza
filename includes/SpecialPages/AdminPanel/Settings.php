@@ -29,6 +29,8 @@ class Settings extends SpecialPage {
                 ul.tab-bar{
                     list-style-type:none;
                     display:flex;
+                    background: white;
+                    color: black;
                 }
             </style>
             <ul class="tab-bar">
@@ -42,7 +44,7 @@ class Settings extends SpecialPage {
             foreach ($tabs as $id => $name) {
                 $content .= <<<HTML
                 <li>
-                    <a href="/index.php?title={$specialPrefix}AdminPanel&section=settings&tab={$id}">{$name}</a>
+                    <a href="/index.php?title={$specialPrefix}AdminPanel&section=settings&tab={$id}" class="btn tab horizontal">{$name}</a>
                 </li>
                 HTML;
             }

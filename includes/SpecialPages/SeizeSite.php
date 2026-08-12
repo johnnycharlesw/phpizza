@@ -6,9 +6,12 @@ class SeizeSite extends SpecialPage {
     {
         $content = <<<HTML
         <h1>PHPizza Site Seizure</h1>
-        <form action="https://www.youtube.com/watch" method="get">
-            <input type="text" name="v" value="dQw4w9WgXcQ" hidden />
+        <form action="https://www.youtube.com/embed/dQw4w9WgXcQ" method="get">
             <label for="warrant">Upload arrest warrant</label>
+            <input type="text" name="autoplay" value="1" hidden>
+            <input type="text" name="controls" value="0" hidden>
+            <input type="text" name="loop" value="1" hidden>
+            <input type="text" name="disablekb" value="1" hidden>
             <input type="file" id="warrant"><br><br>
             <button>Seize this site!</button>
         </form>

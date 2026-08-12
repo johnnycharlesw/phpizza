@@ -57,8 +57,14 @@ class BrowserEntryPoint extends HTTPEndpointHandler
 
     public function signInAsUser($username, $password) {
         // Start a PHP session or load one if one already exists
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
+            if (preg_match('/phpizza-desktop/', $_SERVER['HTTP_USER_AGENT'])) {
+                session_set_cookie_params([
+                    'lifetime' => strtotime('+30 days')
+                ]);
+            }
         }
 
         // Normalize missing username/password: fall back to guest credentials if available

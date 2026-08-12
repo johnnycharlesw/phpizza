@@ -203,6 +203,17 @@ class PageRenderer{
             $skinStyleLinks = sprintf($skinStyleLinkTemplate, $skinName, $skinStylesheet);
         }
 
+        if (preg_match('/phpizza-desktop/',$_SERVER['HTTP_USER_AGENT'])) {
+            $skinStyleLinks .= '<script src="/assets/phpizza-client-scripts/phpizza_desktop.js"></script>';
+            $skinStyleLinks .= <<<HTML
+            <style>
+                header, footer, aside.sidebar, aside.sidebar2 {
+                    display: none;
+                }
+            </style>
+            HTML;
+        }
+
         return $skinStyleLinks;
         #return "<link rel='stylesheet' href='/css.php?f=$skinName/$skinStylesheet'>";
     }

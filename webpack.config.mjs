@@ -13,7 +13,8 @@ export default {
   entry: {
     videoplayer: './client_src/videoplayer.ts',
     console_message: './client_src/console_message.ts',
-    mistral_backed_agent_ui: './client_src/mistral-backed-agent-ui.ts'
+    mistral_backed_agent_ui: './client_src/mistral-backed-agent-ui.ts',
+    phpizza_desktop: './client_src/phpizza-desktop.ts'
   },
   output: {
     path: path.resolve(__dirname, 'assets/phpizza-client-scripts'),

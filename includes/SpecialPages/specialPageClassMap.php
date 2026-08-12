@@ -4,6 +4,7 @@ use PHPizza\SpecialPages\AdminPanel\AdminPanel;
 use PHPizza\SpecialPages\CreateAccount;
 use PHPizza\SpecialPages\DestroySessionToken;
 use PHPizza\SpecialPages\ExceptionTest;
+use PHPizza\SpecialPages\GetUsername;
 use PHPizza\SpecialPages\UserLogin;
 use PHPizza\SpecialPages\UserLogout;
 use PHPizza\SpecialPages\SpecialPages;
@@ -23,5 +24,6 @@ $specialPageClassMap = [
     "DestroySessionToken" => DestroySessionToken::class,
     "SwitchUser" => SwitchUser::class,
     "VideoRenderer" => VideoRenderer::class,
-    "SeizeSite" => SeizeSite::class
+    "SeizeSite" => SeizeSite::class,
+    'GetUsername' => GetUsername::class
 ];

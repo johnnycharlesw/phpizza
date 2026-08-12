@@ -68,7 +68,12 @@ class Skin extends Addon
 
     public function get_os_powered_by(){
         $phpOsFamily = PHP_OS_FAMILY;
-        $isUnix = is_dir('/') && is_dir('/usr') && is_dir('/usr/bin') && is_dir('/usr/sbin') && ($phpOsFamily !== "Windows");
+        $isUnix = is_dir('/') &&
+         is_dir('/usr') && 
+         is_dir('/usr/bin') && 
+         is_dir('/usr/sbin') && 
+         is_file('/usr/sbin/cp') &&
+         @preg_match('/(\x7f)ELF.+/', file_get_contents('/usr/sbin/cp'));
         $isWindowsLike = is_dir('C:/') && (is_dir('C:/Windows') || is_dir('C:/ReactOS'));
 
         // Unix-like operating systems

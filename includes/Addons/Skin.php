@@ -53,7 +53,9 @@ class Skin extends Addon
             'freebsd' => 'https://freebsd.org',
             'openbsd' => 'https://openbsd.org',
             'netbsd' => 'https://netbsd.org',
-            'niche' => 'https://github.com/search?q=operating+system&type=repositories'
+            'niche' => 'https://wiki.osdev.org/Projects',
+            'illumos' => 'https://illumos.org',
+            'serenity' => 'https://serenityos.org'
         ];
         return $urls[$id];
     }
@@ -84,6 +86,8 @@ class Skin extends Addon
                     $osRelease = file_get_contents('/etc/os-release');
                     $isDebian = preg_match('/(debian|raspbian|ubuntu)/', $osRelease) && @is_file('/usr/bin/apt');
                     return $this->get_os_powered_by_result( $isDebian ? 'debian' : 'linux');
+                } elseif (is_file('/system/app/SystemUI.apk')) {
+                    return $this->get_os_powered_by_result('android');
                 } else {
                     return $this->get_os_powered_by_result('linux');
                 }
@@ -92,6 +96,14 @@ class Skin extends Addon
             } elseif ($phpOsFamily == "BSD") {
                 $uname = strtolower(php_uname('s'));
                 return $this->get_os_powered_by_result($uname ?? 'unix');
+            }
+
+            if (php_uname('s') == "SerenityOS") {
+                return $this->get_os_powered_by_result('serenity');
+            }
+
+            if (is_dir('/kernel') && is_dir('/kernel/crypto') && is_dir('/kernel/crypto/amd64') && file_exists('/kernel/crypto/amd64/blowfish')) {
+                return $this->get_os_powered_by_result('illumos');
             }
 
             return $this->get_os_powered_by_result('unix');

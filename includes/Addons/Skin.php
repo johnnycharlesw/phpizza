@@ -55,7 +55,8 @@ class Skin extends Addon
             'netbsd' => 'https://netbsd.org',
             'niche' => 'https://wiki.osdev.org/Projects',
             'illumos' => 'https://illumos.org',
-            'serenity' => 'https://serenityos.org'
+            'serenity' => 'https://serenityos.org',
+            'ironclad' => 'https://ironclad-os.org/'
         ];
         return $urls[$id];
     }
@@ -82,12 +83,13 @@ class Skin extends Addon
         if ($isUnix) {
             if ($phpOsFamily == "Linux") {
                 // Linux: it may or may not be Debian
+                if (is_file('/system/app/SystemUI.apk')) {
+                    return $this->get_os_powered_by_result('android');
+                }
                 if (is_file('/etc/os-release')) {
                     $osRelease = file_get_contents('/etc/os-release');
                     $isDebian = preg_match('/(debian|raspbian|ubuntu)/', $osRelease) && @is_file('/usr/bin/apt');
                     return $this->get_os_powered_by_result( $isDebian ? 'debian' : 'linux');
-                } elseif (is_file('/system/app/SystemUI.apk')) {
-                    return $this->get_os_powered_by_result('android');
                 } else {
                     return $this->get_os_powered_by_result('linux');
                 }
@@ -100,6 +102,10 @@ class Skin extends Addon
 
             if (php_uname('s') == "SerenityOS") {
                 return $this->get_os_powered_by_result('serenity');
+            }
+
+            if (php_uname('s') == "Ironclad") {
+                return $this->get_os_powered_by_result('ironclad');
             }
 
             if (is_dir('/kernel') && is_dir('/kernel/crypto') && is_dir('/kernel/crypto/amd64') && file_exists('/kernel/crypto/amd64/blowfish')) {

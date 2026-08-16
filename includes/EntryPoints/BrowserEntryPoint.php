@@ -48,6 +48,7 @@ class BrowserEntryPoint extends HTTPEndpointHandler
     }
 
     public function register_settings(){
+        // Initialize or import settings relevant to viewing the site in a web browser such as Firefox or Thorium
         global $sitename, $siteLanguage, $guestUsername, $guestPasswordB64;
         $this->configdb->register_key('sitename', $sitename ?? "My Website");
         $this->configdb->register_key('siteLanguage', $siteLanguage ?? 'en');

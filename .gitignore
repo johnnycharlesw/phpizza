@@ -5,6 +5,8 @@ uploads
 config.d
 vendor/
 node_modules/
+maintenance/china-hid-the-facts-tarball
+china-dictatorship
 
 # Other things that should not be in the repo
 adminer-*.php

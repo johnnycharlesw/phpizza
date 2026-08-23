@@ -1,4 +1,4 @@
-# <img src="/assets/phpizza-cms-branding/logo.png" alt="PHPizza logo" width="64" height="auto" /> PHPizza has just been installed!
+# <img src="/assets/phpizza-branding/logo.png" alt="PHPizza logo" width="64" height="auto" /> PHPizza has just been installed!
 ## You just installed a powerful tool for site building.  
 Sure, it might look like any old WordPress site could do this page, but this page is just the "Hello, World" of development with PHPizza.  
 ## Wait, before you open up the editor and change this page!

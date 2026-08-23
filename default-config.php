@@ -18,8 +18,8 @@ $useSkin=true;
 $skinName="PHPizza";
 $homepageName="home";
 $specialPrefix="PHPizza:";
-$siteLogoPath="/assets/phpizza-cms-branding/logo.png";
-$poweredByImageUrl = "/assets/phpizza-cms-branding/powered-by.png";
+$siteLogoPath="/assets/phpizza-branding/logo.png";
+$poweredByImageUrl = "/assets/phpizza-branding/powered-by.png";
 
 // Database configuration
 $dbServer = "localhost";

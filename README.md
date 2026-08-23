@@ -1,4 +1,4 @@
-# <img width=128 height=128 alt="PHPizza Logo" src="assets/phpizza-cms-branding/logo.png" /> PHPizza
+# <img width=128 height=128 alt="PHPizza Logo" src="assets/phpizza-branding/logo.png" /> PHPizza
 This is a CMS/app framework I have been working on for fun.
 
 ## Features

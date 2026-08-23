@@ -1,8 +1,8 @@
-# <img src="/assets/phpizza-cms-branding/logo.png" alt="PHPizza logo" width="64" height="auto" /> Hello, PHPizza!
+# <img src="/assets/phpizza-branding/logo.png" alt="PHPizza logo" width="64" height="auto" /> Hello, PHPizza!
 Build sites like with a CMS. Build apps like with Symfony.
 ## See how PHPizza compares
 
-|Feature | <img src="/assets/phpizza-cms-branding/logo.png" width=64 height=64 alt="PHPizza"></img><br>PHPizza  |  <img src="/uploads/drupal-logo.png" width=64 height=64 alt="Drupal"></img><br>Drupal | <img src="/uploads/wordpress-logo.png" width=64 height=64 alt="WordPress"></img><br>WordPress  |  <img src="/uploads/jekyll-logo.png" width=64 height=64 alt="Jekyll"></img><br>Jekyll |  <img src="/uploads/joomla-logo.png" width=64 height=64 alt="Joomla!"></img><br>Joomla  |<img src="/uploads/wix-logo.png" width=64 height=64 alt="Wix"></img><br>WiX
+|Feature | <img src="/assets/phpizza-branding/logo.png" width=64 height=64 alt="PHPizza"></img><br>PHPizza  |  <img src="/uploads/drupal-logo.png" width=64 height=64 alt="Drupal"></img><br>Drupal | <img src="/uploads/wordpress-logo.png" width=64 height=64 alt="WordPress"></img><br>WordPress  |  <img src="/uploads/jekyll-logo.png" width=64 height=64 alt="Jekyll"></img><br>Jekyll |  <img src="/uploads/joomla-logo.png" width=64 height=64 alt="Joomla!"></img><br>Joomla  |<img src="/uploads/wix-logo.png" width=64 height=64 alt="Wix"></img><br>WiX
 |---|---|---|---|---|---|---|
 | Self-installation  | [x]  | [ ]  | [ ]  | [ ]  | [ ]  | [ ]|  
 | Self-hosting  | [x]  | [x]  | [x]  | [x]  | [x]  | [ ] | 

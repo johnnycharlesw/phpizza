@@ -19,7 +19,7 @@ $useSkin=true;
 $skinName="PHPizza";
 $homepageName="Setup";
 $specialPrefix="";
-$siteLogoPath="assets/phpizza-cms-branding/logo.png";
+$siteLogoPath="assets/phpizza-branding/logo.png";
 
 // Database configuration
 

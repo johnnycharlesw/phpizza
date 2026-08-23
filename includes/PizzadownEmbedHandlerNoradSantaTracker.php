@@ -10,7 +10,7 @@ class PizzadownEmbedHandlerNoradSantaTracker extends PizzadownEmbedHandler {
             return "<!-- Embed not rendered because the site owner disabled santa tracker embeds -->";
         }
         $datetime = new \DateTime("now");
-        if ($datetime->format("MM") !== "12") {
+        if ($datetime->format("m") !== "12") {
             return "<!-- Embed not rendered because it isn't December, silly! -->";
         }
         $html = <<<html

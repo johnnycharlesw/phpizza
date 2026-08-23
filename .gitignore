@@ -14,3 +14,6 @@ pma/
 phpMyAdmin-*.zip
 includes/.phpizza-updater.lock
 includes/.phpizza-updater-threshold
+
+includes/.phpizza-update-threshold
+includes/Updates/.phpizza-update-threshold

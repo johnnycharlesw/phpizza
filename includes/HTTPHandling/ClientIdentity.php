@@ -119,10 +119,20 @@ class ClientIdentity
 
 
         // Store the information
-        $this->countryCode = (string)$result['location']['country_code'];
-        $this->city = (string)$result['location']['city'];
-        $this->state = (string)$result['location']['state'];
-        $this->timezone = (string)$result['location']['timezone'];
+        if ($result['risk']['is_tor']) {
+            // The user used Tor, so we don't know the location. Assume it is Albany, NY for least censorship.
+            $this->countryCode = "US";
+            $this->city = "Albany";
+            $this->state = "New York";
+            $this->timezone = "America/New_York";
+        } else {
+            // It's all ours!
+            $this->countryCode = (string)$result['location']['country_code'];
+            $this->city = (string)$result['location']['city'];
+            $this->state = (string)$result['location']['state'];
+            $this->timezone = (string)$result['location']['timezone'];
+        }
+
     }
 
     public function is_client_allowed(): bool {

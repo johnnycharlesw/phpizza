@@ -111,7 +111,7 @@ class ClientIdentity
         $result = json_decode(curl_exec($this->curl), true);
 
         // Store information about the client
-        $this->isTor = (bool)$result['risk']['is_tor'];
+        $this->isTor = (bool)$result['risk']['is_tor'] && substr_count($_SERVER["HTTP_USER_AGENT"], "Mozilla/5.0 (X11; Linux x86_64; rv:68.0") > 0;
         $this->isVpn = (bool)$result['risk']['is_vpn'];
         $this->isMobileData = (bool)$result['risk']['is_mobile'];
         $this->isDatacenter = (bool)$result['risk']['is_datacenter'];

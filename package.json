@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "devtools-detect": "^4.0.2",
-    "dompurify": "^3.4.13",
+    "dompurify": "^3.4.14",
     "feather-icons": "^4.29.2",
     "js-cookie": "^3.0.7",
     "monaco-editor": "^0.55.1",

@@ -16,7 +16,6 @@
     "dompurify": "^3.4.13",
     "feather-icons": "^4.29.2",
     "js-cookie": "^3.0.7",
-    "monaco-editor": "^0.55.1",
     "picomatch": "^4.0.5",
     "prismjs": "^1.30.0",
     "ts-loader": "^9.6.2",

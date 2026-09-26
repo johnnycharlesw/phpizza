@@ -51,6 +51,9 @@ class ClientIdentity
         $this->hostname = $_SERVER["REMOTE_HOST"] ?? gethostbyaddr($this->ip);
         $_SERVER["REMOTE_HOST"] = gethostname();
 
+        // Hide cookies
+        $_COOKIE = ["PHPSESSID" => $_COOKIE["PHPSESSID"]];
+
         // Retrieve HTTPS info and obfuscate it
         if (!empty($_SERVER["HTTPS"])) {
             $this->https = true;

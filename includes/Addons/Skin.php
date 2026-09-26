@@ -76,13 +76,14 @@ class Skin extends Addon
          is_dir('/usr/bin') && 
          is_dir('/usr/sbin') && 
          is_file('/usr/sbin/cp') &&
-         @preg_match('/(\x7f)ELF.+/', file_get_contents('/usr/sbin/cp'));
+         // Avoid mistaking a Windows PE executable named "cp" for Unix cp.
+         @!preg_match("/MZ.+This program cannot be run in DOS mode.+PE\0\0.+/s", file_get_contents('/usr/sbin/cp'));
         $isWindowsLike = is_dir('C:/') && (is_dir('C:/Windows') || is_dir('C:/ReactOS'));
 
         // Unix-like operating systems
         if ($isUnix) {
             if ($phpOsFamily == "Linux") {
-                // Linux: it may or may not be Debian
+                // Linux: it may or may not be Debian or Android
                 if (is_file('/system/app/SystemUI.apk')) {
                     return $this->get_os_powered_by_result('android');
                 }

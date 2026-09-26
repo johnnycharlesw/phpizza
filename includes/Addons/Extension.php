@@ -13,10 +13,14 @@ class Extension extends Addon
             include $this->assetPath('vendor/autoload.php');
         }
         include $this->assetPath('extension.php');
+        // Hide cookies
+        $_COOKIE = ["PHPSESSID" => $_COOKIE["PHPSESSID"]];
     }
     
     public function deactivate() {
         include $this->assetPath('cleanup.php');
+        // Hide cookies
+        $_COOKIE = ["PHPSESSID" => $_COOKIE["PHPSESSID"]];
     }
 
     public function __destruct() {
